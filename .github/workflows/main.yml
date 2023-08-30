@@ -1,0 +1,25 @@
+name: Robin AI Reviewer
+
+on:
+  pull_request:
+    branches: [main]
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Robin AI Reviewer
+        uses: Integral-Healthcare/robin-ai-reviewer@v[INSERT_LATEST_RELEASE]
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPEN_AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
+          files_to_ignore: |
+            "README.md"
+            "assets/*"
+            "package-lock.json"
