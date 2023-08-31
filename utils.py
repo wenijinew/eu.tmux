@@ -13,7 +13,7 @@ def read_tmux_option(option, default_value):
     try:
         shell_cmd_args = shlex.split(shell_cmd)
         value = subprocess.check_output(shell_cmd_args, shell=False)
-    except Exception:
+    except Exception as err:
         logger.opt(exception=True).debug(
             f"{shell_cmd} is failed to run. use\
                                          {default_value} for {option}"
