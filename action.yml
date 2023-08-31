@@ -1,0 +1,3 @@
+- name: Robin AI Reviewer
+  uses: Integral-Healthcare/robin-ai-reviewer@v1.5.0
+            
