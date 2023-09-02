@@ -1,0 +1,44 @@
+---
+theme: violet
+status_left:
+  - session:
+    - enabled: on
+      tmux_option: "#{b:pane_current_path}"
+      icon: ""
+      decorator: ""
+      fg_option: ""
+      bg_option: ""
+      fg_icon: ""
+      bg_icon: ""
+      fg_decorator: ""
+      bg_decorator: ""
+      style: ""
+window:
+  - active:
+    - icon: ""
+      decorator: ""
+      fg_icon: ""
+      bg_icon: ""
+      fg_decorator: ""
+      bg_decorator: ""
+      fg_window: ""
+      bg_window: ""
+      fg_window_number: ""
+      bg_window_number: ""
+  - inactive:
+    - icon: ""
+      decorator: ""
+      fg_icon: ""
+      bg_icon: ""
+      fg_decorator: ""
+      bg_decorator: ""
+      fg_window: ""
+      bg_window: ""
+      fg_window_number: ""
+      bg_window_number: ""
+status_right:
+  - directory:
+    - enabled: on
+      tmux_option: "#{b:pane_current_path}"
+      icon: ""
+      decorator: ""

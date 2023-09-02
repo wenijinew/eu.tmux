@@ -1,0 +1,39 @@
+---
+status_line:
+  foreground: ""
+  background: ""
+  left_icon: ""
+  right_icon: ""
+  left_decorator: ""
+  right_decorator: ""
+  style: nobold,nounderscore,noitalics
+status_left:
+  fg_option: ""
+  bg_option: ""
+  fg_icon: ""
+  bg_icon: ""
+  fg_decorator: ""
+  bg_decorator: ""
+  icon: ""
+  decorator: ""
+  style: nobold,nounderscore,noitalics
+window:
+  fg_option: ""
+  bg_option: ""
+  fg_icon: ""
+  bg_icon: ""
+  fg_decorator: ""
+  bg_decorator: ""
+  icon: ""
+  decorator: ""
+  style: nobold,nounderscore,noitalics
+status_right:
+  fg_option: ""
+  bg_option: ""
+  fg_icon: ""
+  bg_icon: ""
+  fg_decorator: ""
+  bg_decorator: ""
+  icon: ""
+  decorator: ""
+  style: nobold,nounderscore,noitalics
