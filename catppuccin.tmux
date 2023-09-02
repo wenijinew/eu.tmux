@@ -238,7 +238,8 @@ main() {
   setw clock-mode-colour "${thm_blue}"
   setw mode-style "fg=${thm_pink} bg=${thm_black4} bold"
 
-  tmux "${tmux_commands[@]}"
+  # tmux "${tmux_commands[@]}"
+  echo "${tmux_commands[@]}"
 }
 
 main "$@"

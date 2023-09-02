@@ -1,0 +1,50 @@
+---
+theme: violot
+status_left:
+  session:
+    enabled: "on"
+    tmux_option: " #S "
+    icon: " "
+    decorator: ""
+    fg_option: "#edfbfb"
+    bg_option: "yellow"
+    fg_icon: "red"
+    bg_icon: "green"
+    fg_decorator: "gold"
+    bg_decorator: "red"
+window:
+  active:
+    icon: "A"
+    decorator: ">"
+    fg_icon: "red"
+    bg_icon: "blue"
+    fg_decorator: "green"
+    bg_decorator: "yellow"
+    fg_window: "purple"
+    bg_window: "cyan"
+    fg_window_number: "red"
+    bg_window_number: "yellow"
+  inactive:
+    icon: "I"
+    decorator: ">"
+    fg_icon: "red"
+    bg_icon: "blue"
+    fg_decorator: "green"
+    bg_decorator: "yellow"
+    fg_window: "purple"
+    bg_window: "cyan"
+    fg_window_number: "red"
+    bg_window_number: "yellow"
+status_right:
+  directory:
+    enabled: on
+    tmux_option: "#{b:pane_current_path}"
+    icon: "D"
+    decorator: "<"
+    fg_option: "#edfbfb"
+    bg_option: "gray"
+    fg_icon: "red"
+    bg_icon: "blue"
+    fg_decorator: "yellow"
+    bg_decorator: "gray"
+    style: "nobold"
