@@ -13,23 +13,27 @@ status_left:
     fg_decorator: "#820000"
 window:
   active:
-    window_name: " #W "
-    window_index: " #I"
+    icon:
     decorator: ""
-    fg_decorator: "#418100"
-    fg_window: "#2a432a"
-    bg_window: "#84b384"
-    fg_window_index: "#2a432a"
-    bg_window_index: "#418100"
+    fg_icon:
+    bg_icon:
+    fg_decorator: "green"
+    bg_decorator: "yellow"
+    fg_window: "purple"
+    bg_window: "cyan"
+    fg_window_index: "red"
+    bg_window_index: "yellow"
   inactive:
-    window_name: " #W "
-    window_index: " #I"
+    icon:
     decorator: ""
-    fg_decorator: "#454a64"
-    fg_window: "#2a432a"
-    bg_window: "#646b91"
-    fg_window_index: "#646b91"
-    bg_window_index: "#454a64"
+    fg_icon:
+    bg_icon:
+    fg_decorator: "green"
+    bg_decorator: "yellow"
+    fg_window: "purple"
+    bg_window: "cyan"
+    fg_window_index: "red"
+    bg_window_index: "yellow"
 status_right:
   directory:
     enabled: on

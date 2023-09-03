@@ -12,10 +12,18 @@ UTF_8 = "utf-8"
 EMPTY = ""
 
 # tmux options
-TMUX_WINDOW_OPTION = "#W"
-TMUX_WINDOW_NUMBER_OPTION = "#I"
 STYLE_START = "#["
 STYLE_END = "]"
+
+
+def get(_dict, key, default):
+    """'Rewrite' get method of dict.
+
+    When value is None or Empty, use default."""
+    value = _dict.get(key)
+    if value is None or len(value.strip()) == 0:
+        value = default
+    return value
 
 
 class Theme(dict):
@@ -24,8 +32,12 @@ class Theme(dict):
     def __init__(self, theme_config: dict):
         self.status_line = theme_config.get("status_line")
         self.status_left = ThemeStatusLeft(theme_config)
-        self.active_window = ThemeWindow(theme_config, self.status_line)
-        self.inactive_window = ThemeWindow(theme_config, self.status_line)
+        self.active_window = ThemeWindow(
+            self.status_line, theme_config.get("window").get("active")
+        )
+        self.inactive_window = ThemeWindow(
+            self.status_line, theme_config.get("window").get("inactive")
+        )
         self.window = {
             "active": self.active_window,
             "inactive": self.inactive_window,
@@ -87,44 +99,64 @@ class ThemeWindow(dict):
 
     def __init__(self, status_line_theme_config, window_theme_config):
         """Constructor"""
-        self.fg_window = window_theme_config.get(
-            "fg_window", status_line_theme_config.get("foreground")
+        self.fg_window = get(
+            window_theme_config,
+            "fg_window",
+            status_line_theme_config.get("foreground"),
         )
-        self.bg_window = window_theme_config.get(
-            "bg_window", status_line_theme_config.get("background")
+        self.bg_window = get(
+            window_theme_config,
+            "bg_window",
+            status_line_theme_config.get("background"),
         )
-        self.fg_window_number = window_theme_config.get(
-            "fg_window_number", status_line_theme_config.get("foreground")
+        self.fg_window_index = get(
+            window_theme_config,
+            "fg_window_index",
+            status_line_theme_config.get("foreground"),
         )
-        self.bg_window_number = window_theme_config.get(
-            "bg_window_number", status_line_theme_config.get("background")
+        self.bg_window_index = get(
+            window_theme_config,
+            "bg_window_index",
+            status_line_theme_config.get("background"),
         )
-        self.fg_icon = window_theme_config.get(
-            "fg_icon", status_line_theme_config.get("foreground")
+        self.fg_icon = get(
+            window_theme_config,
+            "fg_icon",
+            status_line_theme_config.get("foreground"),
         )
-        self.bg_icon = window_theme_config.get(
-            "bg_icon", status_line_theme_config.get("background")
+        self.bg_icon = get(
+            window_theme_config,
+            "bg_icon",
+            status_line_theme_config.get("background"),
         )
-        self.fg_decorator = window_theme_config.get(
-            "fg_decorator", status_line_theme_config.get("foreground")
+        self.fg_decorator = get(
+            window_theme_config,
+            "fg_decorator",
+            status_line_theme_config.get("foreground"),
         )
-        self.bg_decorator = window_theme_config.get(
-            "bg_decorator", status_line_theme_config.get("background")
+        self.bg_decorator = get(
+            window_theme_config,
+            "bg_decorator",
+            status_line_theme_config.get("background"),
         )
-        self.icon = window_theme_config.get(
-            "icon", status_line_theme_config.get("left_icon")
+        self.icon = get(
+            window_theme_config,
+            "icon",
+            status_line_theme_config.get("left_icon"),
         )
-        self.decorator = window_theme_config.get(
-            "decorator", status_line_theme_config.get("left_decorator")
+        self.decorator = get(
+            window_theme_config,
+            "decorator",
+            status_line_theme_config.get("left_decorator"),
         )
-        self.style = window_theme_config.get(
-            "style", status_line_theme_config.get("style")
+        self.style = get(
+            window_theme_config, "style", status_line_theme_config.get("style")
         )
         super().__init__(
             fg_window=self.fg_window,
             bg_window=self.bg_window,
-            fg_window_number=self.fg_window_number,
-            bg_window_number=self.bg_window_number,
+            fg_window_index=self.fg_window_index,
+            bg_window_index=self.bg_window_index,
             fg_icon=self.fg_icon,
             bg_icon=self.bg_icon,
             fg_decorator=self.fg_decorator,
@@ -182,10 +214,18 @@ class Constructor:
 
     def __init__(self, catppuccin: dict, theme: Theme):
         """Constructor"""
+        self.status_line = catppuccin.get(
+            "status_line", theme.get("status_line")
+        )
         self.status_left = catppuccin.get("status_left")
         self.window = catppuccin.get("window")
         self.status_right = catppuccin.get("status_right")
         self.theme = theme
+
+    def produce_status_line(self):
+        fg_status_line = self.status_line.get("foreground")
+        bg_status_line = self.status_line.get("background")
+        return f"fg={fg_status_line},bg={bg_status_line}"
 
     def produce_status_left(self):
         """Produce status left option string"""
@@ -237,24 +277,26 @@ class Constructor:
         """Return tuple with active window and inactive window option strings"""
         windows = {}
         for name, component in self.window.items():
+            style = component.get(
+                "style", self.theme.window.get(name).get("style")
+            )
             icon = component.get(
                 "icon", self.theme.window.get(name).get("icon")
             )
             decorator = component.get(
                 "decorator", self.theme.window.get(name).get("decorator")
             )
-            fg_window = component.get(
-                "fg_window", self.theme.window.get(name).get("fg_window")
+            window_name = component.get(
+                "window_name", self.theme.window.get(name).get("window_name")
             )
-            bg_window = component.get(
-                "bg_window", self.theme.window.get(name).get("bg_window")
+            window_index = component.get(
+                "window_index",
+                self.theme.window.get(name).get("window_index"),
             )
-            fg_number = component.get(
-                "fg_number", self.theme.window.get(name).get("fg_number")
+            decorator = component.get(
+                "decorator", self.theme.window.get(name).get("decorator")
             )
-            bg_number = component.get(
-                "bg_number", self.theme.window.get(name).get("bg_number")
-            )
+
             fg_icon = component.get(
                 "fg_icon", self.theme.window.get(name).get("fg_icon")
             )
@@ -267,18 +309,32 @@ class Constructor:
             bg_decorator = component.get(
                 "bg_decorator", self.theme.window.get(name).get("bg_decorator")
             )
-            style = component.get(
-                "style", self.theme.window.get(name).get("style")
+            fg_window = component.get(
+                "fg_window", self.theme.window.get(name).get("fg_window")
             )
+            bg_window = component.get(
+                "bg_window", self.theme.window.get(name).get("bg_window")
+            )
+            fg_window_index = component.get(
+                "fg_window_index",
+                self.theme.window.get(name).get("fg_window_index"),
+            )
+            bg_window_index = component.get(
+                "bg_window_index",
+                self.theme.window.get(name).get("bg_window_index"),
+            )
+
             window_style = self.get_style(fg_window, bg_window, style)
-            window_number_style = self.get_style(fg_number, bg_number, style)
+            window_index_style = self.get_style(
+                fg_window_index, bg_window_index, style
+            )
             icon_style = self.get_style(fg_icon, bg_icon, style)
             decorator_style = self.get_style(fg_decorator, bg_decorator, style)
-            window = f"{window_style}{TMUX_WINDOW_OPTION}"
-            window_number = f"{window_number_style}{TMUX_WINDOW_NUMBER_OPTION}"
+            window_name = f"{window_style}{window_name}"
+            window_index = f"{window_index_style}{window_index}"
             icon = f"{icon_style}{icon}"
             decorator = f"{decorator_style}{decorator}"
-            component_value = f"{window}{window_number}{icon}{decorator}"
+            component_value = f"{window_name}{window_index}{icon}{decorator}"
             windows[name] = component_value
 
         return windows
@@ -331,6 +387,8 @@ class Constructor:
 
     def get_style(self, foreground, background, style):
         """construct style string with foreground and background"""
+        if foreground is None or background is None or style is None:
+            return EMPTY
         pieces = []
         if foreground:
             pieces.append(f"fg={foreground}")
@@ -345,22 +403,28 @@ class Constructor:
 
     def produce_option_commands(self):
         """Return all tmux set option commands."""
+        status_line = self.produce_status_line()
         status_left = self.produce_status_left()
         window = self.produce_window()
         status_right = self.produce_status_right()
+
+        status_line_cmd = self.produce_option_command(
+            "status-style", status_line
+        )
         status_left_cmd = self.produce_option_command(
             "status-left", status_left
         )
         active_window_cmd = self.produce_option_command(
-            "window-status-format", window["inactive"]
+            "window-status-current-format", window["active"]
         )
         inactive_window_cmd = self.produce_option_command(
-            "window-status-current-format", window["active"]
+            "window-status-format", window["inactive"]
         )
         status_right_cmd = self.produce_option_command(
             "status-right", status_right
         )
         option_commands = []
+        option_commands.append(status_line_cmd)
         option_commands.append(status_left_cmd)
         option_commands.append(active_window_cmd)
         option_commands.append(inactive_window_cmd)
@@ -407,6 +471,7 @@ def get_tmux_option(option_name, default_value):
 def run_shell_command(command, default_output=None):
     """Run shell command."""
     try:
+        print(f"Run {command}")
         command_args = shlex.split(command)
         value = subprocess.check_output(command_args, shell=False).decode(
             UTF_8
