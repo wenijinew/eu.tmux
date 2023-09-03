@@ -117,5 +117,5 @@ sys_uptime(){
   fi
 }
 
-status_info="#[bg=#454a64,nobold] #[fg=#2a432a,bg=#646b91,nobold,nounderscore,noitalics] $(sys_uptime) #[fg=#efefef,bg=#303446,nobold] $(resource_usage)"
+status_info="#[bg=#454a64,nobold] #[fg=#2a432a,bg=#646b91,nobold,nounderscore,noitalics] $(sys_uptime) #[fg=#d0d0d0,bg=#303446,nobold] $(resource_usage)"
 echo "$status_info"

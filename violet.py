@@ -215,6 +215,7 @@ class Constructor:
 
     def __init__(self, catppuccin: dict, theme: Theme):
         """Constructor"""
+        self.general = catppuccin.get("general")
         self.status_line = catppuccin.get(
             "status_line", theme.get("status_line")
         )
@@ -224,6 +225,29 @@ class Constructor:
         self.window = catppuccin.get("window")
         self.status_right = catppuccin.get("status_right")
         self.theme = theme
+
+    def produce_general_options_commands(self):
+        """Produce general options."""
+        general = []
+        for name, value in self.general.get("options").items():
+            general.append(f"set-option -gq {name} '{value}'")
+
+        for name, component in self.general.get("styles").items():
+            if name == "option-commands":
+                continue
+            foreground = get(
+                component, "fg", self.status_line.get("foreground")
+            )
+            background = get(
+                component, "bg", self.status_line.get("background")
+            )
+            style = get(component, "style", self.status_line.get("style"))
+            style_command = self.get_style_command(
+                foreground, background, style, name
+            )
+            general.append(style_command)
+
+        return ";".join(general)
 
     def produce_status_line(self):
         """Produce status line option"""
@@ -262,11 +286,11 @@ class Constructor:
                 "bg_decorator", self.theme.status_left.get("bg_decorator")
             )
             style = component.get("style", self.theme.status_left.get("style"))
-            tmux_option_style = (
-                f"{self.get_style(fg_option, bg_option, style, tmux_option)}"
+            tmux_option_style = f"{self.get_style_for_option(fg_option, bg_option, style, tmux_option)}"
+            icon_style = (
+                f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             )
-            icon_style = f"{self.get_style(fg_icon, bg_icon, style, icon)}"
-            decorator_style = f"{self.get_style(fg_decorator, bg_decorator, style, decorator)}"
+            decorator_style = f"{self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)}"
             component_value = (
                 f"{icon_style}{decorator_style}{tmux_option_style}"
             )
@@ -325,17 +349,19 @@ class Constructor:
                 self.theme.window.get(name).get("bg_window_index"),
             )
 
-            window_style = self.get_style(
+            window_style = self.get_style_for_option(
                 fg_window, bg_window, style, window_name
             )
-            window_index_style = self.get_style(
+            window_index_style = self.get_style_for_option(
                 fg_window_index, bg_window_index, style, window_index
             )
-            icon_style = self.get_style(fg_icon, bg_icon, style, icon)
-            decorator_style = self.get_style(
+            icon_style = self.get_style_for_option(
+                fg_icon, bg_icon, style, icon
+            )
+            decorator_style = self.get_style_for_option(
                 fg_decorator, bg_decorator, style, decorator
             )
-            component_value = f"{window_style}{window_index_style}{icon_style}{decorator_style}"
+            component_value = f"{window_style}{window_index_style}{icon_style}{decorator_style} "
             windows[name] = component_value
 
         return windows
@@ -371,11 +397,11 @@ class Constructor:
                 "bg_decorator", self.theme.status_right.get("bg_decorator")
             )
             style = options.get("style", self.theme.status_right.get("style"))
-            tmux_option_style = (
-                f"{self.get_style(fg_option, bg_option, style, tmux_option)}"
+            tmux_option_style = f"{self.get_style_for_option(fg_option, bg_option, style, tmux_option)}"
+            icon_style = (
+                f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             )
-            icon_style = f"{self.get_style(fg_icon, bg_icon, style, icon)}"
-            decorator_style = f"{self.get_style(fg_decorator, bg_decorator, style, decorator)}"
+            decorator_style = f"{self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)}"
             component_value = (
                 f"{decorator_style}{icon_style}{tmux_option_style}"
             )
@@ -383,7 +409,7 @@ class Constructor:
 
         return " ".join(status_right)
 
-    def get_style(self, foreground, background, style, option):
+    def get_style_for_option(self, foreground, background, style, option):
         """construct style string with foreground and background"""
         if option is None:
             option = ""
@@ -403,6 +429,9 @@ class Constructor:
         pieces.append(style)
         _default_style = f"{STYLE_START}{','.join(pieces)}{STYLE_END}"
         return f"{_style}{_default_style}"
+
+    def get_style_command(self, foreground, background, style, style_name):
+        return f"set-option {style_name} 'fg={foreground},bg={background},{style}'"
 
     def produce_option_command(self, option, value):
         """Return tmux set option command"""
@@ -430,7 +459,9 @@ class Constructor:
         status_right_cmd = self.produce_option_command(
             "status-right", status_right
         )
+        general_commands = self.produce_general_options_commands()
         option_commands = []
+        option_commands.append(general_commands)
         option_commands.append(status_line_cmd)
         option_commands.append(status_left_cmd)
         option_commands.append(active_window_cmd)
@@ -455,14 +486,14 @@ def violet(config_file="violet.yaml"):
 
             constructor = Constructor(catppuccin, theme)
             set_option_commands = constructor.produce_option_commands()
-    return set_option_commands
+    return ";".join(set_option_commands)
 
 
 def main():
     """Run"""
     set_option_commands = violet()
     if set_option_commands:
-        for command in set_option_commands:
+        for command in set_option_commands.split(";"):
             run_shell_command(f"tmux {command}")
 
 
