@@ -12,7 +12,7 @@ general:
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
-     fg: ""
+     fg: "#418100"
      bg: ""
      style: ""
     message-command-style:
@@ -34,7 +34,7 @@ status_left:
     icon: "  "
     decorator: ""
     fg_option: "#c6d0f5"
-    bg_option: "#414559"
+    bg_option: "#303446"
     fg_icon: "#ffff4f"
     bg_icon: "#820000"
     fg_decorator: "#820000"
@@ -42,6 +42,7 @@ window:
   active:
     window_name: " #W "
     window_index: " #I"
+    icon: ""
     decorator: ""
     fg_decorator: "#418100"
     fg_window: "#2a432a"
@@ -51,6 +52,7 @@ window:
   inactive:
     window_name: " #W "
     window_index: " #I"
+    icon: ""
     decorator: ""
     fg_decorator: "#454a64"
     fg_window: "#2a432a"
