@@ -58,29 +58,29 @@ class ThemeStatusLeft(dict):
         """Constructor"""
         status_line = theme_config.get("status_line")
         status_left = theme_config.get("status_left")
-        self.fg_option = status_left.get(
-            "fg_option", status_line.get("foreground")
+        self.fg_option = get(
+            status_left, "fg_option", status_line.get("foreground")
         )
-        self.bg_option = status_left.get(
-            "bg_option", status_line.get("background")
+        self.bg_option = get(
+            status_left, "bg_option", status_line.get("background")
         )
-        self.fg_icon = status_left.get(
-            "fg_icon", status_line.get("foreground")
+        self.fg_icon = get(
+            status_left, "fg_icon", status_line.get("foreground")
         )
-        self.bg_icon = status_left.get(
-            "bg_icon", status_line.get("background")
+        self.bg_icon = get(
+            status_left, "bg_icon", status_line.get("background")
         )
         self.fg_decorator = status_left.get(
             "fg_decorator", status_line.get("foreground")
         )
-        self.bg_decorator = status_left.get(
-            "bg_decorator", status_line.get("background")
+        self.bg_decorator = get(
+            status_left, "bg_decorator", status_line.get("background")
         )
-        self.icon = status_left.get("icon", status_line.get("left_icon"))
+        self.icon = get(status_left, "icon", status_line.get("left_icon"))
         self.decorator = status_left.get(
             "decorator", status_line.get("left_decorator")
         )
-        self.style = status_left.get("style", status_line.get("style"))
+        self.style = get(status_left, "style", status_line.get("style"))
         super().__init__(
             fg_option=self.fg_option,
             bg_option=self.bg_option,
@@ -174,29 +174,29 @@ class ThemeStatusRight(dict):
         """Constructor"""
         status_line = theme_config.get("status_line")
         status_right = theme_config.get("status_right")
-        self.fg_option = status_right.get(
-            "fg_option", status_line.get("foreground")
+        self.fg_option = get(
+            status_right, "fg_option", status_line.get("foreground")
         )
-        self.bg_option = status_right.get(
-            "bg_option", status_line.get("background")
+        self.bg_option = get(
+            status_right, "bg_option", status_line.get("background")
         )
-        self.fg_icon = status_right.get(
-            "fg_icon", status_line.get("foreground")
+        self.fg_icon = get(
+            status_right, "fg_icon", status_line.get("foreground")
         )
-        self.bg_icon = status_right.get(
-            "bg_icon", status_line.get("background")
+        self.bg_icon = get(
+            status_right, "bg_icon", status_line.get("background")
         )
-        self.fg_decorator = status_right.get(
-            "fg_decorator", status_line.get("foreground")
+        self.fg_decorator = get(
+            status_right, "fg_decorator", status_line.get("foreground")
         )
-        self.bg_decorator = status_right.get(
-            "bg_decorator", status_line.get("background")
+        self.bg_decorator = get(
+            status_right, "bg_decorator", status_line.get("background")
         )
-        self.icon = status_right.get("icon", status_line.get("left_icon"))
-        self.decorator = status_right.get(
-            "decorator", status_line.get("left_decorator")
+        self.icon = get(status_right, "icon", status_line.get("left_icon"))
+        self.decorator = get(
+            status_right, "decorator", status_line.get("left_decorator")
         )
-        self.style = status_right.get("style", status_line.get("style"))
+        self.style = get(status_right, "style", status_line.get("style"))
         super().__init__(
             fg_option=self.fg_option,
             bg_option=self.bg_option,
@@ -230,6 +230,8 @@ class Constructor:
         """Produce general options."""
         general = []
         for name, value in self.general.get("options").items():
+            if name.startswith("_"):
+                name = f"@{name.lstrip('_')}"
             general.append(f"set-option -gq {name} '{value}'")
 
         for name, component in self.general.get("styles").items():

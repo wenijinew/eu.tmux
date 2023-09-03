@@ -53,7 +53,7 @@ status_right:
   decorator: ""
   style: "nobold,nounderscore,noitalics"
   fg_option: "#2a432a"
-  bg_option: "#646b91"
+  bg_option: "#71789d"
   fg_icon: "#303030"
   bg_icon: "#cc8400"
   fg_decorator: "#454a64"
