@@ -51,10 +51,10 @@ window:
 status_right:
   icon: ""
   decorator: ""
-  style: nobold,nounderscore,noitalics
-  fg_option: "red"
-  bg_option: "blue"
-  fg_icon: "yellow"
-  bg_icon: "green"
-  fg_decorator: "purple"
-  bg_decorator: "violot"
+  style: "nobold,nounderscore,noitalics"
+  fg_option: "#2a432a"
+  bg_option: "#646b91"
+  fg_icon: "#303030"
+  bg_icon: "#cc8400"
+  fg_decorator: "#454a64"
+  bg_decorator: "#303446"
