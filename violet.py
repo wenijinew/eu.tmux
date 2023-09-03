@@ -19,7 +19,15 @@ STYLE_END = "]"
 def get(_dict, key, default):
     """'Rewrite' get method of dict.
 
-    When value is None or Empty, use default."""
+    When value is None or Empty, use default.
+    Should be used in theme configuration only.
+    Lower theme configuration could reuse upper level them configuration, then
+    it's possible to configure less items.
+    However, user configuration should be able to overwrite theme
+    configuration.
+    For example, if theme defined icons, but user don't want to use icon, then
+    they can set icon as Empty.
+    """
     value = _dict.get(key)
     if value is None or value.strip() == EMPTY:
         value = default
