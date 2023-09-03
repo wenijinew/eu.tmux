@@ -17,12 +17,12 @@ general:
      bg: ""
      style: ""
     pane-border-style:
-     fg: ""
-     bg: ""
+     fg: "#414559"
+     bg: "#231f32"
      style: ""
     pane-active-border-style:
-     fg: ""
-     bg: ""
+     fg: "#418100"
+     bg: "#231f32"
      style: ""
 status_left:
   session:
