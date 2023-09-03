@@ -1,6 +1,6 @@
 ---
 status_line:
-  foreground: "#efefef"
+  foreground: "#d0d0d0"
   background: "#303446"
   left_icon: ""
   right_icon: ""

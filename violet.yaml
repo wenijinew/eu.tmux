@@ -1,27 +1,29 @@
 ---
 theme: violet
 general:
-  option:
-   set-option -gq status on
-   set-option -gq status-justify left
-   set-option -gq status-left-length 100
-   set-option -gq status-right-length 100
-  message-style:
-   fg: ""
-   bg: ""
-   style: ""
-  message-command-style:
-   fg: ""
-   bg: ""
-   style: ""
-  pane-border-style:
-   fg: ""
-   bg: ""
-   style: ""
-  pane-active-border-style:
-   fg: ""
-   bg: ""
-   style: ""
+  options:
+    status: on
+    status-justify: left
+    status-left-length: 100
+    status-right-length: 100
+    window-status-separator: ' '
+  styles:
+    message-style:
+     fg: ""
+     bg: ""
+     style: ""
+    message-command-style:
+     fg: ""
+     bg: ""
+     style: ""
+    pane-border-style:
+     fg: ""
+     bg: ""
+     style: ""
+    pane-active-border-style:
+     fg: ""
+     bg: ""
+     style: ""
 status_left:
   session:
     enabled: "on"
@@ -64,7 +66,27 @@ status_right:
     bg_icon: "#cc8400"
     fg_decorator: "#cc8400"
     style: "nobold"
-
-  resource:
+  date:
     enabled: on
-    tmux_option: "#(/workspace/wenijinew/github/violet/resource.sh) "
+    tmux_option: " v%V %a %Y-%m-%d %H:%M:%S "
+    icon: "  "
+    fg_icon: "#adb2c7"
+    bg_icon: "#454a64"
+  cpu:
+    enabled: on
+    tmux_option: " #(source cpu.sh) "
+    icon: "  "
+    fg_icon: "#adb2c7"
+    bg_icon: "#454a64"
+  memory:
+    enabled: on
+    tmux_option: " #(source memory.sh) "
+    icon: "  "
+    fg_icon: "#adb2c7"
+    bg_icon: "#454a64"
+  disk:
+    enabled: on
+    tmux_option: " #(source disk.sh) "
+    icon: "  "
+    fg_icon: "#adb2c7"
+    bg_icon: "#454a64"
