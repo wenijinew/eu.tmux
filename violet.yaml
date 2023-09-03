@@ -61,7 +61,7 @@ status_right:
   directory:
     enabled: on
     tmux_option: " #{b:pane_current_path} "
-    icon: "  "
+    icon: " "
     decorator: ""
     fg_option: "#2a432a"
     bg_option: "#ffc966"
@@ -72,24 +72,24 @@ status_right:
   date:
     enabled: on
     tmux_option: " v%V %a %Y-%m-%d %H:%M:%S "
-    icon: "  "
+    icon: " "
     fg_icon: "#adb2c7"
     bg_icon: "#454a64"
   cpu:
     enabled: on
     tmux_option: " #(source cpu.sh) "
-    icon: "  "
+    icon: " "
     fg_icon: "#adb2c7"
     bg_icon: "#454a64"
   memory:
     enabled: on
     tmux_option: " #(source memory.sh) "
-    icon: "  "
+    icon: " "
     fg_icon: "#adb2c7"
     bg_icon: "#454a64"
   disk:
     enabled: on
     tmux_option: " #(source disk.sh) "
-    icon: "  "
+    icon: " "
     fg_icon: "#adb2c7"
     bg_icon: "#454a64"
