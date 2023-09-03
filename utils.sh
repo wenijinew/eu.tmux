@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 #
+E_ABNORMAL_STATE=2
+TRUE=0
+FALSE=1
+
 percentage(){
     local var1="$1"
     local var2="$2"
@@ -14,7 +18,7 @@ percentage(){
 }
 
 #
-is_over(){
+is_over_used(){
   local usage=$1
   local total=$2
 
