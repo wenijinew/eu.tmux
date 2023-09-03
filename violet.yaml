@@ -1,5 +1,27 @@
 ---
-theme: violot
+theme: violet
+general:
+  option:
+   set-option -gq status on
+   set-option -gq status-justify left
+   set-option -gq status-left-length 100
+   set-option -gq status-right-length 100
+  message-style:
+   fg: ""
+   bg: ""
+   style: ""
+  message-command-style:
+   fg: ""
+   bg: ""
+   style: ""
+  pane-border-style:
+   fg: ""
+   bg: ""
+   style: ""
+  pane-active-border-style:
+   fg: ""
+   bg: ""
+   style: ""
 status_left:
   session:
     enabled: "on"
@@ -33,13 +55,16 @@ window:
 status_right:
   directory:
     enabled: on
-    tmux_option: "#{b:pane_current_path}"
-    icon: "D"
-    decorator: "<"
-    fg_option: "#edfbfb"
-    bg_option: "gray"
-    fg_icon: "red"
-    bg_icon: "blue"
-    fg_decorator: "yellow"
-    bg_decorator: "gray"
+    tmux_option: " #{b:pane_current_path} "
+    icon: "  "
+    decorator: ""
+    fg_option: "#2a432a"
+    bg_option: "#ffc966"
+    fg_icon: "#303030"
+    bg_icon: "#cc8400"
+    fg_decorator: "#cc8400"
     style: "nobold"
+
+  resource:
+    enabled: on
+    tmux_option: "#(/workspace/wenijinew/github/violet/resource.sh) "
