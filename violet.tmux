@@ -64,6 +64,9 @@ create_dynamic_theme_file(){
     while read -r _color;do
         sed -i "s/${PLACE_HOLDERS[$index]}/${_color}/g" "${dynamic_theme_file_name}"
         ((index++))
+        if [ $index -ge ${#PLACE_HOLDERS[@]} ];then
+            break
+        fi
     done < "${PALETTE_FILENAME}"
 }
 
@@ -78,6 +81,9 @@ create_dynamic_config_file(){
     while read -r _color;do
         sed -i "s/${PLACE_HOLDERS[$index]}/${_color}/g" "${dynamic_config_file_name}"
         ((index++))
+        if [ $index -ge ${#PLACE_HOLDERS[@]} ];then
+            break
+        fi
     done < "${PALETTE_FILENAME}"
 }
 

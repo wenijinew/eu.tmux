@@ -70,7 +70,7 @@ def generate_random_colors(
 
 def generate_random_red(n_colors=1, lightness=15):
     """Generate random dark red colors"""
-    lightness_min = lightness
+    lightness_min = lightness or 15
     lightness_max = lightness_min + 25
     hue = random.randint(300, 360) / 360
     saturation = random.randint(75, 100) / 100
@@ -81,7 +81,7 @@ def generate_random_red(n_colors=1, lightness=15):
 
 def generate_random_orange(n_colors=1, lightness=20):
     """Generate random dark orange colors"""
-    lightness_min = lightness
+    lightness_min = lightness or 20
     lightness_max = lightness_min + 20
     hue = random.randint(20, 60) / 360
     saturation = random.randint(60, 100) / 100
@@ -92,7 +92,7 @@ def generate_random_orange(n_colors=1, lightness=20):
 
 def generate_random_purple(n_colors=1, lightness=20):
     """Generate random dark orange colors"""
-    lightness_min = lightness
+    lightness_min = lightness or 20
     lightness_max = lightness_min + 20
     hue = random.randint(270, 330) / 360
     saturation = random.randint(60, 100) / 100
@@ -103,7 +103,7 @@ def generate_random_purple(n_colors=1, lightness=20):
 
 def generate_random_black(n_colors=1, lightness=0):
     """Generate random dark black/gray/blue colors"""
-    lightness_min = lightness
+    lightness_min = lightness or 0
     lightness_max = lightness_min + 10
     hue = random.randint(0, 360) / 360
     saturation = 1
@@ -114,7 +114,7 @@ def generate_random_black(n_colors=1, lightness=0):
 
 def generate_random_blue(n_colors=1, lightness=0):
     """Generate random dark black/gray/blue colors"""
-    lightness_min = lightness
+    lightness_min = lightness or 0
     lightness_max = lightness_min + 15
     hue = random.randint(180, 240) / 360
     saturation = random.randint(75, 100) / 100
@@ -125,7 +125,7 @@ def generate_random_blue(n_colors=1, lightness=0):
 
 def generate_random_green(n_colors=1, lightness=10):
     """Generate random dark green colors"""
-    lightness_min = lightness
+    lightness_min = lightness or 10
     lightness_max = lightness_min + 10
     hue = random.randint(90, 150) / 360
     saturation = random.randint(60, 100) / 100
@@ -134,7 +134,7 @@ def generate_random_green(n_colors=1, lightness=10):
     return generate_random_colors(n_colors, hue, saturation, lightness)
 
 
-def generate_palette(n_palette=1):
+def generate_palette(n_palette=1, lightness=None):
     """Convert"""
 
     n_colors = 24
@@ -144,12 +144,12 @@ def generate_palette(n_palette=1):
     for _i in range(n_palette):
         palette = []
 
-        red = generate_random_red()
-        purple = generate_random_purple()
-        orange = generate_random_orange()
-        green = generate_random_green()
-        blue = generate_random_blue()
-        black = generate_random_black()
+        red = generate_random_red(lightness=lightness)
+        purple = generate_random_purple(lightness=lightness)
+        orange = generate_random_orange(lightness=lightness)
+        green = generate_random_green(lightness=lightness)
+        blue = generate_random_blue(lightness=lightness)
+        black = generate_random_black(lightness=lightness)
         for dark_color in [
             c
             for dark in (
@@ -179,14 +179,14 @@ def generate_palette(n_palette=1):
     return all_palettes
 
 
-def create_theme_palette():
+def create_theme_palette(lightness=None):
     """Create palette for theme.
 
     Returned 9 colors:
         light red, red, dark red; light green, green, dark green, light gray,
         gray, dark gray.
     """
-    return generate_palette()[0]
+    return generate_palette(lightness=lightness)[0]
 
 
 def main():

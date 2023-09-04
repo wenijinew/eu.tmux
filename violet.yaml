@@ -8,7 +8,7 @@ general:
     status-right-length: 100
     window-status-separator: ' '
     _fg_highlight: "DARK_RED"
-    _bg_highlight: "DEEP_GRAY"
+    _bg_highlight: ""
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
