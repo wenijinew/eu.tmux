@@ -98,6 +98,9 @@ def generate_random_dark_green(n_colors=1):
 def generate_palette(n_palette=1):
     """ "Convert"""
 
+    n_colors = 24
+    groups = 6
+    counts = n_colors / groups
     all_palettes = []
     for _i in range(n_palette):
         palette = []
@@ -108,8 +111,17 @@ def generate_palette(n_palette=1):
         for dark_color in [
             c for dark in (dark_red, dark_green, dark_black) for c in dark
         ]:
-            _colors = sns.color_palette(f"light:{dark_color}", n_colors=3)
-            palette.extend(_colors.as_hex())
+            _colors = sns.color_palette(
+                f"light:{dark_color}", n_colors=n_colors
+            )
+            _colors_hex = _colors.as_hex()
+            _picked_colors_index = [
+                c + (counts - 1) for c in range(n_colors) if c % counts == 0
+            ]
+            _picked_colors = [
+                _colors_hex[index] for index in _picked_colors_index
+            ]
+            palette.extend()
 
         all_palettes.append(palette)
 
