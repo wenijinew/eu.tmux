@@ -46,9 +46,9 @@ status_right:
     tmux_option: " #{b:pane_current_path} "
     icon: " "
     decorator: ""
-    fg_option: "DARK_GRAY"
+    fg_option: "DEEP_ORANGE"
     bg_option: "MIDDLE_ORANGE"
-    fg_icon: "DARK_GRAY"
+    fg_icon: "DEEP_ORANGE"
     bg_icon: "DARK_ORANGE"
     fg_decorator: "DARK_ORANGE"
 

@@ -7,25 +7,25 @@ general:
     status-left-length: 100
     status-right-length: 100
     window-status-separator: ' '
-    _fg_highlight: "#ac3929"
+    _fg_highlight: "#d0332b"
     _bg_highlight: ""
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
-     fg: "#81a893"
+     fg: "#819c8d"
      bg: ""
      style: ""
     message-command-style:
-     fg: "#b27eb6"
+     fg: "#d783c6"
      bg: ""
      style: ""
     pane-border-style:
-     fg: "#7b867a"
-     bg: "#020f00"
+     fg: "#7d8d97"
+     bg: "#002133"
      style: ""
     pane-active-border-style:
-     fg: "#81a893"
-     bg: "#020f00"
+     fg: "#819c8d"
+     bg: "#002133"
      style: ""
 status_left:
   session:
@@ -46,11 +46,11 @@ status_right:
     tmux_option: " #{b:pane_current_path} "
     icon: " "
     decorator: ""
-    fg_option: "#2a3628"
-    bg_option: "#cea480"
-    fg_icon: "#2a3628"
-    bg_icon: "#b26c2f"
-    fg_decorator: "#b26c2f"
+    fg_option: "#2d190a"
+    bg_option: "#948982"
+    fg_icon: "#2d190a"
+    bg_icon: "#4f3e32"
+    fg_decorator: "#4f3e32"
 
   date:
     enabled: on
