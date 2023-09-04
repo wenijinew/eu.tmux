@@ -72,7 +72,7 @@ def generate_random_red(n_colors=1, lightness=15):
     """Generate random dark red colors"""
     lightness_min = lightness or 15
     lightness_max = lightness_min + 25
-    hue = random.randint(300, 360) / 360
+    hue = random.randint(0, 20) / 360
     saturation = random.randint(75, 100) / 100
     lightness = random.randint(lightness_min, lightness_max) / 100
 
