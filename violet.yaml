@@ -42,15 +42,27 @@ status_right:
   directory:
     enabled: on
     tmux_option: " #{b:pane_current_path} "
+    icon: " "
+    decorator: ""
+    fg_option: "DARK_GRAY"
+    bg_option: "MIDDLE_ORANGE"
+    fg_icon: "DARK_GRAY"
+    bg_icon: "DARK_ORANGE"
+    fg_decorator: "DARK_ORANGE"
+
   date:
     enabled: on
+    icon: " "
     tmux_option: " v%V %a %Y-%m-%d %H:%M:%S "
   cpu:
     enabled: on
+    icon: " "
     tmux_option: " #(source cpu.sh) "
   memory:
     enabled: on
+    icon: " "
     tmux_option: " #(source memory.sh) "
   disk:
     enabled: on
+    icon: " "
     tmux_option: " #(source disk.sh) "

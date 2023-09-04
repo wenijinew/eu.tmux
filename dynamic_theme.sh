@@ -47,6 +47,8 @@ palette=$(python3 -c "import palette; palette = palette.create_theme_palette(); 
 tmpfile=$(mktemp)
 colors=$(echo $palette | grep -iEo '#[[:alnum:]]{6}' > ${tmpfile})
 
+config_file="violet.yaml"
+
 dynamic_theme_name=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8)
 dynamic_theme_name="dynamic"
 tmux set-option -gq "@dynamic_theme_name" "${dynamic_theme_name}"
@@ -60,6 +62,7 @@ cp "template.theme.yaml" "${dynamic_theme_file_name}"
 index=1
 while read -r _color;do
     sed -i "s/${PLACE_HOLDERS[$index]}/${_color}/g" "${dynamic_theme_file_name}"
+    sed -i "s/${PLACE_HOLDERS[$index]}/${_color}/g" "${config_file}"
     ((index++))
 done < "${tmpfile}"
 
