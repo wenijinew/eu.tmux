@@ -77,9 +77,36 @@ def generate_random_dark_red(n_colors=1):
     return generate_random_colors(n_colors, hue, saturation, lightness)
 
 
+def generate_random_dark_orange(n_colors=1):
+    """Generate random dark orange colors"""
+    hue = random.randint(20, 60) / 360
+    saturation = random.randint(60, 100) / 100
+    lightness = random.randint(20, 40) / 100
+
+    return generate_random_colors(n_colors, hue, saturation, lightness)
+
+
+def generate_random_dark_purple(n_colors=1):
+    """Generate random dark orange colors"""
+    hue = random.randint(270, 330) / 360
+    saturation = random.randint(60, 100) / 100
+    lightness = random.randint(20, 40) / 100
+
+    return generate_random_colors(n_colors, hue, saturation, lightness)
+
+
 def generate_random_dark_black(n_colors=1):
     """Generate random dark black/gray/blue colors"""
-    hue = random.randint(230, 250) / 360
+    hue = random.randint(0, 360) / 360
+    saturation = 1
+    lightness = random.randint(0, 10) / 100
+
+    return generate_random_colors(n_colors, hue, saturation, lightness)
+
+
+def generate_random_dark_blue(n_colors=1):
+    """Generate random dark black/gray/blue colors"""
+    hue = random.randint(180, 240) / 360
     saturation = random.randint(75, 100) / 100
     lightness = random.randint(0, 15) / 100
 
@@ -88,7 +115,7 @@ def generate_random_dark_black(n_colors=1):
 
 def generate_random_dark_green(n_colors=1):
     """Generate random dark green colors"""
-    hue = random.randint(50, 190) / 360
+    hue = random.randint(90, 150) / 360
     saturation = random.randint(60, 100) / 100
     lightness = random.randint(10, 20) / 100
 
@@ -106,10 +133,22 @@ def generate_palette(n_palette=1):
         palette = []
 
         dark_red = generate_random_dark_red()
+        dark_purple = generate_random_dark_purple()
+        dark_orange = generate_random_dark_orange()
         dark_green = generate_random_dark_green()
+        dark_blue = generate_random_dark_blue()
         dark_black = generate_random_dark_black()
         for dark_color in [
-            c for dark in (dark_red, dark_green, dark_black) for c in dark
+            c
+            for dark in (
+                dark_red,
+                dark_purple,
+                dark_orange,
+                dark_green,
+                dark_blue,
+                dark_black,
+            )
+            for c in dark
         ]:
             _colors = sns.color_palette(
                 f"light:{dark_color}", n_colors=n_colors
@@ -119,9 +158,9 @@ def generate_palette(n_palette=1):
                 c + (counts - 1) for c in range(n_colors) if c % counts == 0
             ]
             _picked_colors = [
-                _colors_hex[index] for index in _picked_colors_index
+                _colors_hex[int(index)] for index in _picked_colors_index
             ]
-            palette.extend()
+            palette.extend(_picked_colors)
 
         all_palettes.append(palette)
 
