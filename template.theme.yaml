@@ -16,7 +16,7 @@ status_line:
 status_left:
   fg_option: "LIGHT_GRAY"
   bg_option: "DEEP_GRAY"
-  fg_icon: "LIGHT_ORANGE"
+  fg_icon: "PALE_ORANGE"
   bg_icon: "DEEP_RED"
   fg_decorator: "DEEP_RED"
   bg_decorator: "DEEP_GRAY"
