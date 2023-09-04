@@ -46,11 +46,11 @@ status_right:
     tmux_option: " #{b:pane_current_path} "
     icon: " "
     decorator: ""
-    fg_option: "#293143"
-    bg_option: "#c5ac7f"
-    fg_icon: "#293143"
-    bg_icon: "#a47a2d"
-    fg_decorator: "#a47a2d"
+    fg_option: "#35293a"
+    bg_option: "#bdac7c"
+    fg_icon: "#35293a"
+    bg_icon: "#967b2a"
+    fg_decorator: "#967b2a"
 
   date:
     enabled: on
