@@ -6,6 +6,8 @@ import random
 
 import seaborn as sns
 
+from log import logger
+
 
 def hex2hls(hex_color):
     """ "Convert"""
@@ -72,17 +74,17 @@ def generate_random_red(n_colors=1, lightness=15):
     """Generate random dark red colors"""
     lightness_min = lightness or 15
     lightness_max = lightness_min + 25
-    hue = random.randint(300, 360) / 360
+    hue = random.randint(0, 20) / 360
     saturation = random.randint(75, 100) / 100
     lightness = random.randint(lightness_min, lightness_max) / 100
 
     return generate_random_colors(n_colors, hue, saturation, lightness)
 
 
-def generate_random_orange(n_colors=1, lightness=20):
+def generate_random_orange(n_colors=1, lightness=10):
     """Generate random dark orange colors"""
-    lightness_min = lightness or 20
-    lightness_max = lightness_min + 20
+    lightness_min = lightness or 10
+    lightness_max = lightness_min + 10
     hue = random.randint(20, 60) / 360
     saturation = random.randint(60, 100) / 100
     lightness = random.randint(lightness_min, lightness_max) / 100
@@ -109,6 +111,7 @@ def generate_random_black(n_colors=1, lightness=0):
     saturation = 1
     lightness = random.randint(lightness_min, lightness_max) / 100
 
+    logger.debug(f"generate_random_black: ({hue}, {saturation}, {lightness})")
     return generate_random_colors(n_colors, hue, saturation, lightness)
 
 

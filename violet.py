@@ -8,7 +8,7 @@ import yaml
 from loguru import logger
 from yaml import Loader
 
-import palette
+logger.add("violet.py.log", rotation="10MB")
 
 UTF_8 = "utf-8"
 EMPTY = ""
