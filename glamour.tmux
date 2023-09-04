@@ -6,7 +6,7 @@ TMUX_COMMANDS_FILENAME="tmux_commands.txt"
 DEFAULT_PALETTE_FILENAME="default_palette.txt"
 DYNAMIC_PALETTE_FILENAME="dynamic_palette.txt"
 TEMPLATE_THEME_FILENAME="template.theme.yaml"
-DEFAULT_CONFIG_FILENAME="violet.yaml"
+DEFAULT_CONFIG_FILENAME="glamour.yaml"
 DYNAMIC_THEME_NAME="dynamic"
 PALETTE_FILENAME="${DEFAULT_PALETTE_FILENAME}"
 
@@ -71,12 +71,12 @@ create_dynamic_theme_file(){
 }
 
 create_dynamic_config_file(){
-    dynamic_config_file_name="${DYNAMIC_THEME_NAME}.violet.yaml"
+    dynamic_config_file_name="${DYNAMIC_THEME_NAME}.glamour.yaml"
     tmux set-option -gq "@dynamic_config_file_name" "${dynamic_config_file_name}"
     if [ -e "${dynamic_config_file_name}" ];then
         rm -f "${dynamic_config_file_name}"
     fi
-    cp "violet.yaml" "${dynamic_config_file_name}"
+    cp "glamour.yaml" "${dynamic_config_file_name}"
     index=0
     while read -r _color;do
         sed -i "s/${PLACE_HOLDERS[$index]}/${_color}/g" "${dynamic_config_file_name}"
@@ -91,11 +91,11 @@ main(){
     export PATH="${_DIR}:${PATH}"
     export PYTHONPATH="${_DIR}:${PATH}"
     find ${_DIR} -name "*.sh" -exec chmod u+x '{}' \;
-    tmux bind-key C-g "run -b 'violet.tmux -d'"
+    tmux bind-key C-g "run -b 'glamour.tmux -d'"
     tmux set-environment -g 'PATH' "${_DIR}:${PATH}"
     tmux set-environment -g 'PYTHONPATH' "${_DIR}:${PATH}"
     tmux bind-key g "run 'python -c \"import palette; palettes = palette.generate_palette(); print(palettes)\"'"
-    tmux_commands="$(python3 -c "import violet; tmux_commands = violet.violet(); print(tmux_commands)")"
+    tmux_commands="$(python3 -c "import glamour; tmux_commands = glamour.glamour(); print(tmux_commands)")"
     echo "${tmux_commands}" | sed -e 's/True/on/g' | sed -e 's/False/off/g' | tr ';' '\n' > "${TMUX_COMMANDS_FILENAME}"
     tmux source "${TMUX_COMMANDS_FILENAME}"
 }

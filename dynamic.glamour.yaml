@@ -1,5 +1,5 @@
 ---
-theme: violet
+theme: glamour
 general:
   options:
     status: on
@@ -7,25 +7,25 @@ general:
     status-left-length: 100
     status-right-length: 100
     window-status-separator: ' '
-    _fg_highlight: "#76442d"
+    _fg_highlight: "#a85336"
     _bg_highlight: ""
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
-     fg: "#89a57a"
+     fg: "#85937d"
      bg: ""
      style: ""
     message-command-style:
-     fg: "#be7ec4"
+     fg: "#d18cb5"
      bg: ""
      style: ""
     pane-border-style:
-     fg: "#7a928a"
-     bg: "#00281c"
+     fg: "#837d8d"
+     bg: "#0c001e"
      style: ""
     pane-active-border-style:
-     fg: "#89a57a"
-     bg: "#00281c"
+     fg: "#85937d"
+     bg: "#0c001e"
      style: ""
 status_left:
   session:
@@ -46,11 +46,11 @@ status_right:
     tmux_option: " #{b:pane_current_path} "
     icon: " "
     decorator: ""
-    fg_option: "#2e2209"
-    bg_option: "#948e80"
-    fg_icon: "#2e2209"
-    bg_icon: "#504630"
-    fg_decorator: "#504630"
+    fg_option: "#514a0a"
+    bg_option: "#a5a17d"
+    fg_icon: "#514a0a"
+    bg_icon: "#6d6730"
+    fg_decorator: "#6d6730"
 
   date:
     enabled: on

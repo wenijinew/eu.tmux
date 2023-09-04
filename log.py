@@ -5,5 +5,5 @@ import sys
 
 from loguru import logger
 
-logger.add("violet.py.log", rotation="10MB")
+logger.add("glamour.py.log", rotation="10MB")
 logger.add(sys.stdout)
