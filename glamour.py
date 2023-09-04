@@ -8,7 +8,7 @@ import yaml
 from loguru import logger
 from yaml import Loader
 
-logger.add("violet.py.log", rotation="10MB")
+logger.add("glamour.py.log", rotation="10MB")
 
 UTF_8 = "utf-8"
 EMPTY = ""
@@ -482,7 +482,7 @@ class Constructor:
         return option_commands
 
 
-def violet(config_file="violet.yaml"):
+def glamour(config_file="glamour.yaml"):
     """Load config file, overwrite options by value from tmux.conf."""
     # TODO: the config file should be customizable by putting under
     # $HOME/.tmux/catppuccin.yaml
@@ -507,7 +507,7 @@ def violet(config_file="violet.yaml"):
 
 def main():
     """Run"""
-    set_option_commands = violet()
+    set_option_commands = glamour()
     if set_option_commands:
         for command in set_option_commands.split(";"):
             run_shell_command(f"tmux {command}")
