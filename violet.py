@@ -533,7 +533,9 @@ def run_shell_command(command, default_output=None):
             .decode(UTF_8)
             .strip()
         )
-        return value
+        if value is not None and value.strip() != EMPTY:
+            return value
+        return default_output
     except Exception:
         logger.opt(exception=True).debug(
             f"{command} is failed to run. use default value: \

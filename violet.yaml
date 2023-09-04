@@ -35,9 +35,11 @@ window:
   active:
     window_name: " #W "
     window_index: " #I"
+    icon: ""
   inactive:
     window_name: " #W "
     window_index: " #I"
+    icon: ""
 status_right:
   directory:
     enabled: on

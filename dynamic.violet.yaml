@@ -35,20 +35,22 @@ window:
   active:
     window_name: " #W "
     window_index: " #I"
+    icon: ""
   inactive:
     window_name: " #W "
     window_index: " #I"
+    icon: ""
 status_right:
   directory:
     enabled: on
     tmux_option: " #{b:pane_current_path} "
     icon: " "
     decorator: ""
-    fg_option: "#284b4b"
-    bg_option: "#aa9784"
-    fg_icon: "#284b4b"
-    bg_icon: "#755636"
-    fg_decorator: "#755636"
+    fg_option: "#293143"
+    bg_option: "#c5ac7f"
+    fg_icon: "#293143"
+    bg_icon: "#a47a2d"
+    fg_decorator: "#a47a2d"
 
   date:
     enabled: on
