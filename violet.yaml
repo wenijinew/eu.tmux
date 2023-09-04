@@ -7,25 +7,25 @@ general:
     status-left-length: 100
     status-right-length: 100
     window-status-separator: ' '
-    _fg_highlight: "#840000"
-    _bg_highlight: ""
+    _fg_highlight: "DARK_RED"
+    _bg_highlight: "DEEP_GRAY"
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
-     fg: "#418100"
+     fg: "MIDDLE_GREEN"
      bg: ""
      style: ""
     message-command-style:
-     fg: "#418100"
+     fg: "MIDDLE_PURPLE"
      bg: ""
      style: ""
     pane-border-style:
-     fg: "#418100"
-     bg: "#231f32"
+     fg: "MIDDLE_GRAY"
+     bg: "DEEP_GRAY"
      style: ""
     pane-active-border-style:
-     fg: "#418100"
-     bg: "#231f32"
+     fg: "MIDDLE_GREEN"
+     bg: "DEEP_GRAY"
      style: ""
 status_left:
   session:
