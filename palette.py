@@ -123,7 +123,7 @@ def generate_random_dark_green(n_colors=1):
 
 
 def generate_palette(n_palette=1):
-    """ "Convert"""
+    """Convert"""
 
     n_colors = 24
     groups = 6
