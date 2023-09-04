@@ -487,7 +487,10 @@ def violet(config_file="violet.yaml"):
     # TODO: the config file should be customizable by putting under
     # $HOME/.tmux/catppuccin.yaml
     set_option_commands = []
-    with open(config_file, "r", encoding=UTF_8) as config:
+    dynamic_config_file_name = get_tmux_option(
+        "dynamic_config_file_name", config_file
+    )
+    with open(dynamic_config_file_name, "r", encoding=UTF_8) as config:
         catppuccin = yaml.load(config, Loader=Loader)
 
         theme_name = catppuccin.get("theme")
