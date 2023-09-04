@@ -16,11 +16,11 @@ general:
      bg: ""
      style: ""
     message-command-style:
-     fg: ""
+     fg: "#418100"
      bg: ""
      style: ""
     pane-border-style:
-     fg: "#414559"
+     fg: "#418100"
      bg: "#231f32"
      style: ""
     pane-active-border-style:
@@ -31,67 +31,26 @@ status_left:
   session:
     enabled: "on"
     tmux_option: " #S "
-    icon: "  "
-    decorator: ""
-    fg_option: "#c6d0f5"
-    bg_option: "#303446"
-    fg_icon: "#ffff4f"
-    bg_icon: "#820000"
-    fg_decorator: "#820000"
 window:
   active:
     window_name: " #W "
     window_index: " #I"
-    icon: ""
-    decorator: ""
-    fg_decorator: "#418100"
-    fg_window: "#2a432a"
-    bg_window: "#84b384"
-    fg_window_index: "#2a432a"
-    bg_window_index: "#418100"
   inactive:
     window_name: " #W "
     window_index: " #I"
-    icon: ""
-    decorator: ""
-    fg_decorator: "#454a64"
-    fg_window: "#2a432a"
-    bg_window: "#646b91"
-    fg_window_index: "#646b91"
-    bg_window_index: "#454a64"
 status_right:
   directory:
     enabled: on
     tmux_option: " #{b:pane_current_path} "
-    icon: " "
-    decorator: ""
-    fg_option: "#2a432a"
-    bg_option: "#ffc966"
-    fg_icon: "#303030"
-    bg_icon: "#cc8400"
-    fg_decorator: "#cc8400"
-    style: "nobold"
   date:
     enabled: on
     tmux_option: " v%V %a %Y-%m-%d %H:%M:%S "
-    icon: " "
-    fg_icon: "#adb2c7"
-    bg_icon: "#454a64"
   cpu:
     enabled: on
     tmux_option: " #(source cpu.sh) "
-    icon: " "
-    fg_icon: "#adb2c7"
-    bg_icon: "#454a64"
   memory:
     enabled: on
     tmux_option: " #(source memory.sh) "
-    icon: " "
-    fg_icon: "#adb2c7"
-    bg_icon: "#454a64"
   disk:
     enabled: on
     tmux_option: " #(source disk.sh) "
-    icon: " "
-    fg_icon: "#adb2c7"
-    bg_icon: "#454a64"

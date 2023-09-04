@@ -8,6 +8,8 @@ import yaml
 from loguru import logger
 from yaml import Loader
 
+import palette
+
 UTF_8 = "utf-8"
 EMPTY = ""
 
@@ -489,7 +491,8 @@ def violet(config_file="violet.yaml"):
         catppuccin = yaml.load(config, Loader=Loader)
 
         theme_name = catppuccin.get("theme")
-        theme_filename = f"{theme_name}.theme.yaml"
+        dynamic_theme_name = get_tmux_option("dynamic_theme_name", theme_name)
+        theme_filename = f"{dynamic_theme_name}.theme.yaml"
         with open(theme_filename, "r", encoding=UTF_8) as theme_file:
             theme_config = yaml.load(theme_file, Loader=Loader)
             theme = Theme(theme_config)
@@ -514,7 +517,7 @@ def get_tmux_option(option_name, default_value):
 
     if not option_name.startswith("@"):
         option_name = f"@{option_name}"
-    shell_cmd = f'tmux show_option _gqv "{option_name}"'
+    shell_cmd = f'tmux show-option -gqv "{option_name}"'
     return run_shell_command(shell_cmd, default_value)
 
 
@@ -522,8 +525,10 @@ def run_shell_command(command, default_output=None):
     """Run shell command."""
     try:
         command_args = shlex.split(command)
-        value = subprocess.check_output(command_args, shell=False).decode(
-            UTF_8
+        value = (
+            subprocess.check_output(command_args, shell=False)
+            .decode(UTF_8)
+            .strip()
         )
         return value
     except Exception:
