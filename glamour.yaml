@@ -7,6 +7,13 @@ general:
     status-left-length: 100
     status-right-length: 100
     window-status-separator: ' '
+    terminal-overrides: ",xterm*:Tc"
+    default-terminal: "screen-256color"
+    escape-time: 10
+    status-interval: 3
+    focus-events: on
+    display-time: 10000
+    renumber-windows: on
     _fg_highlight: "DARK_RED"
     _bg_highlight: ""
     _style: "nobold,nounderscore,noitalics"
@@ -20,12 +27,12 @@ general:
      bg: ""
      style: ""
     pane-border-style:
-     fg: "MIDDLE_GRAY"
-     bg: "DEEP_GRAY"
+     fg: "DARK_GRAY"
+     bg: ""
      style: ""
     pane-active-border-style:
-     fg: "MIDDLE_GREEN"
-     bg: "DEEP_GRAY"
+     fg: "STRONG_GREEN"
+     bg: ""
      style: ""
 status_left:
   session:

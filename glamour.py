@@ -40,6 +40,7 @@ class Theme(dict):
     """Wrapper for theme configuration."""
 
     def __init__(self, theme_config: dict):
+        self.terminal = theme_config.get("terminal")
         self.status_line = theme_config.get("status_line")
         self.status_left = ThemeStatusLeft(theme_config)
         self.active_window = ThemeWindow(
@@ -54,6 +55,7 @@ class Theme(dict):
         }
         self.status_right = ThemeStatusRight(theme_config)
         super().__init__(
+            terminal=self.terminal,
             status_line=self.status_line,
             status_left=self.status_left,
             window=self.window,
@@ -226,6 +228,7 @@ class Constructor:
     def __init__(self, catppuccin: dict, theme: Theme):
         """Constructor"""
         self.general = catppuccin.get("general")
+        self.terminal = catppuccin.get("terminal", theme.get("terminal"))
         self.status_line = catppuccin.get(
             "status_line", theme.get("status_line")
         )
@@ -247,17 +250,14 @@ class Constructor:
         for name, component in self.general.get("styles").items():
             if name == "option-commands":
                 continue
-            foreground = get(
-                component, "fg", self.status_line.get("foreground")
-            )
-            background = get(
-                component, "bg", self.status_line.get("background")
-            )
-            style = get(component, "style", self.status_line.get("style"))
+            foreground = component.get("fg", self.terminal.get("foreground"))
+            background = component.get("bg", self.terminal.get("background"))
+            style = component.get("style", self.status_line.get("style"))
             style_command = self.get_style_command(
                 foreground, background, style, name
             )
-            general.append(style_command)
+            if style_command is not None:
+                general.append(style_command)
 
         return ";".join(general)
 
@@ -443,7 +443,16 @@ class Constructor:
         return f"{_style}{_default_style}"
 
     def get_style_command(self, foreground, background, style, style_name):
-        return f"set-option {style_name} 'fg={foreground},bg={background},{style}'"
+        style_content = None
+        if foreground and foreground.strip() != EMPTY:
+            style_content = f"fg={foreground},"
+        if background and background.strip() != EMPTY:
+            style_content = f"{style_content}bg={background},"
+        if style and style.strip() != EMPTY:
+            style_content = f"{style_content}{style}"
+        if style_content is None:
+            return None
+        return f"set-option -gq {style_name} '{style_content}'"
 
     def produce_option_command(self, option, value):
         """Return tmux set option command"""

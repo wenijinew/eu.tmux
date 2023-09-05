@@ -7,25 +7,32 @@ general:
     status-left-length: 100
     status-right-length: 100
     window-status-separator: ' '
-    _fg_highlight: "#a85336"
+    terminal-overrides: ",xterm*:Tc"
+    default-terminal: "screen-256color"
+    escape-time: 10
+    status-interval: 3
+    focus-events: on
+    display-time: 10000
+    renumber-windows: on
+    _fg_highlight: "#2ad090"
     _bg_highlight: ""
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
-     fg: "#85937d"
+     fg: "#7f9381"
      bg: ""
      style: ""
     message-command-style:
-     fg: "#d18cb5"
+     fg: "#c68db4"
      bg: ""
      style: ""
     pane-border-style:
-     fg: "#837d8d"
-     bg: "#0c001e"
+     fg: "#54294b"
+     bg: ""
      style: ""
     pane-active-border-style:
-     fg: "#85937d"
-     bg: "#0c001e"
+     fg: "#57705a"
+     bg: ""
      style: ""
 status_left:
   session:
@@ -46,11 +53,11 @@ status_right:
     tmux_option: " #{b:pane_current_path} "
     icon: " "
     decorator: ""
-    fg_option: "#514a0a"
-    bg_option: "#a5a17d"
-    fg_icon: "#514a0a"
-    bg_icon: "#6d6730"
-    fg_decorator: "#6d6730"
+    fg_option: "#3f2008"
+    bg_option: "#9d8d81"
+    fg_icon: "#3f2008"
+    bg_icon: "#5e4430"
+    fg_decorator: "#5e4430"
 
   date:
     enabled: on

@@ -1,4 +1,7 @@
 ---
+terminal:
+  foreground: "#b7b7ff"
+  background: "#231f32"
 status_line:
   foreground: "LIGHT_GRAY"
   background: "DEEP_GRAY"
