@@ -34,7 +34,7 @@ window:
     bg_window_index: "STRONG_GREEN"
     fg_icon: "DARK_GRAY"
     bg_icon: "DARK_GREEN"
-    fg_decorator: "STRONG_GREEN"
+    fg_decorator: "STRONG_GEEN"
     bg_decorator: "DEEP_GRAY"
     icon: ""
     decorator: ""

@@ -111,8 +111,10 @@ done
 if [ $CREATE_DYNMIC_THEME -eq $TRUE ];then
     PALETTE_FILENAME=${DYNAMIC_PALETTE_FILENAME}
     generate_palette_colors
+    create_dynamic_theme_file
+else
+    tmux set-option -gq "@dynamic_theme_name" ""
 fi
-create_dynamic_theme_file
 create_dynamic_config_file
 
 main

@@ -1,16 +1,16 @@
-<h1 align="center">⚠️README IS TO UPDATE. THE BELOW CONTENT IS OLD FROM catppuccin AND NOT FOR CURRENT IMPLEMENTATION</h1>
+<h1 align="center">⚠️README IS TO UPDATE. THE BELOW CONTENT IS OLD FROM glamour AND NOT FOR CURRENT IMPLEMENTATION</h1>
 
 <h3 align="center">
-	<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/logos/exports/1544x1544_circle.png" width="100" alt="Logo"/><br/>
-	<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/misc/transparent.png" height="30" width="0px"/>
+	<img src="https://raw.githubusercontent.com/glamour/glamour/main/assets/logos/exports/1544x1544_circle.png" width="100" alt="Logo"/><br/>
+	<img src="https://raw.githubusercontent.com/glamour/glamour/main/assets/misc/transparent.png" height="30" width="0px"/>
 	Catppuccin for <a href="https://github.com/tmux/tmux">Tmux</a>
-	<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/misc/transparent.png" height="30" width="0px"/>
+	<img src="https://raw.githubusercontent.com/glamour/glamour/main/assets/misc/transparent.png" height="30" width="0px"/>
 </h3>
 
 <p align="center">
-    <a href="https://github.com/catppuccin/tmux/stargazers"><img src="https://img.shields.io/github/stars/catppuccin/tmux?colorA=363a4f&colorB=b7bdf8&style=for-the-badge"></a>
-    <a href="https://github.com/catppuccin/tmux/issues"><img src="https://img.shields.io/github/issues/catppuccin/tmux?colorA=363a4f&colorB=f5a97f&style=for-the-badge"></a>
-    <a href="https://github.com/catppuccin/tmux/contributors"><img src="https://img.shields.io/github/contributors/catppuccin/tmux?colorA=363a4f&colorB=a6da95&style=for-the-badge"></a>
+    <a href="https://github.com/glamour/tmux/stargazers"><img src="https://img.shields.io/github/stars/glamour/tmux?colorA=363a4f&colorB=b7bdf8&style=for-the-badge"></a>
+    <a href="https://github.com/glamour/tmux/issues"><img src="https://img.shields.io/github/issues/glamour/tmux?colorA=363a4f&colorB=f5a97f&style=for-the-badge"></a>
+    <a href="https://github.com/glamour/tmux/contributors"><img src="https://img.shields.io/github/contributors/glamour/tmux?colorA=363a4f&colorB=a6da95&style=for-the-badge"></a>
 </p>
 
 <p align="center">
@@ -37,10 +37,10 @@
 
 ## Themes
 
-- 🌻 [Latte](./catppuccin-latte.tmuxtheme)
-- 🪴 [Frappé](./catppuccin-frappe.tmuxtheme)
-- 🌺 [Macchiato](./catppuccin-macchiato.tmuxtheme)
-- 🌿 [Mocha](./catppuccin-mocha.tmuxtheme)
+- 🌻 [Latte](./glamour-latte.tmuxtheme)
+- 🪴 [Frappé](./glamour-frappe.tmuxtheme)
+- 🌺 [Macchiato](./glamour-macchiato.tmuxtheme)
+- 🌿 [Mocha](./glamour-mocha.tmuxtheme)
 
 ## Installation
 
@@ -53,7 +53,7 @@ If you do not have patched font installed, you can use the [No patched fonts](#n
 2. Add the Catppuccin plugin:
 
 ```bash
-set -g @plugin 'catppuccin/tmux'
+set -g @plugin 'glamour/tmux'
 # ...alongside
 set -g @plugin 'tmux-plugins/tpm'
 ```
@@ -61,7 +61,7 @@ set -g @plugin 'tmux-plugins/tpm'
 3. (Optional) Set your preferred flavour, it defaults to `"mocha"`:
 
 ```bash
-set -g @catppuccin_flavour 'latte' # or frappe, macchiato, mocha
+set -g @glamour_flavour 'latte' # or frappe, macchiato, mocha
 ```
 
 ### Manual
@@ -82,7 +82,7 @@ With window tabs option enabled
 ### Pill shape
 
 ```sh
-set -g @catppuccin_pill_theme_enabled on
+set -g @glamour_pill_theme_enabled on
 ```
 
 ![Pill shape](./assets/pill.webp)
@@ -90,11 +90,11 @@ set -g @catppuccin_pill_theme_enabled on
 ### Powerline
 
 ```sh
-set -g @catppuccin_powerline_theme_enabled on
-set -g @catppuccin_l_left_separator ""
-set -g @catppuccin_l_right_separator ""
-set -g @catppuccin_r_left_separator ""
-set -g @catppuccin_r_right_separator ""
+set -g @glamour_powerline_theme_enabled on
+set -g @glamour_l_left_separator ""
+set -g @glamour_l_right_separator ""
+set -g @glamour_r_left_separator ""
+set -g @glamour_r_right_separator ""
 ```
 
 ![Powerline](./assets/powerline.webp)
@@ -102,11 +102,11 @@ set -g @catppuccin_r_right_separator ""
 ### Powerline with icons
 
 ```sh
-set -g @catppuccin_powerline_icons_theme_enabled on
-set -g @catppuccin_l_left_separator ""
-set -g @catppuccin_l_right_separator ""
-set -g @catppuccin_r_left_separator ""
-set -g @catppuccin_r_right_separator ""
+set -g @glamour_powerline_icons_theme_enabled on
+set -g @glamour_l_left_separator ""
+set -g @glamour_l_right_separator ""
+set -g @glamour_r_left_separator ""
+set -g @glamour_r_right_separator ""
 ```
 
 ![Powerline with icons](./assets/powerline-icons.webp)
@@ -114,7 +114,7 @@ set -g @catppuccin_r_right_separator ""
 ### No patched fonts
 
 ```sh
-set -g @catppuccin_no_patched_fonts_theme_enabled on
+set -g @glamour_no_patched_fonts_theme_enabled on
 ```
 
 ![No patched fonts](./assets/no-patched-fonts.webp)
@@ -128,24 +128,24 @@ options to your Tmux configuration.
 ### Enable window tabs
 
 By default, the theme places the `window-status` in the `status-right`. With
-`@catppuccin_window_tabs_enabled` set to `on`, the theme will place the
+`@glamour_window_tabs_enabled` set to `on`, the theme will place the
 directory within the `status-right` and move the window names to the
 `window-status` format variables.
 
 ```sh
-set -g @catppuccin_window_tabs_enabled on # or off to disable window_tabs
+set -g @glamour_window_tabs_enabled on # or off to disable window_tabs
 ```
 
 ### Configure separator
 
 By default, the theme will use a round separator.
-To overwrite it use `@catppuccin_l_left_separator`, `@catppuccin_l_right_separator` for left status / window tabs and `@catppuccin_r_left_separator`, `@catppuccin_r_right_separator` for right status.
+To overwrite it use `@glamour_l_left_separator`, `@glamour_l_right_separator` for left status / window tabs and `@glamour_r_left_separator`, `@glamour_r_right_separator` for right status.
 
 With the default status line theme
 
 ```sh
-set -g @catppuccin_l_right_separator "█"
-set -g @catppuccin_r_left_separator "█"
+set -g @glamour_l_right_separator "█"
+set -g @glamour_r_left_separator "█"
 ```
 
 ### Enable DateTime
@@ -154,7 +154,7 @@ By default, the `date_time` component is set to off.
 It can be enabled by specifying any tmux date and time format.
 
 ```sh
-set -g @catppuccin_date_time "%Y-%m-%d %H:%M"
+set -g @glamour_date_time "%Y-%m-%d %H:%M"
 ```
 
 ### Enable User
@@ -163,7 +163,7 @@ By default, the `user` component is set to off.
 It can be enabled by toggling it on.
 
 ```sh
-set -g @catppuccin_user "on"
+set -g @glamour_user "on"
 ```
 
 ### Enable Host
@@ -172,7 +172,7 @@ By default, the `host` component is set to off.
 It can be enabled by toggling it on.
 
 ```sh
-set -g @catppuccin_host "on"
+set -g @glamour_host "on"
 ```
 
 ### Customize Icons
@@ -183,27 +183,27 @@ can be changed to fit your preference or requirements of your font.
 *Note: NerdFont Icons do not render properly in the Github UI, so the below example
 does not use them*
 ```sh
-set -g @catppuccin_datetime_icon "A"
-set -g @catppuccin_user_icon "B"
-set -g @catppuccin_directory_icon "C"
-set -g @catppuccin_window_icon "D"
-set -g @catppuccin_session_icon "E"
-set -g @catppuccin_host_icon "F"
+set -g @glamour_datetime_icon "A"
+set -g @glamour_user_icon "B"
+set -g @glamour_directory_icon "C"
+set -g @glamour_window_icon "D"
+set -g @glamour_session_icon "E"
+set -g @glamour_host_icon "F"
 ```
 
-[style-guide]: https://github.com/catppuccin/catppuccin/blob/main/docs/style-guide.md
+[style-guide]: https://github.com/glamour/glamour/blob/main/docs/style-guide.md
 
 ## 💝 Thanks to
 
-- [Pocco81](https://github.com/catppuccin)
+- [Pocco81](https://github.com/glamour)
 - [vinnyA3](https://github.com/vinnyA3)
 - [rogeruiz](https://github.com/rogeruiz)
 
 &nbsp;
 
-<p align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true" /></p>
-<p align="center">Copyright &copy; 2021-present <a href="https://github.com/catppuccin" target="_blank">Catppuccin Org</a>
-<p align="center"><a href="https://github.com/catppuccin/catppuccin/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&logoColor=d9e0ee&colorA=363a4f&colorB=b7bdf8"/></a></p>
+<p align="center"><img src="https://raw.githubusercontent.com/glamour/glamour/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true" /></p>
+<p align="center">Copyright &copy; 2021-present <a href="https://github.com/glamour" target="_blank">Catppuccin Org</a>
+<p align="center"><a href="https://github.com/glamour/glamour/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&logoColor=d9e0ee&colorA=363a4f&colorB=b7bdf8"/></a></p>
 
 
 1. position: left, right. if left, then option + icon + decorator. if right, then decorator + icon + option. window is always the same as left position.

@@ -64,7 +64,7 @@ export tmux_disk
 resource_usage(){
     source "$_DIR/default.conf"
     source "$PLUGIN_DIR/palette.theme"
-    source "$PLUGIN_DIR/catppuccin-glamour.tmuxtheme"
+    source "$PLUGIN_DIR/glamour-glamour.tmuxtheme"
     COLOR_HIGHLY_USED=$light_red
 
     cpu_total=100
