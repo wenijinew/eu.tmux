@@ -1,5 +1,5 @@
 ---
-theme: glamour
+theme: burgundy-red
 general:
   options:
     status: on
@@ -14,24 +14,24 @@ general:
     focus-events: on
     display-time: 10000
     renumber-windows: on
-    _fg_highlight: "#2ad090"
+    _fg_highlight: "#c05436"
     _bg_highlight: ""
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
-     fg: "#7f9381"
+     fg: "#83a689"
      bg: ""
      style: ""
     message-command-style:
-     fg: "#c68db4"
+     fg: "#b58ab4"
      bg: ""
      style: ""
     pane-border-style:
-     fg: "#54294b"
+     fg: "#284736"
      bg: ""
      style: ""
     pane-active-border-style:
-     fg: "#57705a"
+     fg: "#5e8b65"
      bg: ""
      style: ""
 status_left:
@@ -53,11 +53,11 @@ status_right:
     tmux_option: " #{b:pane_current_path} "
     icon: " "
     decorator: ""
-    fg_option: "#3f2008"
-    bg_option: "#9d8d81"
-    fg_icon: "#3f2008"
-    bg_icon: "#5e4430"
-    fg_decorator: "#5e4430"
+    fg_option: "#4a3d0b"
+    bg_option: "#a29b80"
+    fg_icon: "#4a3d0b"
+    bg_icon: "#675c32"
+    fg_decorator: "#675c32"
 
   date:
     enabled: on

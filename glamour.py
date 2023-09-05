@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Provide utility functions for Tmux option reading and writing."""
 
+import os
 import shlex
 import subprocess
 
@@ -225,18 +226,16 @@ class ThemeStatusRight(dict):
 class Constructor:
     """Constructor for status line component."""
 
-    def __init__(self, catppuccin: dict, theme: Theme):
+    def __init__(self, glamour: dict, theme: Theme):
         """Constructor"""
-        self.general = catppuccin.get("general")
-        self.terminal = catppuccin.get("terminal", theme.get("terminal"))
-        self.status_line = catppuccin.get(
-            "status_line", theme.get("status_line")
-        )
+        self.general = glamour.get("general")
+        self.terminal = glamour.get("terminal", theme.get("terminal"))
+        self.status_line = glamour.get("status_line", theme.get("status_line"))
         self.foreground = self.status_line.get("foreground")
         self.background = self.status_line.get("background")
-        self.status_left = catppuccin.get("status_left")
-        self.window = catppuccin.get("window")
-        self.status_right = catppuccin.get("status_right")
+        self.status_left = glamour.get("status_left")
+        self.window = glamour.get("window")
+        self.status_right = glamour.get("status_right")
         self.theme = theme
 
     def produce_general_options_commands(self):
@@ -494,22 +493,29 @@ class Constructor:
 def glamour(config_file="glamour.yaml"):
     """Load config file, overwrite options by value from tmux.conf."""
     # TODO: the config file should be customizable by putting under
-    # $HOME/.tmux/catppuccin.yaml
+    # $HOME/.tmux/glamour.yaml
     set_option_commands = []
     dynamic_config_file_name = get_tmux_option(
         "dynamic_config_file_name", config_file
     )
     with open(dynamic_config_file_name, "r", encoding=UTF_8) as config:
-        catppuccin = yaml.load(config, Loader=Loader)
+        glamour = yaml.load(config, Loader=Loader)
 
-        theme_name = catppuccin.get("theme")
+        # if specified theme doesn't have corresponding file, then fall-back to
+        # the default theme - glamour theme.
+        theme_name = glamour.get("theme", "glamour")
+        # if dynamic theme is set, then use dynamic theme.
         dynamic_theme_name = get_tmux_option("dynamic_theme_name", theme_name)
         theme_filename = f"{dynamic_theme_name}.theme.yaml"
+        # if dynamic theme file doesn't exist, fall-back to default them -
+        # glamour theme
+        if not os.path.exists(theme_filename):
+            theme_filename = "glamour.theme.yaml"
         with open(theme_filename, "r", encoding=UTF_8) as theme_file:
             theme_config = yaml.load(theme_file, Loader=Loader)
             theme = Theme(theme_config)
 
-            constructor = Constructor(catppuccin, theme)
+            constructor = Constructor(glamour, theme)
             set_option_commands = constructor.produce_option_commands()
     return ";".join(set_option_commands)
 
