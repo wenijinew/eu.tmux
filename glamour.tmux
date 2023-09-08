@@ -76,7 +76,16 @@ create_dynamic_config_file(){
     if [ -e "${dynamic_config_file_name}" ];then
         rm -f "${dynamic_config_file_name}"
     fi
-    cp "glamour.yaml" "${dynamic_config_file_name}"
+
+    # use customized config file is exists
+    config_file="${DEFAULT_CONFIG_FILENAME}"
+    CONFIG_PATH="${XDG_CONFIG_HOME:-${HOME}}/.config"
+    _config_file="${CONFIG_PATH}/tmux/${DEFAULT_CONFIG_FILENAME}"
+    if [ -e "${_config_file}" ];then
+       config_file="${_config_file}"
+    fi
+
+    cp "${config_file}" "${dynamic_config_file_name}"
     index=0
     while read -r _color;do
         sed -i "s/${PLACE_HOLDERS[$index]}/${_color}/g" "${dynamic_config_file_name}"

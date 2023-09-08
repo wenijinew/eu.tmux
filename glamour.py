@@ -20,16 +20,15 @@ STYLE_END = "]"
 
 
 def get(_dict, key, default):
-    """'Rewrite' get method of dict.
+    """
+    'Rewrite' get method of dict.
 
-    When value is None or Empty, use default.
-    Should be used in theme configuration only.
-    Lower theme configuration could reuse upper level them configuration, then
-    it's possible to configure less items.
-    However, user configuration should be able to overwrite theme
-    configuration.
-    For example, if theme defined icons, but user don't want to use icon, then
-    they can set icon as Empty.
+    When value is None or Empty, use default. Should be used in theme
+    configuration only. Lower theme configuration could reuse upper
+    level them configuration, then it's possible to configure less
+    items. However, user configuration should be able to overwrite theme
+    configuration. For example, if theme defined icons, but user don't
+    want to use icon, then they can set icon as Empty.
     """
     value = _dict.get(key)
     if value is None or value.strip() == EMPTY:
@@ -68,7 +67,7 @@ class ThemeStatusLeft(dict):
     """Wrapper for status_left configuration."""
 
     def __init__(self, theme_config):
-        """Constructor"""
+        """Constructor."""
         status_line = theme_config.get("status_line")
         status_left = theme_config.get("status_left")
         self.fg_option = get(
@@ -111,7 +110,7 @@ class ThemeWindow(dict):
     """Wrapper for window configuration."""
 
     def __init__(self, status_line_theme_config, window_theme_config):
-        """Constructor"""
+        """Constructor."""
         self.fg_window = get(
             window_theme_config,
             "fg_window",
@@ -184,7 +183,7 @@ class ThemeStatusRight(dict):
     """Wrapper for status_right configuration."""
 
     def __init__(self, theme_config):
-        """Constructor"""
+        """Constructor."""
         status_line = theme_config.get("status_line")
         status_right = theme_config.get("status_right")
         self.fg_option = get(
@@ -227,7 +226,7 @@ class Constructor:
     """Constructor for status line component."""
 
     def __init__(self, glamour: dict, theme: Theme):
-        """Constructor"""
+        """Constructor."""
         self.general = glamour.get("general")
         self.terminal = glamour.get("terminal", theme.get("terminal"))
         self.status_line = glamour.get("status_line", theme.get("status_line"))
@@ -261,13 +260,13 @@ class Constructor:
         return ";".join(general)
 
     def produce_status_line(self):
-        """Produce status line option"""
+        """Produce status line option."""
         fg_status_line = self.foreground
         bg_status_line = self.background
         return f"fg={fg_status_line},bg={bg_status_line}"
 
     def produce_status_left(self):
-        """Produce status left option string"""
+        """Produce status left option string."""
         status_left = []
         for component in self.status_left.values():
             enabled = component.get("enabled", "on")
@@ -310,7 +309,7 @@ class Constructor:
         return " ".join(status_left)
 
     def produce_window(self):
-        """Return tuple with active window and inactive window option strings"""
+        """Return tuple with active window and inactive window option strings."""
         windows = {}
         for name, component in self.window.items():
             style = component.get(
@@ -421,7 +420,7 @@ class Constructor:
         return " ".join(status_right)
 
     def get_style_for_option(self, foreground, background, style, option):
-        """construct style string with foreground and background"""
+        """Construct style string with foreground and background."""
         if option is None:
             option = ""
         pieces = []
@@ -454,7 +453,7 @@ class Constructor:
         return f"set-option -gq {style_name} '{style_content}'"
 
     def produce_option_command(self, option, value):
-        """Return tmux set option command"""
+        """Return tmux set option command."""
         return f"set-option -gq {option} '{value}'"
 
     def produce_option_commands(self):
@@ -492,8 +491,13 @@ class Constructor:
 
 def glamour(config_file="glamour.yaml"):
     """Load config file, overwrite options by value from tmux.conf."""
-    # TODO: the config file should be customizable by putting under
-    # $HOME/.tmux/glamour.yaml
+
+    # user can set customized config file under CONFIG_HOME
+    config_home = os.getenv("XDG_CONFIG_HOME", f'{os.getenv("HOME")}/.config')
+    _config_file = f"{config_home}/{config_file}"
+    if os.path.exists(_config_file):
+        config_file = _config_file
+
     set_option_commands = []
     dynamic_config_file_name = get_tmux_option(
         "dynamic_config_file_name", config_file
@@ -521,7 +525,7 @@ def glamour(config_file="glamour.yaml"):
 
 
 def main():
-    """Run"""
+    """Run."""
     set_option_commands = glamour()
     if set_option_commands:
         for command in set_option_commands.split(";"):
