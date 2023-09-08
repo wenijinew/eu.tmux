@@ -1,4 +1,4 @@
-<h1 align="center">⚠️README IS TO UPDATE. THE BELOW CONTENT IS OLD FROM glamour AND NOT FOR CURRENT IMPLEMENTATION</h1>
+<h1 align="center">⚠️README IS TO UPDATE. THE BELOW CONTENT IS OLD FROM catppuccin AND NOT FOR CURRENT IMPLEMENTATION</h1>
 
 <h3 align="center">
 	<img src="https://raw.githubusercontent.com/glamour/glamour/main/assets/logos/exports/1544x1544_circle.png" width="100" alt="Logo"/><br/>
