@@ -2,7 +2,9 @@
 theme: burgundy-red
 general:
   options:
-    status: on
+    status: true
+    status-fg: "LIGHT_GRAY"
+    status-bg: "DEEP_GRAY"
     status-justify: left
     status-left-length: 100
     status-right-length: 100
@@ -11,9 +13,9 @@ general:
     default-terminal: "screen-256color"
     escape-time: 10
     status-interval: 3
-    focus-events: on
+    focus-events: true
     display-time: 10000
-    renumber-windows: on
+    renumber-windows: true
     clock-mode-colour: "DARK_GREEN"
     _fg_highlight: "DARK_RED"
     _bg_highlight: ""
