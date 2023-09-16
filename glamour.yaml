@@ -18,7 +18,7 @@ general:
     renumber-windows: true
     clock-mode-colour: "DARK_GREEN"
     _fg_highlight: "DEEP_RED"
-    _bg_highlight: ""
+    _bg_highlight: "MIDDLE_ORANGE"
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
@@ -52,7 +52,7 @@ window:
     icon: ""
 status_right:
   directory:
-    enabled: on
+    enabled: true
     tmux_option: " #{b:pane_current_path} "
     icon: " "
     decorator: ""
@@ -62,18 +62,18 @@ status_right:
     bg_icon: "DARK_ORANGE"
     fg_decorator: "DARK_ORANGE"
   date:
-    enabled: on
+    enabled: true
     icon: " "
     tmux_option: " v%V %a %Y-%m-%d %H:%M:%S "
   cpu:
-    enabled: on
+    enabled: true
     icon: " "
     tmux_option: " #(source cpu.sh) "
   memory:
-    enabled: on
+    enabled: true
     icon: " "
-    tmux_option: " #(source memory.sh) "
+    tmux_option: "#(source memory.sh)"
   disk:
-    enabled: on
+    enabled: true
     icon: " "
     tmux_option: " #(source disk.sh) "
