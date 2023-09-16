@@ -70,18 +70,10 @@ class ThemeStatusLeft(dict):
         """Constructor."""
         status_line = theme_config.get("status_line")
         status_left = theme_config.get("status_left")
-        self.fg_option = get(
-            status_left, "fg_option", status_line.get("foreground")
-        )
-        self.bg_option = get(
-            status_left, "bg_option", status_line.get("background")
-        )
-        self.fg_icon = get(
-            status_left, "fg_icon", status_line.get("foreground")
-        )
-        self.bg_icon = get(
-            status_left, "bg_icon", status_line.get("background")
-        )
+        self.fg_option = get(status_left, "fg_option", status_line.get("foreground"))
+        self.bg_option = get(status_left, "bg_option", status_line.get("background"))
+        self.fg_icon = get(status_left, "fg_icon", status_line.get("foreground"))
+        self.bg_icon = get(status_left, "bg_icon", status_line.get("background"))
         self.fg_decorator = status_left.get(
             "fg_decorator", status_line.get("foreground")
         )
@@ -89,9 +81,7 @@ class ThemeStatusLeft(dict):
             status_left, "bg_decorator", status_line.get("background")
         )
         self.icon = get(status_left, "icon", status_line.get("left_icon"))
-        self.decorator = status_left.get(
-            "decorator", status_line.get("left_decorator")
-        )
+        self.decorator = status_left.get("decorator", status_line.get("left_decorator"))
         self.style = get(status_left, "style", status_line.get("style"))
         super().__init__(
             fg_option=self.fg_option,
@@ -186,18 +176,10 @@ class ThemeStatusRight(dict):
         """Constructor."""
         status_line = theme_config.get("status_line")
         status_right = theme_config.get("status_right")
-        self.fg_option = get(
-            status_right, "fg_option", status_line.get("foreground")
-        )
-        self.bg_option = get(
-            status_right, "bg_option", status_line.get("background")
-        )
-        self.fg_icon = get(
-            status_right, "fg_icon", status_line.get("foreground")
-        )
-        self.bg_icon = get(
-            status_right, "bg_icon", status_line.get("background")
-        )
+        self.fg_option = get(status_right, "fg_option", status_line.get("foreground"))
+        self.bg_option = get(status_right, "bg_option", status_line.get("background"))
+        self.fg_icon = get(status_right, "fg_icon", status_line.get("foreground"))
+        self.bg_icon = get(status_right, "bg_icon", status_line.get("background"))
         self.fg_decorator = get(
             status_right, "fg_decorator", status_line.get("foreground")
         )
@@ -251,9 +233,7 @@ class Constructor:
             foreground = component.get("fg", self.terminal.get("foreground"))
             background = component.get("bg", self.terminal.get("background"))
             style = component.get("style", self.status_line.get("style"))
-            style_command = self.get_style_command(
-                foreground, background, style, name
-            )
+            style_command = self.get_style_command(foreground, background, style, name)
             if style_command is not None:
                 general.append(style_command)
 
@@ -283,12 +263,8 @@ class Constructor:
             bg_option = component.get(
                 "bg_option", self.theme.status_left.get("bg_option")
             )
-            fg_icon = component.get(
-                "fg_icon", self.theme.status_left.get("fg_icon")
-            )
-            bg_icon = component.get(
-                "bg_icon", self.theme.status_left.get("bg_icon")
-            )
+            fg_icon = component.get("fg_icon", self.theme.status_left.get("fg_icon"))
+            bg_icon = component.get("bg_icon", self.theme.status_left.get("bg_icon"))
             fg_decorator = component.get(
                 "fg_decorator", self.theme.status_left.get("fg_decorator")
             )
@@ -296,14 +272,12 @@ class Constructor:
                 "bg_decorator", self.theme.status_left.get("bg_decorator")
             )
             style = component.get("style", self.theme.status_left.get("style"))
-            tmux_option_style = f"{self.get_style_for_option(fg_option, bg_option, style, tmux_option)}"
-            icon_style = (
-                f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
+            tmux_option_style = (
+                f"{self.get_style_for_option(fg_option, bg_option, style, tmux_option)}"
             )
+            icon_style = f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             decorator_style = f"{self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)}"
-            component_value = (
-                f"{icon_style}{decorator_style}{tmux_option_style}"
-            )
+            component_value = f"{icon_style}{decorator_style}{tmux_option_style}"
             status_left.append(component_value)
 
         return " ".join(status_left)
@@ -312,12 +286,8 @@ class Constructor:
         """Return tuple with active window and inactive window option strings."""
         windows = {}
         for name, component in self.window.items():
-            style = component.get(
-                "style", self.theme.window.get(name).get("style")
-            )
-            icon = component.get(
-                "icon", self.theme.window.get(name).get("icon")
-            )
+            style = component.get("style", self.theme.window.get(name).get("style"))
+            icon = component.get("icon", self.theme.window.get(name).get("icon"))
             decorator = component.get(
                 "decorator", self.theme.window.get(name).get("decorator")
             )
@@ -365,13 +335,13 @@ class Constructor:
             window_index_style = self.get_style_for_option(
                 fg_window_index, bg_window_index, style, window_index
             )
-            icon_style = self.get_style_for_option(
-                fg_icon, bg_icon, style, icon
-            )
+            icon_style = self.get_style_for_option(fg_icon, bg_icon, style, icon)
             decorator_style = self.get_style_for_option(
                 fg_decorator, bg_decorator, style, decorator
             )
-            component_value = f"{window_style}{window_index_style}{icon_style}{decorator_style} "
+            component_value = (
+                f"{window_style}{window_index_style}{icon_style}{decorator_style} "
+            )
             windows[name] = component_value
 
         return windows
@@ -394,12 +364,8 @@ class Constructor:
             bg_option = options.get(
                 "bg_option", self.theme.status_right.get("bg_option")
             )
-            fg_icon = options.get(
-                "fg_icon", self.theme.status_right.get("fg_icon")
-            )
-            bg_icon = options.get(
-                "bg_icon", self.theme.status_right.get("bg_icon")
-            )
+            fg_icon = options.get("fg_icon", self.theme.status_right.get("fg_icon"))
+            bg_icon = options.get("bg_icon", self.theme.status_right.get("bg_icon"))
             fg_decorator = options.get(
                 "fg_decorator", self.theme.status_right.get("fg_decorator")
             )
@@ -407,14 +373,12 @@ class Constructor:
                 "bg_decorator", self.theme.status_right.get("bg_decorator")
             )
             style = options.get("style", self.theme.status_right.get("style"))
-            tmux_option_style = f"{self.get_style_for_option(fg_option, bg_option, style, tmux_option)}"
-            icon_style = (
-                f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
+            tmux_option_style = (
+                f"{self.get_style_for_option(fg_option, bg_option, style, tmux_option)}"
             )
+            icon_style = f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             decorator_style = f"{self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)}"
-            component_value = (
-                f"{decorator_style}{icon_style}{tmux_option_style}"
-            )
+            component_value = f"{decorator_style}{icon_style}{tmux_option_style}"
             status_right.append(component_value)
 
         return " ".join(status_right)
@@ -463,21 +427,15 @@ class Constructor:
         window = self.produce_window()
         status_right = self.produce_status_right()
 
-        status_line_cmd = self.produce_option_command(
-            "status-style", status_line
-        )
-        status_left_cmd = self.produce_option_command(
-            "status-left", status_left
-        )
+        status_line_cmd = self.produce_option_command("status-style", status_line)
+        status_left_cmd = self.produce_option_command("status-left", status_left)
         active_window_cmd = self.produce_option_command(
             "window-status-current-format", window["active"]
         )
         inactive_window_cmd = self.produce_option_command(
             "window-status-format", window["inactive"]
         )
-        status_right_cmd = self.produce_option_command(
-            "status-right", status_right
-        )
+        status_right_cmd = self.produce_option_command("status-right", status_right)
         general_commands = self.produce_general_options_commands()
         option_commands = []
         option_commands.append(general_commands)
@@ -499,9 +457,7 @@ def glamour(config_file="glamour.yaml"):
         config_file = _config_file
 
     set_option_commands = []
-    dynamic_config_file_name = get_tmux_option(
-        "dynamic_config_file_name", config_file
-    )
+    dynamic_config_file_name = get_tmux_option("dynamic_config_file_name", config_file)
     with open(dynamic_config_file_name, "r", encoding=UTF_8) as config:
         glamour = yaml.load(config, Loader=Loader)
 
@@ -547,11 +503,7 @@ def run_shell_command(command, default_output=None):
     """Run shell command."""
     try:
         command_args = shlex.split(command)
-        value = (
-            subprocess.check_output(command_args, shell=False)
-            .decode(UTF_8)
-            .strip()
-        )
+        value = subprocess.check_output(command_args, shell=False).decode(UTF_8).strip()
         if value is not None and value.strip() != EMPTY:
             return value
         return default_output
