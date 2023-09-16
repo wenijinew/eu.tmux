@@ -109,7 +109,7 @@ def generate_random_black(n_colors=1, lightness=0):
     """Generate random dark black/gray/blue colors."""
     lightness_min = lightness or 0
     lightness_max = lightness_min + 5
-    hue = random.randint(1, 36) / 36
+    hue = random.randint(1, 30) / 36
     saturation = 1
     lightness = random.randint(lightness_min, lightness_max) / 100
 
