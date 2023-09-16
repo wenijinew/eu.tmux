@@ -17,7 +17,7 @@ general:
     display-time: 10000
     renumber-windows: true
     clock-mode-colour: "DARK_GREEN"
-    _fg_highlight: "DARK_RED"
+    _fg_highlight: "DEEP_RED"
     _bg_highlight: ""
     _style: "nobold,nounderscore,noitalics"
   styles:
@@ -61,7 +61,6 @@ status_right:
     fg_icon: "DEEP_ORANGE"
     bg_icon: "DARK_ORANGE"
     fg_decorator: "DARK_ORANGE"
-
   date:
     enabled: on
     icon: " "
