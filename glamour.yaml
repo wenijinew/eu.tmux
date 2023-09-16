@@ -22,21 +22,21 @@ general:
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
-     fg: "MIDDLE_GREEN"
-     bg: ""
-     style: ""
+      fg: "MIDDLE_GREEN"
+      bg: ""
+      style: ""
     message-command-style:
-     fg: "MIDDLE_PURPLE"
-     bg: ""
-     style: ""
+      fg: "MIDDLE_PURPLE"
+      bg: ""
+      style: ""
     pane-border-style:
-     fg: "DARK_GRAY"
-     bg: ""
-     style: ""
+      fg: "DARK_GRAY"
+      bg: ""
+      style: ""
     pane-active-border-style:
-     fg: "STRONG_GREEN"
-     bg: ""
-     style: ""
+      fg: "STRONG_GREEN"
+      bg: ""
+      style: ""
 status_left:
   session:
     enabled: "on"
