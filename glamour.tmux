@@ -50,7 +50,7 @@ PLACE_HOLDERS=(
 )
 generate_palette_colors(){
     palette=$(python3 -c "import palette; palette = palette.create_theme_palette(); print(palette)")
-    echo $palette | grep -iEo '#[[:alnum:]]{6}' > "${DYNAMIC_PALETTE_FILENAME}"
+    echo "$palette" | grep -iEo '#[[:alnum:]]{6}' > "${DYNAMIC_PALETTE_FILENAME}"
 }
 
 create_dynamic_theme_file(){
@@ -64,7 +64,7 @@ create_dynamic_theme_file(){
     while read -r _color;do
         sed -i "s/${PLACE_HOLDERS[$index]}/${_color}/g" "${dynamic_theme_file_name}"
         ((index++))
-        if [ $index -ge ${#PLACE_HOLDERS[@]} ];then
+        if [ "$index" -ge ${#PLACE_HOLDERS[@]} ];then
             break
         fi
     done < "${PALETTE_FILENAME}"
@@ -90,16 +90,34 @@ create_dynamic_config_file(){
     while read -r _color;do
         sed -i "s/${PLACE_HOLDERS[$index]}/${_color}/g" "${dynamic_config_file_name}"
         ((index++))
-        if [ $index -ge ${#PLACE_HOLDERS[@]} ];then
+        if [ "$index" -ge ${#PLACE_HOLDERS[@]} ];then
             break
         fi
     done < "${PALETTE_FILENAME}"
 }
 
 main(){
+    if [ ! "$(which pip)" ] ; then
+        _warn "Python Environment:\t CHECK FAILED. 'pip' command not found."
+        exit "$E_ABNORMAL_STATE"
+    fi
+    env pip install -q -r "${_DIR}/requirements.txt"
+    if [ $? -ne $TRUE ];then
+       _warn "Python Environment:\t Dependencies Installation Failure."
+    fi
+
+    if [ "$CREATE_DYNMIC_THEME" -eq $TRUE ];then
+       PALETTE_FILENAME=${DYNAMIC_PALETTE_FILENAME}
+       generate_palette_colors
+       create_dynamic_theme_file
+    else
+        tmux set-option -gq "@dynamic_theme_name" ""
+    fi
+    create_dynamic_config_file
+
     export PATH="${_DIR}:${PATH}"
     export PYTHONPATH="${_DIR}:${PATH}"
-    find ${_DIR} -name "*.sh" -exec chmod u+x '{}' \;
+    find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
     tmux bind-key C-g "run -b 'glamour.tmux -d'"
     tmux set-environment -g 'PATH' "${_DIR}:${PATH}"
     tmux set-environment -g 'PYTHONPATH' "${_DIR}:${PATH}"
@@ -109,21 +127,17 @@ main(){
     tmux source "${TMUX_COMMANDS_FILENAME}"
 }
 
+usage(){
+    echoh "./glamour.tmux [-d]"
+}
+
 CREATE_DYNMIC_THEME=${FALSE}
 
 while getopts "d" opt; do
     case $opt in
-        d) CREATE_DYNMIC_THEME=${TRUE};;
+        d) CREATE_DYNMIC_THEME=${TRUE} ;;
+        *) usage ;;
     esac
 done
-
-if [ $CREATE_DYNMIC_THEME -eq $TRUE ];then
-    PALETTE_FILENAME=${DYNAMIC_PALETTE_FILENAME}
-    generate_palette_colors
-    create_dynamic_theme_file
-else
-    tmux set-option -gq "@dynamic_theme_name" ""
-fi
-create_dynamic_config_file
 
 main
