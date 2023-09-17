@@ -49,7 +49,7 @@ PLACE_HOLDERS=(
     "DEEP_GRAY"
 )
 generate_palette_colors(){
-    palette=$(python3 -c "import palette; palette = palette.create_theme_palette(); print(palette)")
+    palette=$(python3 -c "import palette; palette = palette.generate_palette(); print(palette)")
     echo "$palette" | grep -iEo '#[[:alnum:]]{6}' > "${DYNAMIC_PALETTE_FILENAME}"
 }
 
