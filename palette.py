@@ -287,7 +287,9 @@ def generate_palette():
     color has 6 different colors from dark to light. placeholders are
     from light to dark, so need to reverse the order.
     """
-    random_colors = random_color(base_colors_total=5, lighter_colors_total=6)
+    random_colors = random_color(
+        max_color=100, base_colors_total=5, lighter_colors_total=6
+    )
     gray_colors = random_color(
         max_color=30, base_colors_total=1, lighter_colors_total=6
     )
