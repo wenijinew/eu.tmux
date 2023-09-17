@@ -101,7 +101,17 @@ main(){
         _warn "Python Environment:\t CHECK FAILED. 'pip' command not found."
         exit "$E_ABNORMAL_STATE"
     fi
-    env pip install -q -r "${_DIR}/requirements.txt"
+    test -e "${_DIR}/.requirements.installed.txt"
+    is_installed=$?
+    is_latest=$FALSE
+    if [ ${is_installed} -eq $TRUE ];then
+       diff "${_DIR}/.requirements.installed.txt" "${_DIR}/requirements.txt" >/dev/null 2>/dev/null
+       is_latest=$?
+    fi
+    if [[ $is_installed -ne $TURE || $is_latest -ne $TRUE ]];then
+       env pip install -q -r "${_DIR}/requirements.txt" 2>/dev/null
+       cp "${_DIR}/requirements.txt" "${_DIR}/.requirements.installed.txt"
+    fi
     if [ $? -ne $TRUE ];then
        _warn "Python Environment:\t Dependencies Installation Failure."
     fi
