@@ -40,13 +40,17 @@ def rgb2hex(rgb_color):
 
 def get_triadic_colors(hex_color, n_colors=7):
     """ "Convert."""
+    assert hex_color is not None, "Invalid argument: hex_color is None."
+    assert (
+        n_colors is not None and isinstance(n_colors, int) and n_colors > 0
+    ), f"Invalid argument: n_colors = {n_colors}"
     hls_color = hex2hls(hex_color)
     triadic_colors = []
     for offset in range(0, 360, 360 // n_colors):
         triadic_colors.append(
             ((hls_color[0] + offset / 360) % 1.0, hls_color[1], hls_color[2])
         )
-    return [hls2hex(hls_color) for hls_color in triadic_colors]
+    return [hls2hex(hls_color) for hls_color in triadic_colors][0:n_colors]
 
 
 def padding(num, target_length):
@@ -147,7 +151,7 @@ def generate_palette():
     from light to dark, so need to reverse the order.
     """
     random_colors = random_color(
-        max_color=100, base_colors_total=5, lighter_colors_total=6
+        max_color=200, base_colors_total=5, lighter_colors_total=6
     )
     gray_colors = random_color(
         max_color=30, base_colors_total=1, lighter_colors_total=6
