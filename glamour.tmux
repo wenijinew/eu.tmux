@@ -114,11 +114,20 @@ replace_color(){
     done < "${palette_file}"
 }
 
+show_all_themes(){
+    local themes
+    themes="$(find "${_DIR}" -name '*.theme.yaml*' | sed -e 's/.*\///' | sed -e 's/.theme.yaml//' | grep -v template)"
+    echo "${themes}"
+}
+
 main(){
+    # pre-check
     if [ -z "${TMUX}" ];then
        _warn "Not in Tmux."
        exit "${E_ABNORMAL_STATE}"
     fi
+
+    # python environment and requirements installation
     if [ ! "$(which pip)" ] ; then
         _warn "Python Environment:\t CHECK FAILED. 'pip' command not found."
         exit "$E_ABNORMAL_STATE"
@@ -138,20 +147,57 @@ main(){
        _warn "Python Environment:\t Dependencies Installation Failure."
     fi
 
+    # create dynamic theme and config file
     if [ "$CREATE_DYNMIC_THEME" -eq $TRUE ];then
        PALETTE_FILENAME=${DYNAMIC_PALETTE_FILENAME}
        generate_palette_colors
        create_dynamic_theme_file
+    elif [ -n "${THEME_NAME}" ];then
+        tmux set-option -gq "@dynamic_theme_name" "${THEME_NAME}"
+    elif [ "${ROTATE_THEME}" -eq ${TRUE} ];then
+        local current_dynamic_theme themes found_current_dynamic_theme new_dynamic_theme first_theme
+        current_dynamic_theme=$(tmux show-option -gqv "@dynamic_theme_name")
+        themes="$(show_all_themes)"
+        found_current_dynamic_theme=${FALSE}
+        new_dynamic_theme=""
+        first_theme=""
+        for theme in ${themes}; do
+            if [ -z "${first_theme}" ];then
+               first_theme="${theme}"
+            fi
+            # if no current dynamic theme, then set the first theme as new dynamic theme
+            if [ -z "${current_dynamic_theme}" ];then
+               new_dynamic_theme="${theme}"
+               break
+            fi
+            if [ "${theme}" == "${current_dynamic_theme}" ];then
+               found_current_dynamic_theme=${TRUE}
+               continue
+            fi
+            # set the next theme as current dynamic theme
+            if [ "${found_current_dynamic_theme}" -eq ${TRUE} ];then
+               new_dynamic_theme="${theme}"
+               break
+            fi
+        done
+        # if the current dynamic theme if the last theme, then new theme will be the first theme.
+        if [ -z "${new_dynamic_theme}" ];then
+           new_dynamic_theme="${first_theme}"
+        fi
+        tmux set-option -gq "@dynamic_theme_name" "${new_dynamic_theme}"
     else
         tmux set-option -gq "@dynamic_theme_name" ""
     fi
     create_dynamic_config_file
 
+    # set environment variables
     export PATH="${_DIR}:${PATH}"
     export PYTHONPATH="${_DIR}:${PATH}"
     find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
     tmux set-environment -g 'PATH' "${_DIR}:${PATH}"
     tmux set-environment -g 'PYTHONPATH' "${_DIR}:${PATH}"
+
+    # generate and execute tmux commands
     tmux_commands="$(python3 -c "import glamour; tmux_commands = glamour.glamour(); print(tmux_commands)")"
     echo "${tmux_commands}" | sed -e 's/True/on/g' | sed -e 's/False/off/g' | tr ';' '\n' > "${TMUX_COMMANDS_FILENAME}"
     tmux source "${TMUX_COMMANDS_FILENAME}"
@@ -161,14 +207,18 @@ usage(){
     echoh "./glamour.tmux [-d]"
 }
 
+THEME_NAME=""
+ROTATE_THEME=${FALSE}
 CREATE_DYNMIC_THEME=${FALSE}
 
-while getopts "dr" opt; do
+while getopts "adrRt:" opt; do
     case $opt in
+        a) show_all_themes; exit $? ;;
         d) CREATE_DYNMIC_THEME=${TRUE} ;;
-        r) replace_legacy_placeholders; exit $? ;;
+        r) ROTATE_THEME=${TRUE} ;;
+        R) replace_legacy_placeholders; exit $? ;;
+        t) THEME_NAME="$OPTARG" ;;
         *) usage ;;
     esac
 done
-
 main
