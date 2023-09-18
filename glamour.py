@@ -1,22 +1,12 @@
 #!/usr/bin/env python3
 """Provide utility functions for Tmux option reading and writing."""
-
 import os
-import shlex
-import subprocess
 
 import yaml
-from loguru import logger
 from yaml import Loader
 
-logger.add("glamour.py.log", rotation="10MB")
-
-UTF_8 = "utf-8"
-EMPTY = ""
-
-# tmux options
-STYLE_START = "#["
-STYLE_END = "]"
+from const import EMPTY, STYLE_END, STYLE_START, UTF_8
+from utils import get_tmux_option, logger, run_shell_command
 
 
 def get(_dict, key, default):
@@ -237,9 +227,7 @@ class Constructor:
             if style_command is not None:
                 general.append(style_command)
 
-        logger.info(type(self.general.get("commands")))
         for command in self.general.get("commands"):
-            logger.info(command)
             general.append(command)
         return ";".join(general)
 
@@ -490,33 +478,6 @@ def main():
     if set_option_commands:
         for command in set_option_commands.split(";"):
             run_shell_command(f"tmux {command}")
-
-
-def get_tmux_option(option_name, default_value):
-    """Read tmux option."""
-    assert option_name is not None, "option_name is None!"
-    assert default_value is not None, "default_value is None!"
-
-    if not option_name.startswith("@"):
-        option_name = f"@{option_name}"
-    shell_cmd = f'tmux show-option -gqv "{option_name}"'
-    return run_shell_command(shell_cmd, default_value)
-
-
-def run_shell_command(command, default_output=None):
-    """Run shell command."""
-    try:
-        command_args = shlex.split(command)
-        value = subprocess.check_output(command_args, shell=False).decode(UTF_8).strip()
-        if value is not None and value.strip() != EMPTY:
-            return value
-        return default_output
-    except Exception:
-        logger.opt(exception=True).debug(
-            f"{command} is failed to run. use default value: \
-                                         {default_output} as output."
-        )
-        return default_output
 
 
 if __name__ == "__main__":

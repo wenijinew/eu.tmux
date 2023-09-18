@@ -48,26 +48,41 @@ PLACE_HOLDERS=(
     "DARK_GRAY"
     "DEEP_GRAY"
 )
+
+# function to replace legacy solution's placeholders with new solutions color
+# name of palette colors
+replace_legacy_placeholders(){
+    index=0
+    base_color_index=0
+    for placeholder in "${PLACE_HOLDERS[@]}"
+    do
+        colormap_index="$(echo "${index} % 6" | bc)"
+        if [ "${colormap_index}" -eq 0 ];then
+           ((base_color_index++))
+        fi
+        color_name="C_${base_color_index}_${colormap_index}"
+
+        find "${_DIR}" -maxdepth 1 -type f -exec sed -i "s/${placeholder}/${color_name}/g" '{}' \;
+        sed -i "s/${placeholder}/${color_name}/g" "$HOME/.config/tmux/glamour.yaml"
+
+        ((index++))
+    done
+}
+
+# call python module to generate palette file
 generate_palette_colors(){
     palette=$(python3 -c "import palette; palette = palette.generate_palette(); print(palette)")
-    echo "$palette" | grep -iEo '#[[:alnum:]]{6}' > "${DYNAMIC_PALETTE_FILENAME}"
+    echo "$palette" | grep -iEo 'C(_[[:digit:]]{1,}){2}\:#[[:alnum:]]{6}' > "${DYNAMIC_PALETTE_FILENAME}"
 }
 
 create_dynamic_theme_file(){
     dynamic_theme_file_name="${DYNAMIC_THEME_NAME}.theme.yaml"
     tmux set-option -gq "@dynamic_theme_name" "${DYNAMIC_THEME_NAME}"
     if [ -e "${dynamic_theme_file_name}" ];then
-        rm -f "${dynamic_theme_file_name}"
+       rm -f "${dynamic_theme_file_name}"
     fi
     cp "${TEMPLATE_THEME_FILENAME}" "${dynamic_theme_file_name}"
-    index=0
-    while read -r _color;do
-        sed -i "s/${PLACE_HOLDERS[$index]}/${_color}/g" "${dynamic_theme_file_name}"
-        ((index++))
-        if [ "$index" -ge ${#PLACE_HOLDERS[@]} ];then
-            break
-        fi
-    done < "${PALETTE_FILENAME}"
+    replace_color "${dynamic_theme_file_name}"
 }
 
 create_dynamic_config_file(){
@@ -86,14 +101,17 @@ create_dynamic_config_file(){
     fi
 
     cp "${config_file}" "${dynamic_config_file_name}"
-    index=0
+    replace_color "${dynamic_config_file_name}"
+}
+
+replace_color(){
+    target_file="${1}"
+    palette_file="${2:-${PALETTE_FILENAME}}"
     while read -r _color;do
-        sed -i "s/${PLACE_HOLDERS[$index]}/${_color}/g" "${dynamic_config_file_name}"
-        ((index++))
-        if [ "$index" -ge ${#PLACE_HOLDERS[@]} ];then
-            break
-        fi
-    done < "${PALETTE_FILENAME}"
+          color_name="$(echo "${_color}" | cut -d':' -f1)"
+          color_value="$(echo "${_color}" | cut -d':' -f2)"
+          sed -i "s/${color_name}/${color_value}/g" "${target_file}"
+    done < "${palette_file}"
 }
 
 main(){
@@ -141,9 +159,10 @@ usage(){
 
 CREATE_DYNMIC_THEME=${FALSE}
 
-while getopts "d" opt; do
+while getopts "dr" opt; do
     case $opt in
         d) CREATE_DYNMIC_THEME=${TRUE} ;;
+        r) replace_legacy_placeholders; exit $? ;;
         *) usage ;;
     esac
 done

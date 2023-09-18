@@ -3,8 +3,8 @@ theme: burgundy-red
 general:
   options:
     status: true
-    status-fg: "LIGHT_GRAY"
-    status-bg: "DEEP_GRAY"
+    status-fg: "C_6_1"
+    status-bg: "C_6_5"
     status-justify: left
     status-left-length: 100
     status-right-length: 100
@@ -16,25 +16,25 @@ general:
     focus-events: true
     display-time: 10000
     renumber-windows: true
-    clock-mode-colour: "DARK_GREEN"
-    _fg_highlight: "DEEP_RED"
-    _bg_highlight: "MIDDLE_ORANGE"
+    clock-mode-colour: "C_4_4"
+    _fg_highlight: "C_1_5"
+    _bg_highlight: "C_3_2"
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
-      fg: "MIDDLE_GREEN"
+      fg: "C_4_2"
       bg: ""
       style: ""
     message-command-style:
-      fg: "MIDDLE_PURPLE"
+      fg: "C_2_2"
       bg: ""
       style: ""
     pane-border-style:
-      fg: "DARK_GRAY"
+      fg: "C_6_4"
       bg: ""
       style: ""
     pane-active-border-style:
-      fg: "STRONG_GREEN"
+      fg: "C_4_3"
       bg: ""
       style: ""
   commands:
@@ -59,11 +59,11 @@ status_right:
     tmux_option: " #{b:pane_current_path} "
     icon: " "
     decorator: ""
-    fg_option: "DEEP_GRAY"
-    bg_option: "MIDDLE_ORANGE"
-    fg_icon: "DEEP_ORANGE"
-    bg_icon: "DARK_ORANGE"
-    fg_decorator: "DARK_ORANGE"
+    fg_option: "C_6_5"
+    bg_option: "C_3_2"
+    fg_icon: "C_3_5"
+    bg_icon: "C_3_4"
+    fg_decorator: "C_3_4"
   date:
     enabled: true
     icon: " "

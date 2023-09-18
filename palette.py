@@ -4,7 +4,7 @@
 import colorsys
 import random
 
-from log import logger
+from utils import get_tmux_option, logger
 
 
 def hex2hls(hex_color):
@@ -148,32 +148,81 @@ def random_color(
     return random_colors
 
 
-def generate_palette():
-    """
-    Generate random palette.
+class Palette:
+    def __init__(self):
+        # random colors are used for sections, components, and pieces
+        self.base_colors_total = get_tmux_option("@base_colors_total", 5)
+        self.lighter_colors_total = get_tmux_option("@lighter_colors_total", 6)
 
-    6 group base colors: 5 base colors + dark gray color. echo base
-    color has 6 different colors from dark to light. placeholders are
-    from light to dark, so need to reverse the order.
-    """
-    random_colors = random_color(
-        max_color=200, base_colors_total=5, lighter_colors_total=6
-    )
-    gray_colors = random_color(
-        max_color=30, base_colors_total=1, lighter_colors_total=6
-    )
-    random_colors.extend(gray_colors)
-    for r_colors in random_colors:
-        r_colors.reverse()
-    return [color for r_colors in random_colors for color in r_colors]
+    def generate_palette_colors(self):
+        """
+        Generate random palette.
+
+        6 group base colors: 5 base colors + dark gray color. echo base
+        color has 6 different colors from dark to light. placeholders
+        are from light to dark, so need to reverse the order.
+        """
+        random_colors = random_color(
+            max_color=200,
+            base_colors_total=self.base_colors_total,
+            lighter_colors_total=self.lighter_colors_total,
+        )
+        # dark colors are used for status-line
+        dark_colors = random_color(
+            max_color=30, base_colors_total=1, lighter_colors_total=6
+        )
+        random_colors.extend(dark_colors)
+        for r_colors in random_colors:
+            r_colors.reverse()
+        return [color for r_colors in random_colors for color in r_colors]
+
+    def generate_palette(self):
+        """
+        Generate palette content.
+
+        Palette contains a list of colors. Each color is a pair of color
+        name and color code.
+        The format is "C_[base color sequence]_[colormap sequence]".
+
+        For example, "C_1_1":"#8f67ff".
+
+        Note:
+        The 'base color sequence' starts from 0 to @base_colors_total (not
+        included)
+        The 'colormap sequence' starts from 0 to @lighter_colors_total (not
+        included)
+        When "colormap sequence" is 0, then it represents the lightest color.
+
+        One continuous colormap is for one base color and consists of a
+        group of colors from lightest color to the base color.
+
+        Return:
+        A list of palette colors.
+        """
+        palette_color_codes = self.generate_palette_colors()
+        base_color_sequence = 0
+        colormap_sequence = 0
+        palette_colors = []
+        for index, color in enumerate(palette_color_codes):
+            colormap_sequence = index % self.lighter_colors_total
+            if colormap_sequence == 0:
+                base_color_sequence += 1
+            color_name = f"C_{base_color_sequence}_{colormap_sequence}"
+            palette_colors.append(f"{color_name}:{color}")
+        return palette_colors
+
+
+def generate_palette():
+    return Palette().generate_palette()
 
 
 def main():
     """Test."""
+    palette = Palette()
     for c in range(9):
         r_colors = random_color(max_color=100)
         logger.info(r_colors)
-    logger.info(generate_palette())
+    logger.info(palette.generate_palette())
 
 
 if __name__ == "__main__":
