@@ -63,9 +63,9 @@ def generate_random_colors(n_colors=1, hue=None, saturation=None, lightness=None
         # Set the saturation to a constant value (0.5 for moderate saturation)
         # Vary the lightness from 0.2 to 0.5 for dark colors
 
-        hue = hue or random.random()
-        saturation = saturation or 0.5
-        lightness = lightness or (0.2 + hue * 0.3)
+        hue = hue if hue is not None else random.random()
+        saturation = saturation if saturation is not None else 0.5
+        lightness = lightness if lightness is not None else (0.2 + hue * 0.3)
 
         hex_color = hls2hex((hue, lightness, saturation))
         dark_colors.append(hex_color)

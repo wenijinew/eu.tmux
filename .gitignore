@@ -4,3 +4,4 @@ dynamic_palette.txt
 glamour.py.log
 tmux_commands.txt
 __pycache__
+.requirements.installed.txt
