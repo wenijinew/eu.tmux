@@ -18,7 +18,7 @@ glamour_memory(){
         if [ "${bg_highlight}" != "" ];then
             _style="${_style},bg=${bg_highlight}"
         fi
-        mem_usage_percentage="#[${_style}] {mem_usage_percentage} "
+        mem_usage_percentage="#[${_style}] ${mem_usage_percentage} "
     else
         mem_usage_percentage=" ${mem_usage_percentage} "
     fi
