@@ -37,6 +37,9 @@ general:
       fg: "STRONG_GREEN"
       bg: ""
       style: ""
+  commands:
+    - bind-key 'g' run-shell 'glamour.tmux -d'
+    - bind-key 'G' run-shell 'glamour.tmux'
 status_left:
   session:
     enabled: "on"

@@ -55,7 +55,7 @@ status_right:
   icon: " "
   decorator: ""
   style: "nobold,nounderscore,noitalics"
-  fg_option: "STRONG_GRAY"
+  fg_option: "DARK_GRAY"
   bg_option: "MIDDLE_BLUE"
   fg_icon: "DEEP_GRAY"
   bg_icon: "DARK_BLUE"

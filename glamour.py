@@ -237,6 +237,10 @@ class Constructor:
             if style_command is not None:
                 general.append(style_command)
 
+        logger.info(type(self.general.get("commands")))
+        for command in self.general.get("commands"):
+            logger.info(command)
+            general.append(command)
         return ";".join(general)
 
     def produce_status_line(self):

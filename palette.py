@@ -23,7 +23,13 @@ def hex2hls(hex_color):
 
 
 def hls2hex(hls_color):
-    """ "Convert."""
+    """
+    Convert HSL color to HEX code.
+
+    Parameter:
+    hls_color - tuple containing hue, lightness, and saturation color codes
+    such as (0.5277777777777778, 0.04, 1).
+    """
     rgb_color = colorsys.hls_to_rgb(hls_color[0], hls_color[1], hls_color[2])
     scaled_rgb = tuple(int(c * 255) for c in rgb_color)
     return rgb2hex(scaled_rgb)
@@ -38,7 +44,7 @@ def rgb2hex(rgb_color):
     return hex_color
 
 
-def get_triadic_colors(hex_color, n_colors=7):
+def get_scheme_colors(hex_color, n_colors=7):
     """ "Convert."""
     assert hex_color is not None, "Invalid argument: hex_color is None."
     assert (
@@ -130,7 +136,7 @@ def random_color(
         random_color = padding(hex(random_int), 2)
         random_color_code = random_color_code + random_color
 
-    base_colors = get_triadic_colors(random_color_code, base_colors_total)[
+    base_colors = get_scheme_colors(random_color_code, base_colors_total)[
         0:base_colors_total
     ]
 
@@ -172,13 +178,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# def main():
-#    """Test."""
-#    all_palettes = generate_palette(1)
-#    print(all_palettes)
-#
-#
-# if __name__ == "__main__":
-#    main()
