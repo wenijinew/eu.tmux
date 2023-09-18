@@ -115,6 +115,10 @@ replace_color(){
 }
 
 main(){
+    if [ -z "${TMUX}" ];then
+       _warn "Not in Tmux."
+       exit "${E_ABNORMAL_STATE}"
+    fi
     if [ ! "$(which pip)" ] ; then
         _warn "Python Environment:\t CHECK FAILED. 'pip' command not found."
         exit "$E_ABNORMAL_STATE"

@@ -6,7 +6,7 @@ import yaml
 from yaml import Loader
 
 from const import EMPTY, STYLE_END, STYLE_START, UTF_8
-from utils import get_tmux_option, logger, run_shell_command
+from utils import get_tmux_option, run_shell_command
 
 
 def get(_dict, key, default):

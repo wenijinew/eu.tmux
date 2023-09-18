@@ -4,7 +4,7 @@
 import colorsys
 import random
 
-from utils import get_tmux_option, logger
+from utils import get_tmux_option
 
 
 def hex2hls(hex_color):
@@ -221,8 +221,8 @@ def main():
     palette = Palette()
     for c in range(9):
         r_colors = random_color(max_color=100)
-        logger.info(r_colors)
-    logger.info(palette.generate_palette())
+        print(r_colors)
+    print(palette.generate_palette())
 
 
 if __name__ == "__main__":
