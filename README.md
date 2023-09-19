@@ -1,5 +1,5 @@
 <h1 align="center">
-![Glamour.Tmux](glamour.tmux.png)
+![Glamour.Tmux](https://raw.githubusercontent.com/wenijinew/glamour.tmux/main/glamour.tmux.png)
 </h1>
 
 # What's Glamour.Tmux
