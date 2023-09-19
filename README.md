@@ -1,6 +1,4 @@
-<h1 align="center">
-![Glamour.Tmux](/assets/images/glamour.tmux.png)
-</h1>
+![Glamour.Tmux](assets/images/glamour.tmux.png)
 
 # What's Glamour.Tmux
 
