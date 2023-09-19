@@ -450,6 +450,8 @@ def glamour(config_file="glamour.yaml"):
 
     set_option_commands = []
     dynamic_config_file_name = get_tmux_option("dynamic_config_file_name", config_file)
+    glamour_workdir = os.getenv("GLAMOUR_WORKDIR")
+    os.chdir(glamour_workdir)
     with open(dynamic_config_file_name, "r", encoding=UTF_8) as config:
         glamour = yaml.load(config, Loader=Loader)
 

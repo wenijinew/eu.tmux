@@ -2,12 +2,12 @@
 
 # What's Glamour.Tmux
 
-Glamour.Tmux is a Tmux plugin. It aims to help Tmux user to simply configurations, especially for theme configuration.
+Glamour.Tmux is a Tmux plugin. It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
 
 # Installation
 
 
-* Option1: Configure in .tmux.conf file as TPM plugin.
+* Option1: Configure in `.tmux.conf` file as [TPM](https://github.com/tmux-plugins/tpm) plugin.
 
 ``` bash
 set -g @plugin 'tmux-plugins/tpm'

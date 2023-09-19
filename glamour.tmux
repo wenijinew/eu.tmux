@@ -111,7 +111,7 @@ replace_color(){
           color_name="$(echo "${_color}" | cut -d':' -f1)"
           color_value="$(echo "${_color}" | cut -d':' -f2)"
           sed -i "s/${color_name}/${color_value}/g" "${target_file}"
-    done < "${palette_file}"
+    done < "${_DIR}/${palette_file}"
 }
 
 show_all_themes(){
@@ -193,7 +193,9 @@ main(){
     # set environment variables
     export PATH="${_DIR}:${PATH}"
     export PYTHONPATH="${_DIR}:${PATH}"
+    export GLAMOUR_WORKDIR="${_DIR}"
     find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
+    tmux set-environment -g 'GLAMOUR_WORKDIR' "${_DIR}"
     tmux set-environment -g 'PATH' "${_DIR}:${PATH}"
     tmux set-environment -g 'PYTHONPATH' "${_DIR}:${PATH}"
 
@@ -221,4 +223,6 @@ while getopts "adrRt:" opt; do
         *) usage ;;
     esac
 done
+pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${E_ABNORMAL_STATE}
 main
+popd >/dev/null 2>/dev/null || exit ${E_ABNORMAL_STATE}
