@@ -1,12 +1,20 @@
 ![Glamour.Tmux](assets/images/glamour.tmux.v2.png)
 
-# What's Glamour.Tmux
+# Introduction
+
+## What's Glamour.Tmux
 
 Glamour.Tmux is a Tmux plugin(throught [TPM](https://github.com/tmux-plugins/tpm)). It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
 
-# What's NOT Glamour.Tmux
+## What's NOT Glamour.Tmux
 
 Glamour.Tmux is not for Tmux layout or Tmux session management. Try [tmuxp](https://github.com/tmux-python/tmuxp) and [tmuxinator](https://github.com/tmuxinator/tmuxinator) instead.
+
+# Demo
+
+## Dynamic Theme
+
+![Dynamic Theme Demo](assets/images/glamour_tmux_dyanmic_theme.gif)
 
 # Installation
 
@@ -29,6 +37,25 @@ git clone https://github.com/wenijinew/glamour.tmux.git
 
 Go to glamour.tmux and run `./glamour.tmux`
 
+
+# Environment Requirements
+
+* Fonts
+
+Glamour.Tmux can work perfectly if the morden fonts (E.g. [Nerd Fonts](https://www.nerdfonts.com/font-downloads)) are installed for the terminal. These morden fonts support different UNICODE characters which could be used as decoration for Glamour.Tmux themes.
+
+* Python and Bash
+
+Glamour.Tmux is developed with Python and Bash programming languages. In most cases, both are already available in your work environment. If not, please install them separately. The latset version are recommended.
+
+* Tmux
+
+This is nonsense. You must have Tmux installed to use Glamour.Tmux to decorate it.
+
+* Terminal Application
+
+Tmux is not a terminal emulator but a terminal multiplexer. To use Tmux, you have to install terminal applications in advance.
+If you work on Windows, you can use Windows Terminal, PuTTY. If you work on Linux, you probably have more choices.
 
 # User Guide
 
@@ -53,10 +80,6 @@ More bind-keys are set by default as follows:
 * `M-l` - select the previous working window.
 * `M-j` - go to the left pane in the same horizontal level. if no more left, then go to the last pane in the same hozontal level.
 * `M-k` - go to the downward pane in the same vertial level. if no more downward pane, then go to the first pane in the same vertial level.
-
-## Dynamic Theme Demo
-
-![Dynamic Theme Demo](assets/images/glamour_tmux_dyanmic_theme.gif)
 
 # Developer Guide
 
