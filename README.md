@@ -62,7 +62,7 @@ Bash scripts are use to accept client parameters, create dynamic configuration f
 
 Learn more detail by reading the flow chart below:
 
-![Glamour Tmux Flow Chart](glamour_tmux_flow_chart_smallest.png)
+![Glamour Tmux Flow Chart](assets/images/glamour_tmux_flow_chart_smallest.png)
 
 # Thanks
 
