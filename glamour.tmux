@@ -92,12 +92,13 @@ create_dynamic_config_file(){
         rm -f "${dynamic_config_file_name}"
     fi
 
-    # use customized config file is exists
-    config_file="${DEFAULT_CONFIG_FILENAME}"
-    CONFIG_PATH="${XDG_CONFIG_HOME:-${HOME}}/.config"
-    _config_file="${CONFIG_PATH}/tmux/${DEFAULT_CONFIG_FILENAME}"
-    if [ -e "${_config_file}" ];then
-       config_file="${_config_file}"
+
+    # if configuration file not in $XDG_CONFIG_HOME/tmux, then copy the default configuration file to $XDG_CONFIG_HOME/tmux
+    CONFIG_PATH="${XDG_CONFIG_HOME:-${HOME}/.config}/tmux"
+    config_file="${CONFIG_PATH}/${DEFAULT_CONFIG_FILENAME}"
+    if [ ! -e "${config_file}" ];then
+       mkdir -p "${CONFIG_PATH}"
+       cp "${DEFAULT_CONFIG_FILENAME}" "${CONFIG_PATH}"
     fi
 
     cp "${config_file}" "${dynamic_config_file_name}"
