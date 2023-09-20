@@ -63,10 +63,10 @@ After installation, user can use bind-keys as follows for theme settings:
 
 Note: by default, PREFIX is `C-b`.
 
-* `PREFIX g` - create and apply a dynamic theme.
-* `PREFIX G` - reset to the default theme.
-* `PREFIX a` - show all available themes.
-* `PREFIX r` - rotate all available themes.
+* `PREFIX g` - Create and apply a dynamic theme. You can have *unlimited* different dynamic themes. This is the most recommended usage because you can alway have totally fresh and probably unique theme.
+* `PREFIX G` - Reset to the default theme. In case you want to go back to the place where dreams begin.
+* `PREFIX a` - Show all available themes. To show all themes in popup. You can apply any specific theme in command line: `glamour.tmux -t [THEME NAME]`.
+* `PREFIX r` - Rotate all available themes. If you prefer to use available themes, and sometimes want to change a bit, then rotate the available themes.
 
 To create own theme, simply copy `dynamic.theme.yaml` to the new them file. Then, do customization in the new theme file.
 To set the new theme as default theme, update `$XDG_CONFIG_HOME/tmux/glamour.yaml` file to change theme name to new theme.
