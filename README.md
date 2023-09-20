@@ -1,4 +1,4 @@
-![Glamour.Tmux](assets/images/glamour.tmux.png)
+![Glamour.Tmux](assets/images/glamour.tmux.v2.png)
 
 # What's Glamour.Tmux
 
