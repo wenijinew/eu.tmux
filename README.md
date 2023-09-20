@@ -2,7 +2,7 @@
 
 # What's Glamour.Tmux
 
-Glamour.Tmux is a Tmux plugin. It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
+Glamour.Tmux is a Tmux plugin(throught [TPM](https://github.com/tmux-plugins/tpm)). It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
 
 # What's NOT Glamour.Tmux
 
@@ -59,6 +59,10 @@ Glamour.Tmux is developed with Python and Bash programming languages.
 Python modules are use to generate dynamic palette, parse configuration file and theme file, generate Tmux commands to set options and bind keys.
 
 Bash scripts are use to accept client parameters, create dynamic configuration file or theme file, run generated Tmux commands to apply configurations and theme.
+
+Learn more detail by reading the flow chart below:
+
+![Glamour Tmux Flow Chart](glamour_tmux_flow_chart_smallest.png)
 
 # Thanks
 
