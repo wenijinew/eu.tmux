@@ -40,6 +40,8 @@ general:
   commands:
     - bind-key 'g' run-shell 'glamour.tmux -d'
     - bind-key 'G' run-shell 'glamour.tmux'
+    - bind-key 'a' run-shell 'glamour.tmux -a'
+    - bind-key 'r' run-shell 'glamour.tmux -r'
     - bind-key 'C-j' setw synchronize-panes on
     - bind-key 'C-k' setw synchronize-panes off
     - bind-key -n 'M-l' select-window -l
