@@ -442,12 +442,14 @@ class Constructor:
 def glamour(config_file="glamour.yaml"):
     """Load config file, overwrite options by value from tmux.conf."""
 
-    # user can set customized config file under CONFIG_HOME
-    config_home = os.getenv("XDG_CONFIG_HOME", f'{os.getenv("HOME")}/.config')
-    _config_file = f"{config_home}/{config_file}"
+    # user can set customized config file under GLAMOUR_CONFIG_HOME
+    XDG_CONFIG_HOME = os.getenv("XDG_CONFIG_HOME", f'{os.getenv("HOME")}/.config')
+    GLAMOUR_CONFIG_HOME = f"{XDG_CONFIG_HOME}/glamour.tmux"
+    _config_file = f"{GLAMOUR_CONFIG_HOME}/{config_file}"
     if os.path.exists(_config_file):
         config_file = _config_file
 
+    glamour = {}
     set_option_commands = []
     dynamic_config_file_name = get_tmux_option("dynamic_config_file_name", config_file)
     glamour_workdir = os.getenv("GLAMOUR_WORKDIR")
@@ -455,22 +457,29 @@ def glamour(config_file="glamour.yaml"):
     with open(dynamic_config_file_name, "r", encoding=UTF_8) as config:
         glamour = yaml.load(config, Loader=Loader)
 
-        # if specified theme doesn't have corresponding file, then fall-back to
-        # the default theme - glamour theme.
-        theme_name = glamour.get("theme", "glamour")
-        # if dynamic theme is set, then use dynamic theme.
-        dynamic_theme_name = get_tmux_option("dynamic_theme_name", theme_name)
-        theme_filename = f"{dynamic_theme_name}.theme.yaml"
-        # if dynamic theme file doesn't exist, fall-back to default them -
-        # glamour theme
-        if not os.path.exists(theme_filename):
-            theme_filename = "glamour.theme.yaml"
-        with open(theme_filename, "r", encoding=UTF_8) as theme_file:
-            theme_config = yaml.load(theme_file, Loader=Loader)
-            theme = Theme(theme_config)
+    # if specified theme doesn't have corresponding file, then fall-back to
+    # the default theme - glamour theme.
+    theme_name = glamour.get("theme", "glamour")
 
-            constructor = Constructor(glamour, theme)
-            set_option_commands = constructor.produce_option_commands()
+    # if dynamic theme is set, then use dynamic theme.
+    dynamic_theme_name = get_tmux_option("dynamic_theme_name", theme_name)
+    theme_filename = f"{dynamic_theme_name}.theme.yaml"
+
+    # if dynamic theme file doesn't exist under project, then check if it
+    # exists under GLAMOUR_CONFIG_HOME, if not, then fall-back to default them -
+    # glamour theme, otherwise, load the theme file from GLAMOUR_CONFIG_HOME
+    if not os.path.exists(theme_filename):
+        if os.path.exists(f"{GLAMOUR_CONFIG_HOME}/{theme_filename}"):
+            theme_filename = f"{GLAMOUR_CONFIG_HOME}/{theme_filename}"
+        else:
+            theme_filename = "glamour.theme.yaml"
+
+    with open(theme_filename, "r", encoding=UTF_8) as theme_file:
+        theme_config = yaml.load(theme_file, Loader=Loader)
+        theme = Theme(theme_config)
+
+        constructor = Constructor(glamour, theme)
+        set_option_commands = constructor.produce_option_commands()
     return ";".join(set_option_commands)
 
 

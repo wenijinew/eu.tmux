@@ -2,13 +2,6 @@
 _DIR="$(cd "$(dirname "$0")" && pwd)"
 source "${_DIR}/utils.sh"
 
-TMUX_COMMANDS_FILENAME="tmux_commands.txt"
-DEFAULT_PALETTE_FILENAME="default_palette.txt"
-DYNAMIC_PALETTE_FILENAME="dynamic_palette.txt"
-TEMPLATE_THEME_FILENAME="template.theme.yaml"
-DEFAULT_CONFIG_FILENAME="glamour.yaml"
-DYNAMIC_THEME_NAME="dynamic"
-PALETTE_FILENAME="${DEFAULT_PALETTE_FILENAME}"
 
 PLACE_HOLDERS=(
     "PALE_RED"
@@ -49,6 +42,43 @@ PLACE_HOLDERS=(
     "DEEP_GRAY"
 )
 
+setup(){
+    # constants
+    THEME_FILE_EXTENSION=".theme.yaml"
+    TMUX_COMMANDS_FILENAME="tmux_commands.txt"
+    DEFAULT_PALETTE_FILENAME="default_palette.txt"
+    DYNAMIC_PALETTE_FILENAME="dynamic_palette.txt"
+    TEMPLATE_THEME_FILENAME="template${THEME_FILE_EXTENSION}"
+    DEFAULT_CONFIG_FILENAME="glamour.yaml"
+    DYNAMIC_THEME_NAME="dynamic"
+    PALETTE_FILENAME="${DEFAULT_PALETTE_FILENAME}"
+    DELAY=3000
+
+    # global variables, could be set by script arguments. see main.
+    THEME_NAME=""
+    NEW_THEME_NAME=""
+    ROTATE_THEME=${FALSE}
+    CREATE_DYNMIC_THEME=${FALSE}
+
+    # set working directory to glamour.tmux project path
+    pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
+
+    # set config home and config file
+    GLAMOUR_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/glamour.tmux"
+    mkdir -p "${GLAMOUR_CONFIG_HOME}" >/dev/null 2>/dev/null
+
+    # if config file not in $GLAMOUR_CONFIG_HOME, then copy the default config file to $GLAMOUR_CONFIG_HOME
+    GLAMOUR_CONFIG_FILE="${GLAMOUR_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
+    if [ ! -e "${GLAMOUR_CONFIG_FILE}" ];then
+       cp "${DEFAULT_CONFIG_FILENAME}" "${GLAMOUR_CONFIG_HOME}"
+    fi
+}
+
+teardown(){
+    popd >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
+}
+
+
 # function to replace legacy solution's placeholders with new solutions color
 # name of palette colors
 replace_legacy_placeholders(){
@@ -76,7 +106,7 @@ generate_palette_colors(){
 }
 
 create_dynamic_theme_file(){
-    dynamic_theme_file_name="${DYNAMIC_THEME_NAME}.theme.yaml"
+    dynamic_theme_file_name="${DYNAMIC_THEME_NAME}${THEME_FILE_EXTENSION}"
     tmux set-option -gq "@dynamic_theme_name" "${DYNAMIC_THEME_NAME}"
     if [ -e "${dynamic_theme_file_name}" ];then
        rm -f "${dynamic_theme_file_name}"
@@ -93,12 +123,10 @@ create_dynamic_config_file(){
     fi
 
 
-    # if configuration file not in $XDG_CONFIG_HOME/tmux, then copy the default configuration file to $XDG_CONFIG_HOME/tmux
-    CONFIG_PATH="${XDG_CONFIG_HOME:-${HOME}/.config}/tmux"
-    config_file="${CONFIG_PATH}/${DEFAULT_CONFIG_FILENAME}"
+    # if config file not in $GLAMOUR_CONFIG_HOME, then copy the default config file to $GLAMOUR_CONFIG_HOME
+    config_file="${GLAMOUR_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
     if [ ! -e "${config_file}" ];then
-       mkdir -p "${CONFIG_PATH}"
-       cp "${DEFAULT_CONFIG_FILENAME}" "${CONFIG_PATH}"
+       cp "${DEFAULT_CONFIG_FILENAME}" "${GLAMOUR_CONFIG_HOME}"
     fi
 
     cp "${config_file}" "${dynamic_config_file_name}"
@@ -116,22 +144,68 @@ replace_color(){
 }
 
 show_all_themes(){
-    local themes
-    themes="$(find "${_DIR}" -name '*.theme.yaml*' | sed -e 's/.*\///' | sed -e 's/.theme.yaml//' | grep -v template)"
-    echo "${themes}"
+    local _themes
+    # except for template
+    _themes=""
+    for _path in ${_DIR} ${GLAMOUR_CONFIG_HOME}; do
+        _themes="${_themes} $(find "${_path}" -name "*${THEME_FILE_EXTENSION}*" | sed -e 's/.*\///' | sed -e "s/${THEME_FILE_EXTENSION}//g" | grep -v template)"
+    done
+    echo "${_themes## }"
 }
+
+save_dynamic_theme(){
+    local new_theme_name
+    new_theme_name="${1}"
+    if [ -z "${new_theme_name}" ];then
+       tmux command-prompt -p "New theme name:" "\
+                           run-shell 'glamour.tmux -T %1'
+                           "
+       exit $?
+    fi
+    new_theme_name="${new_theme_name/%%${THEME_FILE_EXTENSION}*/}"
+    current_dynamic_theme=$(tmux show-option -gqv "@dynamic_theme_name")
+    current_dynamic_theme_filename="${current_dynamic_theme}${THEME_FILE_EXTENSION}"
+    if [ -e "${current_dynamic_theme_filename}" ];then
+       cp "${current_dynamic_theme_filename}" "${GLAMOUR_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
+       if [ $? -eq $TRUE ];then
+          tmux display-message -d "${DELAY}" "New theme saved: ${GLAMOUR_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
+       fi
+    fi
+}
+
+# apply the given theme. if the theme name is not given, prompt to ask user to provide.
+apply_theme(){
+    local theme_name
+    theme_name="${1}"
+
+    if [ -z "${theme_name}" ];then
+       tmux command-prompt -p "Target theme name:" "\
+                 run-shell 'glamour.tmux -t %1'
+                 "
+       exit $?
+    else
+       themes=$(show_all_themes)
+       echo "$themes" | grep -q "${theme_name}"
+       if [ $? -ne $TRUE ];then
+          tmux display-message -d "${DELAY}" "Not found theme: '${theme_name}'"
+          exit ${EXIT_ABNORMAL}
+       fi
+    fi
+    THEME_NAME="${theme_name}"
+}
+
 
 main(){
     # pre-check
     if [ -z "${TMUX}" ];then
        _warn "Not in Tmux."
-       exit "${E_ABNORMAL_STATE}"
+       exit "${EXIT_ABNORMAL}"
     fi
 
     # python environment and requirements installation
     if [ ! "$(which pip)" ] ; then
         _warn "Python Environment:\t CHECK FAILED. 'pip' command not found."
-        exit "$E_ABNORMAL_STATE"
+        exit "$EXIT_ABNORMAL"
     fi
     test -e "${_DIR}/.requirements.installed.txt"
     is_installed=$?
@@ -148,6 +222,9 @@ main(){
        _warn "Python Environment:\t Dependencies Installation Failure."
     fi
 
+    local current_dynamic_theme
+    current_dynamic_theme=$(tmux show-option -gqv "@dynamic_theme_name")
+
     # create dynamic theme and config file
     if [ "$CREATE_DYNMIC_THEME" -eq $TRUE ];then
        PALETTE_FILENAME=${DYNAMIC_PALETTE_FILENAME}
@@ -156,8 +233,7 @@ main(){
     elif [ -n "${THEME_NAME}" ];then
         tmux set-option -gq "@dynamic_theme_name" "${THEME_NAME}"
     elif [ "${ROTATE_THEME}" -eq ${TRUE} ];then
-        local current_dynamic_theme themes found_current_dynamic_theme new_dynamic_theme first_theme
-        current_dynamic_theme=$(tmux show-option -gqv "@dynamic_theme_name")
+        local themes found_current_dynamic_theme new_dynamic_theme first_theme
         themes="$(show_all_themes)"
         found_current_dynamic_theme=${FALSE}
         new_dynamic_theme=""
@@ -187,7 +263,7 @@ main(){
         fi
         tmux set-option -gq "@dynamic_theme_name" "${new_dynamic_theme}"
     else
-        tmux set-option -gq "@dynamic_theme_name" ""
+        tmux set-option -gq "@dynamic_theme_name" "${current_dynamic_theme}"
     fi
     create_dynamic_config_file
 
@@ -210,20 +286,18 @@ usage(){
     echoh "./glamour.tmux [-d]"
 }
 
-THEME_NAME=""
-ROTATE_THEME=${FALSE}
-CREATE_DYNMIC_THEME=${FALSE}
-
-while getopts "adrRt:" opt; do
+setup
+while getopts "adDrRt:T:" opt; do
     case $opt in
         a) show_all_themes; exit $? ;;
         d) CREATE_DYNMIC_THEME=${TRUE} ;;
+        D) THEME_NAME="glamour" ;;
         r) ROTATE_THEME=${TRUE} ;;
         R) replace_legacy_placeholders; exit $? ;;
-        t) THEME_NAME="$OPTARG" ;;
-        *) usage ;;
+        t) apply_theme "${OPTARG}" ;;
+        T) NEW_THEME_NAME="$OPTARG"; save_dynamic_theme "${NEW_THEME_NAME}"; exit $? ;;
+        *) usage; exit "${EXIT_SUCCESS}" ;;
     esac
 done
-pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${E_ABNORMAL_STATE}
 main
-popd >/dev/null 2>/dev/null || exit ${E_ABNORMAL_STATE}
+teardown

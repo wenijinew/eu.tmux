@@ -14,6 +14,8 @@ Glamour.Tmux is not for Tmux layout or Tmux session management. Try [tmuxp](http
 
 ## Dynamic Theme
 
+You can create new random dynamic theme and apply immediately by key `PREFEX g`. In theory, you can have unlimited dynamic theme. Note: by default, new dynamic theme will override the old one. In another word, only one dynamic theme is saved automatically.
+
 ![Dynamic Theme Demo](assets/images/glamour_tmux_dyanmic_theme.gif)
 
 # Installation
