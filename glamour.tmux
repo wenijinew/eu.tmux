@@ -150,7 +150,8 @@ show_all_themes(){
     for _path in ${_DIR} ${GLAMOUR_CONFIG_HOME}; do
         _themes="${_themes} $(find "${_path}" -name "*${THEME_FILE_EXTENSION}*" | sed -e 's/.*\///' | sed -e "s/${THEME_FILE_EXTENSION}//g" | grep -v template)"
     done
-    echo "${_themes## }"
+    _themes="${_themes## }"
+    echo "${_themes}" | env sed -e 's/ /\n/g'
 }
 
 save_dynamic_theme(){
