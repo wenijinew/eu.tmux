@@ -4,6 +4,10 @@
 
 Glamour.Tmux is a Tmux plugin. It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
 
+# What's NOT Glamour.Tmux
+
+Glamour.Tmux is not for Tmux layout or Tmux session management. Try [tmuxp](https://github.com/tmux-python/tmuxp) and [tmuxinator](https://github.com/tmuxinator/tmuxinator) instead.
+
 # Installation
 
 
@@ -28,7 +32,7 @@ Go to glamour.tmux and run `./glamour.tmux`
 
 # User Guide
 
-After installation, user can use bind-keys as follows:
+After installation, user can use bind-keys as follows for theme settings:
 
 * `PREFIX g` - set dynamic theme.
 * `PREFIX G` - reset default theme.
@@ -37,6 +41,16 @@ After installation, user can use bind-keys as follows:
 
 To create own theme, simply copy `dynamic.theme.yaml` to the new them file. Then, do customization in the new theme file.
 To set the new theme as default theme, update `$XDG_CONFIG_HOME/tmux/glamour.yaml` file to change theme name to new theme.
+
+More bind-keys are set by default as follows:
+
+* `PREFIX C-j` - enable synchronize-panes (typing in all panes simultaneously in current windows).
+* `PREFIX C-k` - disable synchronize-panes (typing in all panes simultaneously in current windows).
+* `M-Left` - select the left window. (if in the first window, then go to last window)
+* `M-Right` - select the right window. (if in the last window, then go to first window)
+* `M-l` - select the previous working window.
+* `M-j` - go to the left pane in the same horizontal level. if no more left, then go to the last pane in the same hozontal level.
+* `M-k` - go to the downward pane in the same vertial level. if no more downward pane, then go to the first pane in the same vertial level.
 
 # Developer Guide
 

@@ -40,6 +40,13 @@ general:
   commands:
     - bind-key 'g' run-shell 'glamour.tmux -d'
     - bind-key 'G' run-shell 'glamour.tmux'
+    - bind-key 'C-j' setw synchronize-panes on
+    - bind-key 'C-k' setw synchronize-panes off
+    - bind-key -n 'M-l' select-window -l
+    - bind-key -n 'M-j' select-pane -R
+    - bind-key -n 'M-k' select-pane -D
+    - bind-key -n 'M-Left' select-window -p
+    - bind-key -n 'M-Right' select-window -n
 status_left:
   session:
     enabled: "on"
