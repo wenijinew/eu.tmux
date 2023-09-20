@@ -54,6 +54,10 @@ More bind-keys are set by default as follows:
 * `M-j` - go to the left pane in the same horizontal level. if no more left, then go to the last pane in the same hozontal level.
 * `M-k` - go to the downward pane in the same vertial level. if no more downward pane, then go to the first pane in the same vertial level.
 
+## Dynamic Theme Demo
+
+![Dynamic Theme Demo](assets/images/glamour_tmux_dyanmic_theme.gif)
+
 # Developer Guide
 
 Glamour.Tmux is developed with Python and Bash programming languages.
