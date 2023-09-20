@@ -1,4 +1,5 @@
 # Security Policy
 
 ## Reporting a Vulnerability
-Please create a new issue to report a vulnerability. Thanks.
+
+Please [report vulnerability](https://github.com/wenijinew/glamour.tmux/security/advisories/new) once you noticed.

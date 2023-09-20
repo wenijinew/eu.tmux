@@ -81,6 +81,14 @@ More bind-keys are set by default as follows:
 * `M-j` - go to the left pane in the same horizontal level. if no more left, then go to the last pane in the same hozontal level.
 * `M-k` - go to the downward pane in the same vertial level. if no more downward pane, then go to the first pane in the same vertial level.
 
+# Issues, New Features and Vulnerabilities
+
+Please use [Bug Report](https://github.com/wenijinew/glamour.tmux/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=) or [Feature Request](https://github.com/wenijinew/glamour.tmux/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=).
+
+## Vulnerability
+
+Please [report vulnerability](https://github.com/wenijinew/glamour.tmux/security/advisories/new) once you noticed.
+
 # Developer Guide
 
 Glamour.Tmux is developed with Python and Bash programming languages.
@@ -88,6 +96,8 @@ Glamour.Tmux is developed with Python and Bash programming languages.
 Python modules are use to generate dynamic palette, parse configuration file and theme file, generate Tmux commands to set options and bind keys.
 
 Bash scripts are use to accept client parameters, create dynamic configuration file or theme file, run generated Tmux commands to apply configurations and theme.
+
+Anybody are welcome to contribute for new features or fix bugs. Before you start, please carefully read [CONTRIBUTING](CONTRIBUTING.md) and [CODE OF CONDUCT](CODE_OF_CONDUCT.md).Please make sure you respect it.
 
 Learn more detail by reading the flow chart below:
 
