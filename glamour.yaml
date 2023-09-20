@@ -37,6 +37,7 @@ general:
       fg: "C_4_3"
       bg: ""
       style: ""
+    # Tmux 3.3+ support popup styles
     popup-style:
       fg: "C_4_2"
       bg: "C_6_5"
