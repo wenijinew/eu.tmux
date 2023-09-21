@@ -1,3 +1,4 @@
+"""Constants."""
 UTF_8 = "utf-8"
 EMPTY = ""
 

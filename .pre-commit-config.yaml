@@ -1,3 +1,4 @@
+---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
@@ -26,7 +27,7 @@ repos:
     types: [yaml]
     args:
      [
-       "-d", "{extends: relaxed, rules: {line-length: {max: 120}}}"
+      "-d", "{extends: relaxed, rules: {line-length: {max: 120}}}"
      ]
   - id: shellcheck
     name: shellcheck
@@ -35,5 +36,5 @@ repos:
     types: [sh, csh]
     args:
      [
-       "-i", "SC2154"
+      "-i", "SC2154"
      ]

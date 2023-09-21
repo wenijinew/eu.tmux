@@ -443,9 +443,9 @@ def glamour(config_file="glamour.yaml"):
     """Load config file, overwrite options by value from tmux.conf."""
 
     # user can set customized config file under GLAMOUR_CONFIG_HOME
-    XDG_CONFIG_HOME = os.getenv("XDG_CONFIG_HOME", f'{os.getenv("HOME")}/.config')
-    GLAMOUR_CONFIG_HOME = f"{XDG_CONFIG_HOME}/glamour.tmux"
-    _config_file = f"{GLAMOUR_CONFIG_HOME}/{config_file}"
+    xdg_config_home = os.getenv("XDG_CONFIG_HOME", f'{os.getenv("HOME")}/.config')
+    glamour_config_home = f"{xdg_config_home}/glamour.tmux"
+    _config_file = f"{glamour_config_home}/{config_file}"
     if os.path.exists(_config_file):
         config_file = _config_file
 
@@ -469,8 +469,8 @@ def glamour(config_file="glamour.yaml"):
     # exists under GLAMOUR_CONFIG_HOME, if not, then fall-back to default them -
     # glamour theme, otherwise, load the theme file from GLAMOUR_CONFIG_HOME
     if not os.path.exists(theme_filename):
-        if os.path.exists(f"{GLAMOUR_CONFIG_HOME}/{theme_filename}"):
-            theme_filename = f"{GLAMOUR_CONFIG_HOME}/{theme_filename}"
+        if os.path.exists(f"{glamour_config_home}/{theme_filename}"):
+            theme_filename = f"{glamour_config_home}/{theme_filename}"
         else:
             theme_filename = "glamour.theme.yaml"
 

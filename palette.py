@@ -131,7 +131,7 @@ def random_color(
     _min = min_color
     _max = max_color
     random_color_code = "#"
-    for c in range(0, 3):
+    for counter in range(0, 3):
         random_int = random.randint(_min, _max)
         random_color = padding(hex(random_int), 2)
         random_color_code = random_color_code + random_color
@@ -149,6 +149,8 @@ def random_color(
 
 
 class Palette:
+    """Generate palette colors."""
+
     def __init__(self):
         # random colors are used for sections, components, and pieces
         self.base_colors_total = get_tmux_option("@base_colors_total", 5)
@@ -213,13 +215,14 @@ class Palette:
 
 
 def generate_palette():
+    """Generate palette colors."""
     return Palette().generate_palette()
 
 
 def main():
     """Test."""
     palette = Palette()
-    for c in range(9):
+    for counter in range(9):
         r_colors = random_color(max_color=100)
         print(r_colors)
     print(palette.generate_palette())
