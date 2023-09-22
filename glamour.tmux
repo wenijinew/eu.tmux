@@ -49,7 +49,7 @@ setup(){
     DEFAULT_PALETTE_FILENAME="default_palette.txt"
     DYNAMIC_PALETTE_FILENAME="dynamic_palette.txt"
     TEMPLATE_THEME_FILENAME="template${THEME_FILE_EXTENSION}"
-    DEFAULT_CONFIG_FILENAME="glamour.yaml"
+    DEFAULT_CONFIG_FILENAME="eutmux.yaml"
     DYNAMIC_THEME_NAME="dynamic"
     PALETTE_FILENAME="${DEFAULT_PALETTE_FILENAME}"
     DELAY=3000
@@ -60,17 +60,17 @@ setup(){
     ROTATE_THEME=${FALSE}
     CREATE_DYNMIC_THEME=${FALSE}
 
-    # set working directory to glamour.tmux project path
+    # set working directory to eutmux.tmux project path
     pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
 
     # set config home and config file
-    GLAMOUR_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/glamour.tmux"
-    mkdir -p "${GLAMOUR_CONFIG_HOME}" >/dev/null 2>/dev/null
+    EUTMUX_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux.tmux"
+    mkdir -p "${EUTMUX_CONFIG_HOME}" >/dev/null 2>/dev/null
 
-    # if config file not in $GLAMOUR_CONFIG_HOME, then copy the default config file to $GLAMOUR_CONFIG_HOME
-    GLAMOUR_CONFIG_FILE="${GLAMOUR_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
-    if [ ! -e "${GLAMOUR_CONFIG_FILE}" ];then
-       cp "${DEFAULT_CONFIG_FILENAME}" "${GLAMOUR_CONFIG_HOME}"
+    # if config file not in $EUTMUX_CONFIG_HOME, then copy the default config file to $EUTMUX_CONFIG_HOME
+    EUTMUX_CONFIG_FILE="${EUTMUX_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
+    if [ ! -e "${EUTMUX_CONFIG_FILE}" ];then
+       cp "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
     fi
 }
 
@@ -93,7 +93,7 @@ replace_legacy_placeholders(){
         color_name="C_${base_color_index}_${colormap_index}"
 
         find "${_DIR}" -maxdepth 1 -type f -exec sed -i "s/${placeholder}/${color_name}/g" '{}' \;
-        sed -i "s/${placeholder}/${color_name}/g" "$HOME/.config/tmux/glamour.yaml"
+        sed -i "s/${placeholder}/${color_name}/g" "$HOME/.config/tmux/eutmux.yaml"
 
         ((index++))
     done
@@ -116,17 +116,17 @@ create_dynamic_theme_file(){
 }
 
 create_dynamic_config_file(){
-    dynamic_config_file_name="${DYNAMIC_THEME_NAME}.glamour.yaml"
+    dynamic_config_file_name="${DYNAMIC_THEME_NAME}.eutmux.yaml"
     tmux set-option -gq "@dynamic_config_file_name" "${dynamic_config_file_name}"
     if [ -e "${dynamic_config_file_name}" ];then
         rm -f "${dynamic_config_file_name}"
     fi
 
 
-    # if config file not in $GLAMOUR_CONFIG_HOME, then copy the default config file to $GLAMOUR_CONFIG_HOME
-    config_file="${GLAMOUR_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
+    # if config file not in $EUTMUX_CONFIG_HOME, then copy the default config file to $EUTMUX_CONFIG_HOME
+    config_file="${EUTMUX_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
     if [ ! -e "${config_file}" ];then
-       cp "${DEFAULT_CONFIG_FILENAME}" "${GLAMOUR_CONFIG_HOME}"
+       cp "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
     fi
 
     cp "${config_file}" "${dynamic_config_file_name}"
@@ -147,7 +147,7 @@ show_all_themes(){
     local _themes
     # except for template
     _themes=""
-    for _path in ${_DIR} ${GLAMOUR_CONFIG_HOME}; do
+    for _path in ${_DIR} ${EUTMUX_CONFIG_HOME}; do
         _themes="${_themes} $(find "${_path}" -name "*${THEME_FILE_EXTENSION}*" | sed -e 's/.*\///' | sed -e "s/${THEME_FILE_EXTENSION}//g" | grep -v template)"
     done
     _themes="${_themes## }"
@@ -159,7 +159,7 @@ save_dynamic_theme(){
     new_theme_name="${1}"
     if [ -z "${new_theme_name}" ];then
        tmux command-prompt -p "New theme name:" "\
-                           run-shell 'glamour.tmux -T %1'
+                           run-shell 'eutmux.tmux -T %1'
                            "
        exit $?
     fi
@@ -167,9 +167,9 @@ save_dynamic_theme(){
     current_dynamic_theme=$(tmux show-option -gqv "@dynamic_theme_name")
     current_dynamic_theme_filename="${current_dynamic_theme}${THEME_FILE_EXTENSION}"
     if [ -e "${current_dynamic_theme_filename}" ];then
-       cp "${current_dynamic_theme_filename}" "${GLAMOUR_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
+       cp "${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
        if [ $? -eq $TRUE ];then
-          tmux display-message -d "${DELAY}" "New theme saved: ${GLAMOUR_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
+          tmux display-message -d "${DELAY}" "New theme saved: ${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
        fi
     fi
 }
@@ -181,7 +181,7 @@ apply_theme(){
 
     if [ -z "${theme_name}" ];then
        tmux command-prompt -p "Target theme name:" "\
-                 run-shell 'glamour.tmux -t %1'
+                 run-shell 'eutmux.tmux -t %1'
                  "
        exit $?
     else
@@ -271,20 +271,20 @@ main(){
     # set environment variables
     export PATH="${_DIR}:${PATH}"
     export PYTHONPATH="${_DIR}:${PATH}"
-    export GLAMOUR_WORKDIR="${_DIR}"
+    export EUTMUX_WORKDIR="${_DIR}"
     find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
-    tmux set-environment -g 'GLAMOUR_WORKDIR' "${_DIR}"
+    tmux set-environment -g 'EUTMUX_WORKDIR' "${_DIR}"
     tmux set-environment -g 'PATH' "${_DIR}:${PATH}"
     tmux set-environment -g 'PYTHONPATH' "${_DIR}:${PATH}"
 
     # generate and execute tmux commands
-    tmux_commands="$(python3 -c "import glamour; tmux_commands = glamour.glamour(); print(tmux_commands)")"
+    tmux_commands="$(python3 -c "import eutmux; tmux_commands = eutmux.eutmux(); print(tmux_commands)")"
     echo "${tmux_commands}" | sed -e 's/True/on/g' | sed -e 's/False/off/g' | tr ';' '\n' > "${TMUX_COMMANDS_FILENAME}"
     tmux source "${TMUX_COMMANDS_FILENAME}"
 }
 
 usage(){
-    echoh "./glamour.tmux [-d]"
+    echoh "./eutmux.tmux [-d]"
 }
 
 setup
@@ -292,7 +292,7 @@ while getopts "adDrRt:T:" opt; do
     case $opt in
         a) show_all_themes; exit $? ;;
         d) CREATE_DYNMIC_THEME=${TRUE} ;;
-        D) THEME_NAME="glamour" ;;
+        D) THEME_NAME="eutmux" ;;
         r) ROTATE_THEME=${TRUE} ;;
         R) replace_legacy_placeholders; exit $? ;;
         t) apply_theme "${OPTARG}" ;;

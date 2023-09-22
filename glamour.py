@@ -197,16 +197,16 @@ class ThemeStatusRight(dict):
 class Constructor:
     """Constructor for status line component."""
 
-    def __init__(self, glamour: dict, theme: Theme):
+    def __init__(self, eutmux: dict, theme: Theme):
         """Constructor."""
-        self.general = glamour.get("general")
-        self.terminal = glamour.get("terminal", theme.get("terminal"))
-        self.status_line = glamour.get("status_line", theme.get("status_line"))
+        self.general = eutmux.get("general")
+        self.terminal = eutmux.get("terminal", theme.get("terminal"))
+        self.status_line = eutmux.get("status_line", theme.get("status_line"))
         self.foreground = self.status_line.get("foreground")
         self.background = self.status_line.get("background")
-        self.status_left = glamour.get("status_left")
-        self.window = glamour.get("window")
-        self.status_right = glamour.get("status_right")
+        self.status_left = eutmux.get("status_left")
+        self.window = eutmux.get("window")
+        self.status_right = eutmux.get("status_right")
         self.theme = theme
 
     def produce_general_options_commands(self):
@@ -439,53 +439,53 @@ class Constructor:
         return option_commands
 
 
-def glamour(config_file="glamour.yaml"):
+def eutmux(config_file="eutmux.yaml"):
     """Load config file, overwrite options by value from tmux.conf."""
 
-    # user can set customized config file under GLAMOUR_CONFIG_HOME
+    # user can set customized config file under EUTMUX_CONFIG_HOME
     xdg_config_home = os.getenv("XDG_CONFIG_HOME", f'{os.getenv("HOME")}/.config')
-    glamour_config_home = f"{xdg_config_home}/glamour.tmux"
-    _config_file = f"{glamour_config_home}/{config_file}"
+    eutmux_config_home = f"{xdg_config_home}/eutmux.tmux"
+    _config_file = f"{eutmux_config_home}/{config_file}"
     if os.path.exists(_config_file):
         config_file = _config_file
 
-    glamour = {}
+    eutmux = {}
     set_option_commands = []
     dynamic_config_file_name = get_tmux_option("dynamic_config_file_name", config_file)
-    glamour_workdir = os.getenv("GLAMOUR_WORKDIR")
-    os.chdir(glamour_workdir)
+    eutmux_workdir = os.getenv("EUTMUX_WORKDIR")
+    os.chdir(eutmux_workdir)
     with open(dynamic_config_file_name, "r", encoding=UTF_8) as config:
-        glamour = yaml.load(config, Loader=Loader)
+        eutmux = yaml.load(config, Loader=Loader)
 
     # if specified theme doesn't have corresponding file, then fall-back to
-    # the default theme - glamour theme.
-    theme_name = glamour.get("theme", "glamour")
+    # the default theme - eutmux theme.
+    theme_name = eutmux.get("theme", "eutmux")
 
     # if dynamic theme is set, then use dynamic theme.
     dynamic_theme_name = get_tmux_option("dynamic_theme_name", theme_name)
     theme_filename = f"{dynamic_theme_name}.theme.yaml"
 
     # if dynamic theme file doesn't exist under project, then check if it
-    # exists under GLAMOUR_CONFIG_HOME, if not, then fall-back to default them -
-    # glamour theme, otherwise, load the theme file from GLAMOUR_CONFIG_HOME
+    # exists under EUTMUX_CONFIG_HOME, if not, then fall-back to default them -
+    # eutmux theme, otherwise, load the theme file from EUTMUX_CONFIG_HOME
     if not os.path.exists(theme_filename):
-        if os.path.exists(f"{glamour_config_home}/{theme_filename}"):
-            theme_filename = f"{glamour_config_home}/{theme_filename}"
+        if os.path.exists(f"{eutmux_config_home}/{theme_filename}"):
+            theme_filename = f"{eutmux_config_home}/{theme_filename}"
         else:
-            theme_filename = "glamour.theme.yaml"
+            theme_filename = "eutmux.theme.yaml"
 
     with open(theme_filename, "r", encoding=UTF_8) as theme_file:
         theme_config = yaml.load(theme_file, Loader=Loader)
         theme = Theme(theme_config)
 
-        constructor = Constructor(glamour, theme)
+        constructor = Constructor(eutmux, theme)
         set_option_commands = constructor.produce_option_commands()
     return ";".join(set_option_commands)
 
 
 def main():
     """Run."""
-    set_option_commands = glamour()
+    set_option_commands = eutmux()
     if set_option_commands:
         for command in set_option_commands.split(";"):
             run_shell_command(f"tmux {command}")

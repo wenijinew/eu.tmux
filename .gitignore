@@ -1,7 +1,7 @@
-dynamic.glamour.yaml
+dynamic.eutmux.yaml
 dynamic.theme.yaml
 dynamic_palette.txt
-glamour.py.log
+eutmux.py.log
 tmux_commands.txt
 __pycache__
 /.requirements.installed.txt

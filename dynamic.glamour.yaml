@@ -3,46 +3,46 @@ theme: burgundy-red
 general:
   options:
     status: true
-    status-fg: "C_6_1"
-    status-bg: "C_6_5"
+    status-fg: "#a3adaa"
+    status-bg: "#000a07"
     status-justify: left
     status-left-length: 100
     status-right-length: 100
     window-status-separator: ' '
     terminal-overrides: ",xterm*:Tc"
     default-terminal: "screen-256color"
-    escape-time: 5
+    escape-time: 10
     status-interval: 3
     focus-events: true
-    display-time: 5000
+    display-time: 10000
     renumber-windows: true
-    clock-mode-colour: "C_4_4"
-    _fg_highlight: "C_1_5"
-    _bg_highlight: "C_3_2"
+    clock-mode-colour: "#3d6f32"
+    _fg_highlight: "#842009"
+    _bg_highlight: "#9b9580"
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
-      fg: "C_4_2"
+      fg: "#87a780"
       bg: ""
       style: ""
     message-command-style:
-      fg: "C_2_2"
+      fg: "#ba84cd"
       bg: ""
       style: ""
     pane-border-style:
-      fg: "C_6_4"
+      fg: "#28322f"
       bg: ""
       style: ""
     pane-active-border-style:
-      fg: "C_4_3"
+      fg: "#628b5a"
       bg: ""
       style: ""
     # Tmux 3.3+ support popup styles
     popup-style:
-      fg: "C_4_2"
-      bg: "C_6_5"
+      fg: "#87a780"
+      bg: "#000a07"
     popup-border-style:
-      fg: "C_4_2"
+      fg: "#87a780"
       bg: ""
   commands:
     - bind-key 'g' run-shell 'eutmux.tmux -d'
@@ -77,11 +77,11 @@ status_right:
     tmux_option: " #{b:pane_current_path} "
     icon: " "
     decorator: ""
-    fg_option: "C_6_5"
-    bg_option: "C_3_2"
-    fg_icon: "C_6_5"
-    bg_icon: "C_3_4"
-    fg_decorator: "C_3_4"
+    fg_option: "#000a07"
+    bg_option: "#9b9580"
+    fg_icon: "#000a07"
+    bg_icon: "#5b5332"
+    fg_decorator: "#5b5332"
   date:
     enabled: true
     icon: " "

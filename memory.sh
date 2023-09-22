@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source "utils.sh"
 
-glamour_memory(){
+eutmux_memory(){
     mem_total_and_used=$(free | grep Mem | sed -E -e's/\s+/ /g' | cut -d' ' -f2,3)
     mem_total=$(echo $mem_total_and_used | cut -d' ' -f1)
     mem_used=$(echo $mem_total_and_used | cut -d' ' -f2)
@@ -25,6 +25,6 @@ glamour_memory(){
     fi
     echo "${mem_usage_percentage}"
 }
-export glamour_memory
+export eutmux_memory
 
-glamour_memory
+eutmux_memory
