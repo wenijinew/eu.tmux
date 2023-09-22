@@ -1,14 +1,14 @@
-![Eutmux](assets/images/utmux.tmux.v2.png)
+![Utmux](assets/images/utmux.tmux.v2.png)
 
 # Introduction
 
-## What's Eutmux
+## What's Utmux
 
-Eutmux is a Tmux plugin(throught [TPM](https://github.com/tmux-plugins/tpm)). It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
+Utmux is a Tmux plugin(throught [TPM](https://github.com/tmux-plugins/tpm)). It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
 
-## What's NOT Eutmux
+## What's NOT Utmux
 
-Eutmux is not for Tmux layout or Tmux session management. Try [tmuxp](https://github.com/tmux-python/tmuxp) and [tmuxinator](https://github.com/tmuxinator/tmuxinator) instead.
+Utmux is not for Tmux layout or Tmux session management. Try [tmuxp](https://github.com/tmux-python/tmuxp) and [tmuxinator](https://github.com/tmuxinator/tmuxinator) instead.
 
 # Demo
 
@@ -44,15 +44,15 @@ Go to utmux.tmux and run `./utmux.tmux`
 
 * Fonts
 
-Eutmux can work perfectly if the morden fonts (E.g. [Nerd Fonts](https://www.nerdfonts.com/font-downloads)) are installed for the terminal. These morden fonts support different UNICODE characters which could be used as decoration for Eutmux themes.
+Utmux can work perfectly if the morden fonts (E.g. [Nerd Fonts](https://www.nerdfonts.com/font-downloads)) are installed for the terminal. These morden fonts support different UNICODE characters which could be used as decoration for Utmux themes.
 
 * Python and Bash
 
-Eutmux is developed with Python and Bash programming languages. In most cases, both are already available in your work environment. If not, please install them separately. The latset version are recommended.
+Utmux is developed with Python and Bash programming languages. In most cases, both are already available in your work environment. If not, please install them separately. The latset version are recommended.
 
 * Tmux
 
-This is nonsense. You must have Tmux installed to use Eutmux to decorate it.
+This is nonsense. You must have Tmux installed to use Utmux to decorate it.
 
 * Terminal Application
 
@@ -93,7 +93,7 @@ Please [report vulnerability](https://github.com/wenijinew/utmux.tmux/security/a
 
 # Developer Guide
 
-Eutmux is developed with Python and Bash programming languages.
+Utmux is developed with Python and Bash programming languages.
 
 Python modules are use to generate dynamic palette, parse configuration file and theme file, generate Tmux commands to set options and bind keys.
 
@@ -103,8 +103,8 @@ Anybody are welcome to contribute for new features or fix bugs. Before you start
 
 Learn more detail by reading the flow chart below:
 
-![Eutmux Flow Chart](assets/images/utmux_tmux_flow_chart.png)
+![Utmux Flow Chart](assets/images/utmux_tmux_flow_chart.png)
 
 # Thanks
 
-Eutmux is derived from [catppuccin/tmux](https://github.com/catppuccin/tmux). Thanks all contributors and their great work on [catppuccin/tmux](https://github.com/catppuccin/tmux).
+Utmux is derived from [catppuccin/tmux](https://github.com/catppuccin/tmux). Thanks all contributors and their great work on [catppuccin/tmux](https://github.com/catppuccin/tmux).
