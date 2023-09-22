@@ -1,4 +1,4 @@
-![Eutmux](assets/images/eutmux.tmux.v2.png)
+![Eutmux](assets/images/eutmux.v2.png)
 
 # Introduction
 
@@ -103,7 +103,7 @@ Anybody are welcome to contribute for new features or fix bugs. Before you start
 
 Learn more detail by reading the flow chart below:
 
-![Eutmux Flow Chart](assets/images/eutmux_tmux_flow_chart.png)
+![Eutmux Flow Chart](assets/images/eutmux_flow_chart.png)
 
 # Thanks
 
