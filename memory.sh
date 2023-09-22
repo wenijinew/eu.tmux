@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source "utils.sh"
 
-utmux_memory(){
+eutmux_memory(){
     mem_total_and_used=$(free | grep Mem | sed -E -e's/\s+/ /g' | cut -d' ' -f2,3)
     mem_total=$(echo $mem_total_and_used | cut -d' ' -f1)
     mem_used=$(echo $mem_total_and_used | cut -d' ' -f2)
@@ -25,6 +25,6 @@ utmux_memory(){
     fi
     echo "${mem_usage_percentage}"
 }
-export utmux_memory
+export eutmux_memory
 
-utmux_memory
+eutmux_memory

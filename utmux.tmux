@@ -49,7 +49,7 @@ setup(){
     DEFAULT_PALETTE_FILENAME="default_palette.txt"
     DYNAMIC_PALETTE_FILENAME="dynamic_palette.txt"
     TEMPLATE_THEME_FILENAME="template${THEME_FILE_EXTENSION}"
-    DEFAULT_CONFIG_FILENAME="utmux.yaml"
+    DEFAULT_CONFIG_FILENAME="eutmux.yaml"
     DYNAMIC_THEME_NAME="dynamic"
     PALETTE_FILENAME="${DEFAULT_PALETTE_FILENAME}"
     DELAY=3000
@@ -60,11 +60,11 @@ setup(){
     ROTATE_THEME=${FALSE}
     CREATE_DYNMIC_THEME=${FALSE}
 
-    # set working directory to utmux.tmux project path
+    # set working directory to eutmux.tmux project path
     pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
 
     # set config home and config file
-    UTMUX_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/utmux.tmux"
+    UTMUX_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux.tmux"
     mkdir -p "${UTMUX_CONFIG_HOME}" >/dev/null 2>/dev/null
 
     # if config file not in $UTMUX_CONFIG_HOME, then copy the default config file to $UTMUX_CONFIG_HOME
@@ -93,7 +93,7 @@ replace_legacy_placeholders(){
         color_name="C_${base_color_index}_${colormap_index}"
 
         find "${_DIR}" -maxdepth 1 -type f -exec sed -i "s/${placeholder}/${color_name}/g" '{}' \;
-        sed -i "s/${placeholder}/${color_name}/g" "$HOME/.config/tmux/utmux.yaml"
+        sed -i "s/${placeholder}/${color_name}/g" "$HOME/.config/tmux/eutmux.yaml"
 
         ((index++))
     done
@@ -116,7 +116,7 @@ create_dynamic_theme_file(){
 }
 
 create_dynamic_config_file(){
-    dynamic_config_file_name="${DYNAMIC_THEME_NAME}.utmux.yaml"
+    dynamic_config_file_name="${DYNAMIC_THEME_NAME}.eutmux.yaml"
     tmux set-option -gq "@dynamic_config_file_name" "${dynamic_config_file_name}"
     if [ -e "${dynamic_config_file_name}" ];then
         rm -f "${dynamic_config_file_name}"
@@ -159,7 +159,7 @@ save_dynamic_theme(){
     new_theme_name="${1}"
     if [ -z "${new_theme_name}" ];then
        tmux command-prompt -p "New theme name:" "\
-                           run-shell 'utmux.tmux -T %1'
+                           run-shell 'eutmux.tmux -T %1'
                            "
        exit $?
     fi
@@ -181,7 +181,7 @@ apply_theme(){
 
     if [ -z "${theme_name}" ];then
        tmux command-prompt -p "Target theme name:" "\
-                 run-shell 'utmux.tmux -t %1'
+                 run-shell 'eutmux.tmux -t %1'
                  "
        exit $?
     else
@@ -278,13 +278,13 @@ main(){
     tmux set-environment -g 'PYTHONPATH' "${_DIR}:${PATH}"
 
     # generate and execute tmux commands
-    tmux_commands="$(python3 -c "import utmux; tmux_commands = utmux.utmux(); print(tmux_commands)")"
+    tmux_commands="$(python3 -c "import eutmux; tmux_commands = eutmux.eutmux(); print(tmux_commands)")"
     echo "${tmux_commands}" | sed -e 's/True/on/g' | sed -e 's/False/off/g' | tr ';' '\n' > "${TMUX_COMMANDS_FILENAME}"
     tmux source "${TMUX_COMMANDS_FILENAME}"
 }
 
 usage(){
-    echoh "./utmux.tmux [-d]"
+    echoh "./eutmux.tmux [-d]"
 }
 
 setup
@@ -292,7 +292,7 @@ while getopts "adDrRt:T:" opt; do
     case $opt in
         a) show_all_themes; exit $? ;;
         d) CREATE_DYNMIC_THEME=${TRUE} ;;
-        D) THEME_NAME="utmux" ;;
+        D) THEME_NAME="eutmux" ;;
         r) ROTATE_THEME=${TRUE} ;;
         R) replace_legacy_placeholders; exit $? ;;
         t) apply_theme "${OPTARG}" ;;

@@ -2,4 +2,4 @@
 
 ## Reporting a Vulnerability
 
-Please [report vulnerability](https://github.com/wenijinew/utmux.tmux/security/advisories/new) once you noticed.
+Please [report vulnerability](https://github.com/wenijinew/eutmux.tmux/security/advisories/new) once you noticed.

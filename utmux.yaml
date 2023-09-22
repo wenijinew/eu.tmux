@@ -45,12 +45,12 @@ general:
       fg: "C_4_2"
       bg: ""
   commands:
-    - bind-key 'g' run-shell 'utmux.tmux -d'
-    - bind-key 'G' run-shell 'utmux.tmux -D'
-    - bind-key 'a' display-popup 'utmux.tmux -a'
-    - bind-key 'r' run-shell 'utmux.tmux -r'
-    - bind-key 't' run-shell 'utmux.tmux -t ""'
-    - bind-key 'T' run-shell 'utmux.tmux -T ""'
+    - bind-key 'g' run-shell 'eutmux.tmux -d'
+    - bind-key 'G' run-shell 'eutmux.tmux -D'
+    - bind-key 'a' display-popup 'eutmux.tmux -a'
+    - bind-key 'r' run-shell 'eutmux.tmux -r'
+    - bind-key 't' run-shell 'eutmux.tmux -t ""'
+    - bind-key 'T' run-shell 'eutmux.tmux -T ""'
     - bind-key 'C-j' setw synchronize-panes on
     - bind-key 'C-k' setw synchronize-panes off
     - bind-key -n 'M-l' select-window -l

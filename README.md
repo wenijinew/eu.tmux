@@ -1,14 +1,14 @@
-![Utmux](assets/images/utmux.tmux.v2.png)
+![Eutmux](assets/images/eutmux.tmux.v2.png)
 
 # Introduction
 
-## What's Utmux
+## What's Eutmux
 
-Utmux is a Tmux plugin(throught [TPM](https://github.com/tmux-plugins/tpm)). It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
+Eutmux is a Tmux plugin(throught [TPM](https://github.com/tmux-plugins/tpm)). It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
 
-## What's NOT Utmux
+## What's NOT Eutmux
 
-Utmux is not for Tmux layout or Tmux session management. Try [tmuxp](https://github.com/tmux-python/tmuxp) and [tmuxinator](https://github.com/tmuxinator/tmuxinator) instead.
+Eutmux is not for Tmux layout or Tmux session management. Try [tmuxp](https://github.com/tmux-python/tmuxp) and [tmuxinator](https://github.com/tmuxinator/tmuxinator) instead.
 
 # Demo
 
@@ -16,7 +16,7 @@ Utmux is not for Tmux layout or Tmux session management. Try [tmuxp](https://git
 
 You can create new random dynamic theme and apply immediately by key `PREFEX g`. In theory, you can have unlimited dynamic theme. Note: by default, new dynamic theme will override the old one. In another word, only one dynamic theme is saved automatically.
 
-![Dynamic Theme Demo](assets/images/utmux_tmux_dyanmic_theme.gif)
+![Dynamic Theme Demo](assets/images/eutmux_tmux_dyanmic_theme.gif)
 
 # Installation
 
@@ -26,7 +26,7 @@ You can create new random dynamic theme and apply immediately by key `PREFEX g`.
 ``` bash
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'wenijinew/utmux.tmux'
+set -g @plugin 'wenijinew/eutmux.tmux'
 ```
 
 And then run command `tmux source ~/.tmux.conf` and `PREFIX I ` to clone this repo to `~/.tmux/plugins/`
@@ -34,25 +34,25 @@ And then run command `tmux source ~/.tmux.conf` and `PREFIX I ` to clone this re
 * Option2: Clone this repo by manually:
 
 ``` bash
-git clone https://github.com/wenijinew/utmux.tmux.git
+git clone https://github.com/wenijinew/eutmux.tmux.git
 ```
 
-Go to utmux.tmux and run `./utmux.tmux`
+Go to eutmux.tmux and run `./eutmux.tmux`
 
 
 # Environment Requirements
 
 * Fonts
 
-Utmux can work perfectly if the morden fonts (E.g. [Nerd Fonts](https://www.nerdfonts.com/font-downloads)) are installed for the terminal. These morden fonts support different UNICODE characters which could be used as decoration for Utmux themes.
+Eutmux can work perfectly if the morden fonts (E.g. [Nerd Fonts](https://www.nerdfonts.com/font-downloads)) are installed for the terminal. These morden fonts support different UNICODE characters which could be used as decoration for Eutmux themes.
 
 * Python and Bash
 
-Utmux is developed with Python and Bash programming languages. In most cases, both are already available in your work environment. If not, please install them separately. The latset version are recommended.
+Eutmux is developed with Python and Bash programming languages. In most cases, both are already available in your work environment. If not, please install them separately. The latset version are recommended.
 
 * Tmux
 
-This is nonsense. You must have Tmux installed to use Utmux to decorate it.
+This is nonsense. You must have Tmux installed to use Eutmux to decorate it.
 
 * Terminal Application
 
@@ -67,11 +67,11 @@ Note: by default, PREFIX is `C-b`.
 
 * `PREFIX g` - Create and apply a dynamic theme. You can have *unlimited* different dynamic themes. This is the most recommended usage because you can alway have totally fresh and probably unique theme.
 * `PREFIX G` - Reset to the default theme. In case you want to go back to the place where dreams begin.
-* `PREFIX a` - Show all available themes. To show all themes in popup. You can apply any specific theme in command line: `utmux.tmux -t [THEME NAME]`.
+* `PREFIX a` - Show all available themes. To show all themes in popup. You can apply any specific theme in command line: `eutmux.tmux -t [THEME NAME]`.
 * `PREFIX r` - Rotate all available themes. If you prefer to use available themes, and sometimes want to change a bit, then rotate the available themes.
 
 To create own theme, simply copy `dynamic.theme.yaml` to the new them file. Then, do customization in the new theme file.
-To set the new theme as default theme, update `$XDG_CONFIG_HOME/tmux/utmux.yaml` file to change theme name to new theme.
+To set the new theme as default theme, update `$XDG_CONFIG_HOME/tmux/eutmux.yaml` file to change theme name to new theme.
 
 More bind-keys are set by default as follows:
 
@@ -85,15 +85,15 @@ More bind-keys are set by default as follows:
 
 # Issues, New Features and Vulnerabilities
 
-Please use [Bug Report](https://github.com/wenijinew/utmux.tmux/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=) or [Feature Request](https://github.com/wenijinew/utmux.tmux/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=).
+Please use [Bug Report](https://github.com/wenijinew/eutmux.tmux/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=) or [Feature Request](https://github.com/wenijinew/eutmux.tmux/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=).
 
 ## Vulnerability
 
-Please [report vulnerability](https://github.com/wenijinew/utmux.tmux/security/advisories/new) once you noticed.
+Please [report vulnerability](https://github.com/wenijinew/eutmux.tmux/security/advisories/new) once you noticed.
 
 # Developer Guide
 
-Utmux is developed with Python and Bash programming languages.
+Eutmux is developed with Python and Bash programming languages.
 
 Python modules are use to generate dynamic palette, parse configuration file and theme file, generate Tmux commands to set options and bind keys.
 
@@ -103,8 +103,8 @@ Anybody are welcome to contribute for new features or fix bugs. Before you start
 
 Learn more detail by reading the flow chart below:
 
-![Utmux Flow Chart](assets/images/utmux_tmux_flow_chart.png)
+![Eutmux Flow Chart](assets/images/eutmux_tmux_flow_chart.png)
 
 # Thanks
 
-Utmux is derived from [catppuccin/tmux](https://github.com/catppuccin/tmux). Thanks all contributors and their great work on [catppuccin/tmux](https://github.com/catppuccin/tmux).
+Eutmux is derived from [catppuccin/tmux](https://github.com/catppuccin/tmux). Thanks all contributors and their great work on [catppuccin/tmux](https://github.com/catppuccin/tmux).
