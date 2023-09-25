@@ -6,7 +6,7 @@ import yaml
 from yaml import Loader
 
 from const import EMPTY, STYLE_END, STYLE_START, UTF_8
-from utils import get_tmux_option, run_shell_command
+from utils import get_format, run_shell_command
 
 
 def get(_dict, key, default):
@@ -60,8 +60,8 @@ class ThemeStatusLeft(dict):
         """Constructor."""
         status_line = theme_config.get("status_line")
         status_left = theme_config.get("status_left")
-        self.fg_option = get(status_left, "fg_option", status_line.get("foreground"))
-        self.bg_option = get(status_left, "bg_option", status_line.get("background"))
+        self.fg_format = get(status_left, "fg_format", status_line.get("foreground"))
+        self.bg_format = get(status_left, "bg_format", status_line.get("background"))
         self.fg_icon = get(status_left, "fg_icon", status_line.get("foreground"))
         self.bg_icon = get(status_left, "bg_icon", status_line.get("background"))
         self.fg_decorator = status_left.get(
@@ -74,8 +74,8 @@ class ThemeStatusLeft(dict):
         self.decorator = status_left.get("decorator", status_line.get("left_decorator"))
         self.style = get(status_left, "style", status_line.get("style"))
         super().__init__(
-            fg_option=self.fg_option,
-            bg_option=self.bg_option,
+            fg_format=self.fg_format,
+            bg_format=self.bg_format,
             fg_icon=self.fg_icon,
             bg_icon=self.bg_icon,
             fg_decorator=self.fg_decorator,
@@ -166,8 +166,8 @@ class ThemeStatusRight(dict):
         """Constructor."""
         status_line = theme_config.get("status_line")
         status_right = theme_config.get("status_right")
-        self.fg_option = get(status_right, "fg_option", status_line.get("foreground"))
-        self.bg_option = get(status_right, "bg_option", status_line.get("background"))
+        self.fg_format = get(status_right, "fg_format", status_line.get("foreground"))
+        self.bg_format = get(status_right, "bg_format", status_line.get("background"))
         self.fg_icon = get(status_right, "fg_icon", status_line.get("foreground"))
         self.bg_icon = get(status_right, "bg_icon", status_line.get("background"))
         self.fg_decorator = get(
@@ -182,8 +182,8 @@ class ThemeStatusRight(dict):
         )
         self.style = get(status_right, "style", status_line.get("style"))
         super().__init__(
-            fg_option=self.fg_option,
-            bg_option=self.bg_option,
+            fg_format=self.fg_format,
+            bg_format=self.bg_format,
             fg_icon=self.fg_icon,
             bg_icon=self.bg_icon,
             fg_decorator=self.fg_decorator,
@@ -244,16 +244,16 @@ class Constructor:
             enabled = component.get("enabled", "on")
             if not enabled:
                 continue
-            tmux_option = component.get("tmux_option", EMPTY)
+            format = component.get("format", EMPTY)
             icon = component.get("icon", self.theme.status_left.get("icon"))
             decorator = component.get(
                 "decorator", self.theme.status_left.get("decorator")
             )
-            fg_option = component.get(
-                "fg_option", self.theme.status_left.get("fg_option")
+            fg_format = component.get(
+                "fg_format", self.theme.status_left.get("fg_format")
             )
-            bg_option = component.get(
-                "bg_option", self.theme.status_left.get("bg_option")
+            bg_format = component.get(
+                "bg_format", self.theme.status_left.get("bg_format")
             )
             fg_icon = component.get("fg_icon", self.theme.status_left.get("fg_icon"))
             bg_icon = component.get("bg_icon", self.theme.status_left.get("bg_icon"))
@@ -264,12 +264,12 @@ class Constructor:
                 "bg_decorator", self.theme.status_left.get("bg_decorator")
             )
             style = component.get("style", self.theme.status_left.get("style"))
-            tmux_option_style = (
-                f"{self.get_style_for_option(fg_option, bg_option, style, tmux_option)}"
+            format_style = (
+                f"{self.get_style_for_option(fg_format, bg_format, style, format)}"
             )
             icon_style = f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             decorator_style = f"{self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)}"
-            component_value = f"{icon_style}{decorator_style}{tmux_option_style}"
+            component_value = f"{icon_style}{decorator_style}{format_style}"
             status_left.append(component_value)
 
         return " ".join(status_left)
@@ -345,16 +345,16 @@ class Constructor:
             enabled = options.get("enabled", "on")
             if not enabled:
                 continue
-            tmux_option = options.get("tmux_option", EMPTY)
+            format = options.get("format", EMPTY)
             icon = options.get("icon", self.theme.status_right.get("icon"))
             decorator = options.get(
                 "decorator", self.theme.status_right.get("decorator")
             )
-            fg_option = options.get(
-                "fg_option", self.theme.status_right.get("fg_option")
+            fg_format = options.get(
+                "fg_format", self.theme.status_right.get("fg_format")
             )
-            bg_option = options.get(
-                "bg_option", self.theme.status_right.get("bg_option")
+            bg_format = options.get(
+                "bg_format", self.theme.status_right.get("bg_format")
             )
             fg_icon = options.get("fg_icon", self.theme.status_right.get("fg_icon"))
             bg_icon = options.get("bg_icon", self.theme.status_right.get("bg_icon"))
@@ -365,12 +365,12 @@ class Constructor:
                 "bg_decorator", self.theme.status_right.get("bg_decorator")
             )
             style = options.get("style", self.theme.status_right.get("style"))
-            tmux_option_style = (
-                f"{self.get_style_for_option(fg_option, bg_option, style, tmux_option)}"
+            format_style = (
+                f"{self.get_style_for_option(fg_format, bg_format, style, format)}"
             )
             icon_style = f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             decorator_style = f"{self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)}"
-            component_value = f"{decorator_style}{icon_style}{tmux_option_style}"
+            component_value = f"{decorator_style}{icon_style}{format_style}"
             status_right.append(component_value)
 
         return " ".join(status_right)
@@ -451,7 +451,7 @@ def eutmux(config_file="eutmux.yaml"):
 
     eutmux = {}
     set_option_commands = []
-    dynamic_config_file_name = get_tmux_option("dynamic_config_file_name", config_file)
+    dynamic_config_file_name = get_format("dynamic_config_file_name", config_file)
     eutmux_workdir = os.getenv("UTMUX_WORKDIR")
     os.chdir(eutmux_workdir)
     with open(dynamic_config_file_name, "r", encoding=UTF_8) as config:
@@ -462,7 +462,7 @@ def eutmux(config_file="eutmux.yaml"):
     theme_name = eutmux.get("theme", "eutmux")
 
     # if dynamic theme is set, then use dynamic theme.
-    dynamic_theme_name = get_tmux_option("dynamic_theme_name", theme_name)
+    dynamic_theme_name = get_format("dynamic_theme_name", theme_name)
     theme_filename = f"{dynamic_theme_name}.theme.yaml"
 
     # if dynamic theme file doesn't exist under project, then check if it

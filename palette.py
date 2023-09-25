@@ -4,7 +4,7 @@
 import colorsys
 import random
 
-from utils import get_tmux_option
+from utils import get_format
 
 
 def hex2hls(hex_color):
@@ -97,14 +97,14 @@ def lighter(base_color, n_color):
 def random_color(
     min_color=0,
     max_color=231,
-    base_colors_total=7,
-    lighter_colors_total=24,
+    eutmux_base_color_total=7,
+    eutmux_light_color_total=24,
 ):
     """
     Generate random color hex codes.
 
-    Firstly, it will generate random integer from min_color (0-(255 - lighter_colors_total - 1)) to max_color (0-(255 - lighter_colors_total)).
-    The max_color should be less than (255 - lighter_colors_total) because it needs the room to generate lighter colors.
+    Firstly, it will generate random integer from min_color (0-(255 - eutmux_light_color_total - 1)) to max_color (0-(255 - eutmux_light_color_total)).
+    The max_color should be less than (255 - eutmux_light_color_total) because it needs the room to generate lighter colors.
 
     To generate darker colors, use smaller value for max_color.
     To generate ligher colors, use bigger value for min_color.
@@ -112,19 +112,19 @@ def random_color(
     It's recommended to use default values.
     If you want to make change, please make sure what you are doing.
 
-    Secondly, it will generate 'lighter_colors_total' different hex color codes from base color to the lightest color.
-    Note that 'lighter_colors_total' includes base color also. It means it will generate 'lighter_colors_total - 1' lighter colors besides base color.
+    Secondly, it will generate 'eutmux_light_color_total' different hex color codes from base color to the lightest color.
+    Note that 'eutmux_light_color_total' includes base color also. It means it will generate 'eutmux_light_color_total - 1' lighter colors besides base color.
 
     Parameters:
         min_color - minimum color code. default: 0.
         max_color - maximum color code. default: 254.
-        base_colors_total - how many base colors to generate. default: 7.
-        lighter_colors_total - how many lighter colors to generate. default: 24.
+        eutmux_base_color_total - how many base colors to generate. default: 7.
+        eutmux_light_color_total - how many lighter colors to generate. default: 24.
         plot: True to plot the generated color. Otherwise, False. default: False.
 
     Retrun:
         Generated random base colors and all lighter colors of each base color.
-        The returned value is a two-dimention list. First dimention length is the value of base_colors_total. Second dimention length is lighter_colors_total.
+        The returned value is a two-dimention list. First dimention length is the value of eutmux_base_color_total. Second dimention length is eutmux_light_color_total.
     """
 
     random_int = random.randint(0, 15**6)
@@ -136,13 +136,13 @@ def random_color(
         random_color = padding(hex(random_int), 2)
         random_color_code = random_color_code + random_color
 
-    base_colors = get_scheme_colors(random_color_code, base_colors_total)[
-        0:base_colors_total
+    base_colors = get_scheme_colors(random_color_code, eutmux_base_color_total)[
+        0:eutmux_base_color_total
     ]
 
     random_colors = []
     for base_color in base_colors:
-        lighter_colors = lighter(base_color, lighter_colors_total)
+        lighter_colors = lighter(base_color, eutmux_light_color_total)
         random_colors.append(lighter_colors)
 
     return random_colors
@@ -153,8 +153,8 @@ class Palette:
 
     def __init__(self):
         # random colors are used for sections, components, and pieces
-        self.base_colors_total = get_tmux_option("@base_colors_total", 5)
-        self.lighter_colors_total = get_tmux_option("@lighter_colors_total", 6)
+        self.eutmux_base_color_total = get_format("@eutmux_base_color_total", 5)
+        self.eutmux_light_color_total = get_format("@eutmux_light_color_total", 6)
 
     def generate_palette_colors(self):
         """
@@ -166,12 +166,12 @@ class Palette:
         """
         random_colors = random_color(
             max_color=200,
-            base_colors_total=self.base_colors_total,
-            lighter_colors_total=self.lighter_colors_total,
+            eutmux_base_color_total=self.eutmux_base_color_total,
+            eutmux_light_color_total=self.eutmux_light_color_total,
         )
         # dark colors are used for status-line
         dark_colors = random_color(
-            max_color=30, base_colors_total=1, lighter_colors_total=6
+            max_color=30, eutmux_base_color_total=1, eutmux_light_color_total=6
         )
         random_colors.extend(dark_colors)
         for r_colors in random_colors:
@@ -189,9 +189,9 @@ class Palette:
         For example, "C_1_1":"#8f67ff".
 
         Note:
-        The 'base color sequence' starts from 0 to @base_colors_total (not
+        The 'base color sequence' starts from 1 to @eutmux_base_color_total (not
         included)
-        The 'colormap sequence' starts from 0 to @lighter_colors_total (not
+        The 'colormap sequence' starts from 0 to @eutmux_light_color_total (not
         included)
         When "colormap sequence" is 0, then it represents the lightest color.
 
@@ -206,7 +206,7 @@ class Palette:
         colormap_sequence = 0
         palette_colors = []
         for index, color in enumerate(palette_color_codes):
-            colormap_sequence = index % self.lighter_colors_total
+            colormap_sequence = index % self.eutmux_light_color_total
             if colormap_sequence == 0:
                 base_color_sequence += 1
             color_name = f"C_{base_color_sequence}_{colormap_sequence}"

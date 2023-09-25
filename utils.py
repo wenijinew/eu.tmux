@@ -6,14 +6,14 @@ import subprocess
 from const import EMPTY, UTF_8
 
 
-def get_tmux_option(option_name, default_value):
+def get_format(name, default_value):
     """Read tmux option."""
-    assert option_name is not None, "option_name is None!"
+    assert name is not None, "name is None!"
     assert default_value is not None, "default_value is None!"
 
-    if not option_name.startswith("@"):
-        option_name = f"@{option_name}"
-    shell_cmd = f'tmux show-option -gqv "{option_name}"'
+    if not name.startswith("@"):
+        name = f"@{name}"
+    shell_cmd = f'tmux show-option -gqv "{name}"'
     return run_shell_command(shell_cmd, default_value)
 
 

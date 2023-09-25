@@ -83,6 +83,42 @@ More bind-keys are set by default as follows:
 * `M-j` - go to the left pane in the same horizontal level. if no more left, then go to the last pane in the same hozontal level.
 * `M-k` - go to the downward pane in the same vertial level. if no more downward pane, then go to the first pane in the same vertial level.
 
+## Customization
+
+### Configuration File
+
+After installation, the default configuration file was copied to `$XDG_CONFIG_HOME/eutmux/eutmux.yaml`. In the configuration file, user can do customization.
+
+* theme: theme file name without extension(`.theme.yaml`)
+* general/options: any kinds of Tmux options. `key` is the option name, `value` is the option value. For switch options, use `true` or `false`. `on` or `off`, "on" or "off" are all supported.
+* general/styles: [STYLES](https://man7.org/linux/man-pages/man1/tmux.1.html#STYLES) options. Mainly for `fg`, `bg` and `style` settings.
+* general/commands: general Tmux commands but mainly for `bind-keys`.
+* status-left: a list of one or more supported Tmux [FORMATS](https://man7.org/linux/man-pages/man1/tmux.1.html#FORMATS) could be configured here. Each of them is a `dict`: `key` is name, `value` is a `dict` whose `key` is one of the supported keys: `enabled`, `format`, `icon`, `decorator`, `fg_format`, `bg_format`, `fg_icon`, `bg_icon`, `fg_decorator`, `bg_decorator`. `style`. _Note_: `icon` and `decorator` are UNICODE charactors which represents graphs . By default, `enabled` is `true`, `format` is empty. Other keys are optional and the ones in *theme* file will be used if not configured in the configuration file. Value of `fg_***` and `bg_***` could be HEX value such as `#ff0efa` (lower case) or [Color Identity](#color-identify) such as `C_1_2`.
+* window: includes 2 sections: `active` and `inactive` for current window and other windows. Both supports keys `window_name`, `window_index`, and all keys supported by `status-left`.
+* status-right: same with `status-left` but for right side of the status line.
+
+### Theme File
+
+Theme file is to decouple icon, decorator, style and color configurations from the main configuration file. Refer to the [Template Theme File](template.theme.yaml) for details. The [Template Theme File](template.theme.yaml) is mainly used for [Dynamic Theme](#dynamic-theme) generation. All color values in the [Template Theme File](template.theme.yaml) are [Color Identity](#color-identity) such as `C_1_3` which will be replaced with specific color HEX value such as `#ff7834` when [Dynamic Theme](#dynamic-theme) is generated. Therefore, in generated [Dynamic Theme](#dynamic-theme) file, all color values are HEX value and not color identity anymore.
+
+
+#### Dynamic Theme
+
+Dynamic theme relies on [RGB](https://en.wikipedia.org/wiki/RGB_color_model), [Hue](https://en.wikipedia.org/wiki/Hue), [HLS](https://en.wikipedia.org/wiki/HSL_color_space) and [Color Scheme](https://en.wikipedia.org/wiki/Color_scheme) technologies. Simply, use one random [RGB](https://en.wikipedia.org/wiki/RGB_color_model) color and then find out `n` other colors with 360 degrees. For example, if `n` is 3, then other 2 colors are from `120` and `240` degrees of [Hue](https://en.wikipedia.org/wiki/Hue). These colors are called _base colors_. Once _base colors_ are generated, _light colors_ are generated.
+
+By default, dynamic theme uses `6` different random _base color_ sets. One of them is `dark` color set which is used for status-line `bg`. Other `5` colors are for status-line components `bg` and `fg`. The _light color_ total is `5` by default. Therefore, each dynamic theme consists of `36` different colors - `6` _base color_ and `30` _light color_. However, in [Template Theme File](template.theme.yaml) for details, only `11` of them are used by default. To make the status-line more colors, user can make tuning in [Template Theme File](template.theme.yaml) for details.
+
+The total number of _base color_ and _light color_ are configurable with customized Tmux options `@eutmux_base_color_total` and `@eutmux_light_color_total` respectively.
+
+##### Color Identity
+
+Color identity plays the place holder role. When dynmamic theme is generated, all color identities are replaced with concrete color HEX codes.
+
+Value of each color identity follows the format `C_[base color index]_[light color index]`. _Base color_ index starts from `1` and _light color_ index starts from `0` (lightest). So, by default, the color identities are from `C_1_0` to `C_6_5`.
+Note, here, _base color_ in _base color index_ should be understood as group of the colors rather than the concrete color HEX codes which are all from _light color_ which includes both _base color_ and _light color_. (A bit confusing but I need more time to think about the better names to easily distinguish them.)
+
+Color identify could be used in [Configuration File](#configuration-file) also. In fact, _Eutmux_ always generates dynamic configuration file by replacing color identities with color codes from theme file.
+
 # Issues, New Features and Vulnerabilities
 
 Please use [Bug Report](https://github.com/wenijinew/eutmux/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=) or [Feature Request](https://github.com/wenijinew/eutmux/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=).

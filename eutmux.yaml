@@ -61,7 +61,7 @@ general:
 status_left:
   session:
     enabled: "on"
-    tmux_option: " #S "
+    format: " #S "
 window:
   active:
     window_name: " #W "
@@ -74,27 +74,27 @@ window:
 status_right:
   directory:
     enabled: true
-    tmux_option: " #{b:pane_current_path} "
+    format: " #{b:pane_current_path} "
     icon: " "
     decorator: ""
-    fg_option: "C_6_5"
-    bg_option: "C_3_2"
+    fg_format: "C_6_5"
+    bg_format: "C_3_2"
     fg_icon: "C_6_5"
     bg_icon: "C_3_4"
     fg_decorator: "C_3_4"
   date:
     enabled: true
     icon: " "
-    tmux_option: " v%V %a %Y-%m-%d %H:%M:%S "
+    format: " v%V %a %Y-%m-%d %H:%M:%S "
   cpu:
     enabled: true
     icon: " "
-    tmux_option: " #(source cpu.sh) "
+    format: " #(source cpu.sh) "
   memory:
     enabled: true
     icon: " "
-    tmux_option: "#(source memory.sh)"
+    format: "#(source memory.sh)"
   disk:
     enabled: true
     icon: " "
-    tmux_option: " #(source disk.sh) "
+    format: " #(source disk.sh) "
