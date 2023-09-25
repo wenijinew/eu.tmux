@@ -52,6 +52,8 @@ setup(){
     DEFAULT_CONFIG_FILENAME="eutmux.yaml"
     DYNAMIC_THEME_NAME="dynamic"
     PALETTE_FILENAME="${DEFAULT_PALETTE_FILENAME}"
+    TMUX_OPTION_NAME_DYNAMIC_CONFIG="@eutmux_dynamic_config_file_name"
+    TMUX_OPTION_NAME_DYNAMIC_THEME="@eutmux_dynamic_theme_name"
     DELAY=3000
 
     # global variables, could be set by script arguments. see main.
@@ -107,7 +109,7 @@ generate_palette_colors(){
 
 create_dynamic_theme_file(){
     dynamic_theme_file_name="${DYNAMIC_THEME_NAME}${THEME_FILE_EXTENSION}"
-    tmux set-option -gq "@dynamic_theme_name" "${DYNAMIC_THEME_NAME}"
+    tmux set-option -gq "${TMUX_OPTION_NAME_DYNAMIC_THEME}" "${DYNAMIC_THEME_NAME}"
     if [ -e "${dynamic_theme_file_name}" ];then
        rm -f "${dynamic_theme_file_name}"
     fi
@@ -116,10 +118,10 @@ create_dynamic_theme_file(){
 }
 
 create_dynamic_config_file(){
-    dynamic_config_file_name="${DYNAMIC_THEME_NAME}.eutmux.yaml"
-    tmux set-option -gq "@dynamic_config_file_name" "${dynamic_config_file_name}"
-    if [ -e "${dynamic_config_file_name}" ];then
-        rm -f "${dynamic_config_file_name}"
+    eutmux_dynamic_config_file_name="${DYNAMIC_THEME_NAME}.eutmux.yaml"
+    tmux set-option -gq "${TMUX_OPTION_NAME_DYNAMIC_CONFIG}" "${eutmux_dynamic_config_file_name}"
+    if [ -e "${eutmux_dynamic_config_file_name}" ];then
+        rm -f "${eutmux_dynamic_config_file_name}"
     fi
 
 
@@ -129,8 +131,8 @@ create_dynamic_config_file(){
        cp "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
     fi
 
-    cp "${config_file}" "${dynamic_config_file_name}"
-    replace_color "${dynamic_config_file_name}"
+    cp "${config_file}" "${eutmux_dynamic_config_file_name}"
+    replace_color "${eutmux_dynamic_config_file_name}"
 }
 
 replace_color(){
@@ -164,7 +166,7 @@ save_dynamic_theme(){
        exit $?
     fi
     new_theme_name="${new_theme_name/%%${THEME_FILE_EXTENSION}*/}"
-    current_dynamic_theme=$(tmux show-option -gqv "@dynamic_theme_name")
+    current_dynamic_theme=$(tmux show-option -gqv "${TMUX_OPTION_NAME_DYNAMIC_THEME}")
     current_dynamic_theme_filename="${current_dynamic_theme}${THEME_FILE_EXTENSION}"
     if [ -e "${current_dynamic_theme_filename}" ];then
        cp "${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
@@ -224,7 +226,7 @@ main(){
     fi
 
     local current_dynamic_theme
-    current_dynamic_theme=$(tmux show-option -gqv "@dynamic_theme_name")
+    current_dynamic_theme=$(tmux show-option -gqv "${TMUX_OPTION_NAME_DYNAMIC_THEME}")
 
     # create dynamic theme and config file
     if [ "$CREATE_DYNMIC_THEME" -eq $TRUE ];then
@@ -232,7 +234,7 @@ main(){
        generate_palette_colors
        create_dynamic_theme_file
     elif [ -n "${THEME_NAME}" ];then
-        tmux set-option -gq "@dynamic_theme_name" "${THEME_NAME}"
+        tmux set-option -gq "${TMUX_OPTION_NAME_DYNAMIC_THEME}" "${THEME_NAME}"
     elif [ "${ROTATE_THEME}" -eq ${TRUE} ];then
         local themes found_current_dynamic_theme new_dynamic_theme first_theme
         themes="$(show_all_themes)"
@@ -262,9 +264,9 @@ main(){
         if [ -z "${new_dynamic_theme}" ];then
            new_dynamic_theme="${first_theme}"
         fi
-        tmux set-option -gq "@dynamic_theme_name" "${new_dynamic_theme}"
+        tmux set-option -gq "${TMUX_OPTION_NAME_DYNAMIC_THEME}" "${new_dynamic_theme}"
     else
-        tmux set-option -gq "@dynamic_theme_name" "${current_dynamic_theme}"
+        tmux set-option -gq "${TMUX_OPTION_NAME_DYNAMIC_THEME}" "${current_dynamic_theme}"
     fi
     create_dynamic_config_file
 

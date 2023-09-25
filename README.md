@@ -106,6 +106,8 @@ Dynamic theme relies on [RGB](https://en.wikipedia.org/wiki/RGB_color_model), [H
 
 By default, dynamic theme uses `6` different random _base color_ sets. One of them is `dark` color set which is used for status-line `bg`. Other `5` colors are for status-line components `bg` and `fg`. The _light color_ total is `5` by default. Therefore, each dynamic theme consists of `36` different colors - `6` _base color_ and `30` _light color_. However, in [Template Theme File](template.theme.yaml) for details, only `11` of them are used by default. To make the status-line more colors, user can make tuning in [Template Theme File](template.theme.yaml) for details.
 
+Dynamic colors are generated and saved in palette file - _dynamic_palette.txt_. The conent of palette file follows the format: `[color identity]=[color hex code]` such as `C_5_4:#685255`.
+
 The total number of _base color_ and _light color_ are configurable with customized Tmux options `@eutmux_base_color_total` and `@eutmux_light_color_total` respectively.
 
 _Note_: till now, dynamic theme only work for _color_ of the themes not for _icon_, _decorator_, and _style_. In another word, only _color_ could be dynamic. I don't see the need of dynamic theme for _icon_, _decorator_, and _style_ yet.
@@ -117,7 +119,7 @@ Color identity plays the place holder role. When dynmamic theme is generated, al
 Value of each color identity follows the format `C_[base color index]_[light color index]`. _Base color_ index starts from `1` and _light color_ index starts from `0` (lightest). So, by default, the color identities are from `C_1_0` to `C_6_5`.
 Note, here, _base color_ in _base color index_ should be understood as group of the colors rather than the concrete color HEX codes which are all from _light color_ which includes both _base color_ and _light color_. (A bit confusing but I need more time to think about the better names to easily distinguish them.)
 
-Color identity could be used in [Configuration File](#configuration-file) also. In fact, _Eutmux_ always generates dynamic configuration file by replacing color identities with color codes from theme file.
+Color identity could be used in [Configuration File](#configuration-file) also. In fact, _Eutmux_ always generates dynamic configuration file by replacing color identities with color codes from palette file.
 
 ## Report
 

@@ -6,7 +6,7 @@ import yaml
 from yaml import Loader
 
 from const import EMPTY, STYLE_END, STYLE_START, UTF_8
-from utils import get_format, run_shell_command
+from utils import get_tmux_option, run_shell_command
 
 
 def get(_dict, key, default):
@@ -451,10 +451,12 @@ def eutmux(config_file="eutmux.yaml"):
 
     eutmux = {}
     set_option_commands = []
-    dynamic_config_file_name = get_format("dynamic_config_file_name", config_file)
+    eutmux_dynamic_config_file_name = get_tmux_option(
+        "@eutmux_dynamic_config_file_name", config_file
+    )
     eutmux_workdir = os.getenv("EUTMUX_WORKDIR")
     os.chdir(eutmux_workdir)
-    with open(dynamic_config_file_name, "r", encoding=UTF_8) as config:
+    with open(eutmux_dynamic_config_file_name, "r", encoding=UTF_8) as config:
         eutmux = yaml.load(config, Loader=Loader)
 
     # if specified theme doesn't have corresponding file, then fall-back to
@@ -462,7 +464,7 @@ def eutmux(config_file="eutmux.yaml"):
     theme_name = eutmux.get("theme", "eutmux")
 
     # if dynamic theme is set, then use dynamic theme.
-    dynamic_theme_name = get_format("dynamic_theme_name", theme_name)
+    dynamic_theme_name = get_tmux_option("@eutmux_dynamic_theme_name", theme_name)
     theme_filename = f"{dynamic_theme_name}.theme.yaml"
 
     # if dynamic theme file doesn't exist under project, then check if it

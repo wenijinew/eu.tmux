@@ -4,7 +4,7 @@
 import colorsys
 import random
 
-from utils import get_format
+from utils import get_tmux_option
 
 
 def hex2hls(hex_color):
@@ -153,8 +153,8 @@ class Palette:
 
     def __init__(self):
         # random colors are used for sections, components, and pieces
-        self.eutmux_base_color_total = get_format("@eutmux_base_color_total", 5)
-        self.eutmux_light_color_total = get_format("@eutmux_light_color_total", 6)
+        self.eutmux_base_color_total = get_tmux_option("@eutmux_base_color_total", 5)
+        self.eutmux_light_color_total = get_tmux_option("@eutmux_light_color_total", 6)
 
     def generate_palette_colors(self):
         """

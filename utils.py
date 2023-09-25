@@ -6,7 +6,7 @@ import subprocess
 from const import EMPTY, UTF_8
 
 
-def get_format(name, default_value):
+def get_tmux_option(name, default_value):
     """Read tmux option."""
     assert name is not None, "name is None!"
     assert default_value is not None, "default_value is None!"
