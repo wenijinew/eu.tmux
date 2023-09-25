@@ -442,7 +442,7 @@ class Constructor:
 def eutmux(config_file="eutmux.yaml"):
     """Load config file, overwrite options by value from tmux.conf."""
 
-    # user can set customized config file under UTMUX_CONFIG_HOME
+    # user can set customized config file under EUTMUX_CONFIG_HOME
     xdg_config_home = os.getenv("XDG_CONFIG_HOME", f'{os.getenv("HOME")}/.config')
     eutmux_config_home = f"{xdg_config_home}/eutmux"
     _config_file = f"{eutmux_config_home}/{config_file}"
@@ -452,7 +452,7 @@ def eutmux(config_file="eutmux.yaml"):
     eutmux = {}
     set_option_commands = []
     dynamic_config_file_name = get_format("dynamic_config_file_name", config_file)
-    eutmux_workdir = os.getenv("UTMUX_WORKDIR")
+    eutmux_workdir = os.getenv("EUTMUX_WORKDIR")
     os.chdir(eutmux_workdir)
     with open(dynamic_config_file_name, "r", encoding=UTF_8) as config:
         eutmux = yaml.load(config, Loader=Loader)
@@ -466,8 +466,8 @@ def eutmux(config_file="eutmux.yaml"):
     theme_filename = f"{dynamic_theme_name}.theme.yaml"
 
     # if dynamic theme file doesn't exist under project, then check if it
-    # exists under UTMUX_CONFIG_HOME, if not, then fall-back to default them -
-    # eutmux theme, otherwise, load the theme file from UTMUX_CONFIG_HOME
+    # exists under EUTMUX_CONFIG_HOME, if not, then fall-back to default them -
+    # eutmux theme, otherwise, load the theme file from EUTMUX_CONFIG_HOME
     if not os.path.exists(theme_filename):
         if os.path.exists(f"{eutmux_config_home}/{theme_filename}"):
             theme_filename = f"{eutmux_config_home}/{theme_filename}"

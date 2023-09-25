@@ -64,13 +64,13 @@ setup(){
     pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
 
     # set config home and config file
-    UTMUX_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux"
-    mkdir -p "${UTMUX_CONFIG_HOME}" >/dev/null 2>/dev/null
+    EUTMUX_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux"
+    mkdir -p "${EUTMUX_CONFIG_HOME}" >/dev/null 2>/dev/null
 
-    # if config file not in $UTMUX_CONFIG_HOME, then copy the default config file to $UTMUX_CONFIG_HOME
-    UTMUX_CONFIG_FILE="${UTMUX_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
-    if [ ! -e "${UTMUX_CONFIG_FILE}" ];then
-       cp "${DEFAULT_CONFIG_FILENAME}" "${UTMUX_CONFIG_HOME}"
+    # if config file not in $EUTMUX_CONFIG_HOME, then copy the default config file to $EUTMUX_CONFIG_HOME
+    EUTMUX_CONFIG_FILE="${EUTMUX_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
+    if [ ! -e "${EUTMUX_CONFIG_FILE}" ];then
+       cp "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
     fi
 }
 
@@ -123,10 +123,10 @@ create_dynamic_config_file(){
     fi
 
 
-    # if config file not in $UTMUX_CONFIG_HOME, then copy the default config file to $UTMUX_CONFIG_HOME
-    config_file="${UTMUX_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
+    # if config file not in $EUTMUX_CONFIG_HOME, then copy the default config file to $EUTMUX_CONFIG_HOME
+    config_file="${EUTMUX_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
     if [ ! -e "${config_file}" ];then
-       cp "${DEFAULT_CONFIG_FILENAME}" "${UTMUX_CONFIG_HOME}"
+       cp "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
     fi
 
     cp "${config_file}" "${dynamic_config_file_name}"
@@ -147,7 +147,7 @@ show_all_themes(){
     local _themes
     # except for template
     _themes=""
-    for _path in ${_DIR} ${UTMUX_CONFIG_HOME}; do
+    for _path in ${_DIR} ${EUTMUX_CONFIG_HOME}; do
         _themes="${_themes} $(find "${_path}" -name "*${THEME_FILE_EXTENSION}*" | sed -e 's/.*\///' | sed -e "s/${THEME_FILE_EXTENSION}//g" | grep -v template)"
     done
     _themes="${_themes## }"
@@ -167,9 +167,9 @@ save_dynamic_theme(){
     current_dynamic_theme=$(tmux show-option -gqv "@dynamic_theme_name")
     current_dynamic_theme_filename="${current_dynamic_theme}${THEME_FILE_EXTENSION}"
     if [ -e "${current_dynamic_theme_filename}" ];then
-       cp "${current_dynamic_theme_filename}" "${UTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
+       cp "${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
        if [ $? -eq $TRUE ];then
-          tmux display-message -d "${DELAY}" "New theme saved: ${UTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
+          tmux display-message -d "${DELAY}" "New theme saved: ${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
        fi
     fi
 }
@@ -269,11 +269,11 @@ main(){
     create_dynamic_config_file
 
     # set environment variables
-    export PATH="${_DIR}:${PATH}"
+    export PATH="${_DIR}:${EUTMUX_CONFIG_HOME}:${PATH}"
     export PYTHONPATH="${_DIR}:${PATH}"
-    export UTMUX_WORKDIR="${_DIR}"
+    export EUTMUX_WORKDIR="${_DIR}"
     find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
-    tmux set-environment -g 'UTMUX_WORKDIR' "${_DIR}"
+    tmux set-environment -g 'EUTMUX_WORKDIR' "${_DIR}"
     tmux set-environment -g 'PATH' "${_DIR}:${PATH}"
     tmux set-environment -g 'PYTHONPATH' "${_DIR}:${PATH}"
 
