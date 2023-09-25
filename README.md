@@ -90,16 +90,16 @@ More bind-keys are set by default as follows:
 After installation, the default configuration file was copied to `$XDG_CONFIG_HOME/eutmux/eutmux.yaml`. In the configuration file, user can do customization.
 
 * _theme_: theme file name without extension(`.theme.yaml`)
-* _general/options_: any kinds of Tmux options. `key` is the option name, `value` is the option value. For switch options, use `true` or `false`. `on` or `off`, "on" or "off" are all supported.
-* _general/styles_: [STYLES](https://man7.org/linux/man-pages/man1/tmux.1.html#STYLES) options. Mainly for `fg`, `bg` and `style` settings.
+* _general/options_: any kinds of Tmux options (but only those with simple values are recommended to put here). `key` is the option name, `value` is the option value. For switch options, use `true` or `false`. `on` or `off`, "on" or "off" are all supported.
+* _general/styles_: Tmux options ending with `_style` such as `message-style`. Mainly for `fg`, `bg` and `style` settings.
 * _general/commands_: general Tmux commands but mainly for `bind-keys`.
-* _status_left_: a list of one or more supported Tmux [FORMATS](https://man7.org/linux/man-pages/man1/tmux.1.html#FORMATS) could be configured here. Each of them is a `dict`: `key` is name, `value` is a `dict` whose `key` is one of the supported keys: `enabled`, `format`, `icon`, `decorator`, `fg_format`, `bg_format`, `fg_icon`, `bg_icon`, `fg_decorator`, `bg_decorator`. `style`. _Note_: `icon` and `decorator` are UNICODE charactors which represents graphs . By default, `enabled` is `true`, `format` is empty. Other keys are optional and the ones in *theme* file will be used if not configured in the configuration file. Value of `fg_***` and `bg_***` could be HEX value such as `#ff0efa` (lower case) or [Color Identity](#color-identity) such as `C_1_2`.
+* _status_left_: a list of one or more supported Tmux [FORMATS](https://man7.org/linux/man-pages/man1/tmux.1.html#FORMATS) could be configured here. Each of them is a `dict`: `key` is name, `value` is a `dict` whose `key` is one of the supported keys: `enabled`, `format`, `icon`, `decorator`, `fg_format`, `bg_format`, `fg_icon`, `bg_icon`, `fg_decorator`, `bg_decorator`. `style`. _Note_: `icon` and `decorator` are UNICODE charactors which represents graphs . By default, `enabled` is `true`, `format` is empty. _Other keys_ are optional and the ones in *theme* file will be used if not configured in the configuration file (if they are configured in configuration file, they have higher priority - will overrides the ones from *theme* file). Value of `fg_***` and `bg_***` could be HEX value such as `#ff0efa` (lower case) or [Color Identity](#color-identity) such as `C_1_2`.
 * _window_: includes 2 sections: `active` and `inactive` for current window and other windows. Both supports keys `window_name`, `window_index`, and all keys supported by `status-left`.
 * _status_right_: same with `status-left` but for right side of the status line.
 
 ### Theme File
 
-Theme file is to decouple icon, decorator, style and color configurations from the main configuration file. Refer to the [Template Theme File](template.theme.yaml) for details. The [Template Theme File](template.theme.yaml) is mainly used for [Dynamic Theme](#dynamic-theme) generation. All color values in the [Template Theme File](template.theme.yaml) are [Color Identity](#color-identity) such as `C_1_3` which will be replaced with specific color HEX value such as `#ff7834` when [Dynamic Theme](#dynamic-theme) is generated. Therefore, in generated [Dynamic Theme](#dynamic-theme) file, all color values are HEX value and not color identity anymore.
+Theme file is to decouple _icon_, _decorator_, _style_ and _color_ configurations from the main configuration file. Refer to the [Template Theme File](template.theme.yaml) for details. The [Template Theme File](template.theme.yaml) is mainly used for [Dynamic Theme](#dynamic-theme) generation. All color values in the [Template Theme File](template.theme.yaml) are [Color Identity](#color-identity) such as `C_1_3` which will be replaced with specific color HEX value such as `#ff7834` when [Dynamic Theme](#dynamic-theme) is generated. Therefore, in generated [Dynamic Theme](#dynamic-theme) file, all color values are HEX value and not color identity anymore.
 
 
 #### Dynamic Theme
@@ -109,6 +109,8 @@ Dynamic theme relies on [RGB](https://en.wikipedia.org/wiki/RGB_color_model), [H
 By default, dynamic theme uses `6` different random _base color_ sets. One of them is `dark` color set which is used for status-line `bg`. Other `5` colors are for status-line components `bg` and `fg`. The _light color_ total is `5` by default. Therefore, each dynamic theme consists of `36` different colors - `6` _base color_ and `30` _light color_. However, in [Template Theme File](template.theme.yaml) for details, only `11` of them are used by default. To make the status-line more colors, user can make tuning in [Template Theme File](template.theme.yaml) for details.
 
 The total number of _base color_ and _light color_ are configurable with customized Tmux options `@eutmux_base_color_total` and `@eutmux_light_color_total` respectively.
+
+_Note_: till now, dynamic theme only work for _color_ of the themes not for _icon_, _decorator_, and _style_. In another word, only _color_ could be dynamic. I don't see the need of dynamic theme for _icon_, _decorator_, and _style_ yet.
 
 ##### Color Identity
 
