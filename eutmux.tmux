@@ -60,11 +60,11 @@ setup(){
     ROTATE_THEME=${FALSE}
     CREATE_DYNMIC_THEME=${FALSE}
 
-    # set working directory to eutmux.tmux project path
+    # set working directory to eutmux project path
     pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
 
     # set config home and config file
-    UTMUX_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux.tmux"
+    UTMUX_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux"
     mkdir -p "${UTMUX_CONFIG_HOME}" >/dev/null 2>/dev/null
 
     # if config file not in $UTMUX_CONFIG_HOME, then copy the default config file to $UTMUX_CONFIG_HOME

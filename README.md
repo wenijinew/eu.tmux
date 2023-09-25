@@ -16,7 +16,7 @@ Eutmux is not for Tmux layout or Tmux session management. Try [tmuxp](https://gi
 
 You can create new random dynamic theme and apply immediately by key `PREFEX g`. In theory, you can have unlimited dynamic theme. Note: by default, new dynamic theme will override the old one. In another word, only one dynamic theme is saved automatically.
 
-![Dynamic Theme Demo](assets/images/eutmux_tmux_dyanmic_theme.gif)
+![Dynamic Theme Demo](assets/images/eutmux_dyanmic_theme.gif)
 
 # Installation
 
@@ -26,7 +26,7 @@ You can create new random dynamic theme and apply immediately by key `PREFEX g`.
 ``` bash
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'wenijinew/eutmux.tmux'
+set -g @plugin 'wenijinew/eutmux'
 ```
 
 And then run command `tmux source ~/.tmux.conf` and `PREFIX I ` to clone this repo to `~/.tmux/plugins/`
@@ -34,10 +34,10 @@ And then run command `tmux source ~/.tmux.conf` and `PREFIX I ` to clone this re
 * Option2: Clone this repo by manually:
 
 ``` bash
-git clone https://github.com/wenijinew/eutmux.tmux.git
+git clone https://github.com/wenijinew/eutmux.git
 ```
 
-Go to eutmux.tmux and run `./eutmux.tmux`
+Go to eutmux and run `./eutmux.tmux`
 
 
 # Environment Requirements
@@ -85,11 +85,11 @@ More bind-keys are set by default as follows:
 
 # Issues, New Features and Vulnerabilities
 
-Please use [Bug Report](https://github.com/wenijinew/eutmux.tmux/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=) or [Feature Request](https://github.com/wenijinew/eutmux.tmux/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=).
+Please use [Bug Report](https://github.com/wenijinew/eutmux/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=) or [Feature Request](https://github.com/wenijinew/eutmux/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=).
 
 ## Vulnerability
 
-Please [report vulnerability](https://github.com/wenijinew/eutmux.tmux/security/advisories/new) once you noticed.
+Please [report vulnerability](https://github.com/wenijinew/eutmux/security/advisories/new) once you noticed.
 
 # Developer Guide
 

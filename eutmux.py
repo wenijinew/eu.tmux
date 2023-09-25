@@ -444,7 +444,7 @@ def eutmux(config_file="eutmux.yaml"):
 
     # user can set customized config file under UTMUX_CONFIG_HOME
     xdg_config_home = os.getenv("XDG_CONFIG_HOME", f'{os.getenv("HOME")}/.config')
-    eutmux_config_home = f"{xdg_config_home}/eutmux.tmux"
+    eutmux_config_home = f"{xdg_config_home}/eutmux"
     _config_file = f"{eutmux_config_home}/{config_file}"
     if os.path.exists(_config_file):
         config_file = _config_file
