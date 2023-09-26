@@ -1,4 +1,6 @@
 ![Eutmux](assets/images/eutmux.v2.png)
+<p align="center"><img src="https://img.shields.io/github/last-commit/wenijinew/eutmux">&nbsp;<img src="https://img.shields.io/github/contributors/wenijinew/eutmux">&nbsp;<img src="https://img.shields.io/github/commit-activity/y/wenijinew/eutmux/main"></p>
+
 
 # Introduction
 
