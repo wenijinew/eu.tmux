@@ -151,3 +151,7 @@ Learn more detail by reading the flow chart below:
 # Thanks
 
 Eutmux is derived from [catppuccin/tmux](https://github.com/catppuccin/tmux). Thanks all contributors and their great work on [catppuccin/tmux](https://github.com/catppuccin/tmux).
+
+# Support
+
+If you like Eutmux, don't forget to leave a star ⭐️.
