@@ -1,16 +1,16 @@
-![Eutmux](assets/images/eutmux.v2.png)
-<p align="center"><img src="https://img.shields.io/github/last-commit/wenijinew/eutmux">&nbsp;<img src="https://img.shields.io/github/contributors/wenijinew/eutmux">&nbsp;<img src="https://img.shields.io/github/commit-activity/y/wenijinew/eutmux/main"></p>
+![Eu.tmux](assets/images/eutmux.v2.png)
+<p align="center"><img src="https://img.shields.io/github/last-commit/wenijinew/eu.tmux">&nbsp;<img src="https://img.shields.io/github/contributors/wenijinew/eu.tmux">&nbsp;<img src="https://img.shields.io/github/commit-activity/y/wenijinew/eu.tmux/main"></p>
 
 
 # Introduction
 
-## What's Eutmux
+## What's Eu.tmux
 
-Eutmux is a Tmux plugin(throught [TPM](https://github.com/tmux-plugins/tpm)). It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
+Eu.tmux is a Tmux plugin(throught [TPM](https://github.com/tmux-plugins/tpm)). It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
 
-## What's NOT Eutmux
+## What's NOT Eu.tmux
 
-Eutmux is not for Tmux layout or Tmux session management. Try [tmuxp](https://github.com/tmux-python/tmuxp) and [tmuxinator](https://github.com/tmuxinator/tmuxinator) instead.
+Eu.tmux is not for Tmux layout or Tmux session management. Try [tmuxp](https://github.com/tmux-python/tmuxp) and [tmuxinator](https://github.com/tmuxinator/tmuxinator) instead.
 
 # Demo
 
@@ -28,7 +28,7 @@ You can create new random dynamic theme and apply immediately by key `PREFEX g`.
 ``` bash
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'wenijinew/eutmux'
+set -g @plugin 'wenijinew/eu.tmux'
 ```
 
 And then run command `tmux source ~/.tmux.conf` and `PREFIX I ` to clone this repo to `~/.tmux/plugins/`
@@ -36,25 +36,25 @@ And then run command `tmux source ~/.tmux.conf` and `PREFIX I ` to clone this re
 * Option2: Clone this repo by manually:
 
 ``` bash
-git clone https://github.com/wenijinew/eutmux.git
+git clone https://github.com/wenijinew/eu.tmux.git
 ```
 
-Go to eutmux and run `./eutmux.tmux`
+Go to eu.tmux and run `./eutmux.tmux`
 
 
 # Environment Requirements
 
 * Fonts
 
-Eutmux can work perfectly if the morden fonts (E.g. [Nerd Fonts](https://www.nerdfonts.com/font-downloads)) are installed for the terminal. These morden fonts support different UNICODE characters which could be used as decoration for Eutmux themes.
+Eu.tmux can work perfectly if the morden fonts (E.g. [Nerd Fonts](https://www.nerdfonts.com/font-downloads)) are installed for the terminal. These morden fonts support different UNICODE characters which could be used as decoration for Eu.tmux themes.
 
 * Python and Bash
 
-Eutmux is developed with Python and Bash programming languages. In most cases, both are already available in your work environment. If not, please install them separately. The latset version are recommended.
+Eu.tmux is developed with Python and Bash programming languages. In most cases, both are already available in your work environment. If not, please install them separately. The latset version are recommended.
 
 * Tmux
 
-This is nonsense. You must have Tmux installed to use Eutmux to decorate it.
+This is nonsense. You must have Tmux installed to use Eu.tmux to decorate it.
 
 * Terminal Application
 
@@ -121,17 +121,17 @@ Color identity plays the place holder role. When dynmamic theme is generated, al
 Value of each color identity follows the format `C_[base color index]_[light color index]`. _Base color_ index starts from `1` and _light color_ index starts from `0` (lightest). So, by default, the color identities are from `C_1_0` to `C_6_5`.
 Note, here, _base color_ in _base color index_ should be understood as group of the colors rather than the concrete color HEX codes which are all from _light color_ which includes both _base color_ and _light color_. (A bit confusing but I need more time to think about the better names to easily distinguish them.)
 
-Color identity could be used in [Configuration File](#configuration-file) also. In fact, _Eutmux_ always generates dynamic configuration file by replacing color identities with color codes from palette file.
+Color identity could be used in [Configuration File](#configuration-file) also. In fact, _Eu.tmux_ always generates dynamic configuration file by replacing color identities with color codes from palette file.
 
 ## Report
 
-* [Bug](https://github.com/wenijinew/eutmux/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=)
-* [Feature](https://github.com/wenijinew/eutmux/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=)
-* [Vulnerability](https://github.com/wenijinew/eutmux/security/advisories/new)
+* [Bug](https://github.com/wenijinew/eu.tmux/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=)
+* [Feature](https://github.com/wenijinew/eu.tmux/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=)
+* [Vulnerability](https://github.com/wenijinew/eu.tmux/security/advisories/new)
 
 # Developer Guide
 
-Eutmux is developed with Python and Bash programming languages.
+Eu.tmux is developed with Python and Bash programming languages.
 
 Python modules are use to generate dynamic palette, parse configuration file and theme file, generate Tmux commands to set options and bind keys.
 
@@ -146,12 +146,12 @@ Anybody are welcome to contribute for new features or fix bugs. Before you start
 
 Learn more detail by reading the flow chart below:
 
-![Eutmux Flow Chart](assets/images/eutmux_flow_chart.png)
+![Eu.tmux Flow Chart](assets/images/eutmux_flow_chart.png)
 
 # Thanks
 
-Eutmux is derived from [catppuccin/tmux](https://github.com/catppuccin/tmux). Thanks all contributors and their great work on [catppuccin/tmux](https://github.com/catppuccin/tmux).
+Eu.tmux is derived from [catppuccin/tmux](https://github.com/catppuccin/tmux). Thanks all contributors and their great work on [catppuccin/tmux](https://github.com/catppuccin/tmux).
 
 # Support
 
-If you like Eutmux, don't forget to leave a star ⭐️.
+If you like Eu.tmux, don't forget to leave a star ⭐️.
