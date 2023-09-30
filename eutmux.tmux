@@ -53,6 +53,7 @@ setup(){
     # therefore, from 2nd time theme setting, this option could be visible and used.
     eutmux_template_name=$(tmux show-option -gqv "@eutmux_template_name")
     if [ -n "${eutmux_template_name}" ];then
+       eutmux_template_name="${eutmux_template_name/%%${THEME_FILE_EXTENSION}*/}"
        TEMPLATE_THEME_FILENAME="${eutmux_template_name}${THEME_FILE_EXTENSION}"
        if [ ! -e "${TEMPLATE_THEME_FILENAME}" ];then
           TEMPLATE_THEME_FILENAME="${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux/${TEMPLATE_THEME_FILENAME}"
@@ -60,7 +61,15 @@ setup(){
     else
        TEMPLATE_THEME_FILENAME="${DEFAULT_TEMPLATE_THEME_FILENAME}"
     fi
+    # if the template theme file name does not exist, print warning and cleanup the tmux option for it
+    if [ ! -e "${TEMPLATE_THEME_FILENAME}" ];then
+       _warn "Not found ${TEMPLATE_THEME_FILENAME}"
+       tmux set-option -gq "@eutmux_template_name" ""
+       exit ${EXIT_ABNORMAL}
+    fi
+    # otherwise, save the template theme file name in the tmux option
     tmux set-option -gq "@eutmux_template_filename" "${TEMPLATE_THEME_FILENAME}"
+
     DEFAULT_CONFIG_FILENAME="eutmux.yaml"
     DYNAMIC_THEME_NAME="dynamic"
     PALETTE_FILENAME="${DEFAULT_PALETTE_FILENAME}"
