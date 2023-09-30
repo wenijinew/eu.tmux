@@ -271,18 +271,52 @@ main(){
     create_dynamic_config_file
 
     # set environment variables
-    export PATH="${_DIR}:${EUTMUX_CONFIG_HOME}:${PATH}"
-    export PYTHONPATH="${_DIR}:${PATH}"
+    prepend_path "${_DIR}" "${EUTMUX_CONFIG_HOME}"
+    prepend_pythonpath "${_DIR}"
     export EUTMUX_WORKDIR="${_DIR}"
     find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
     tmux set-environment -g 'EUTMUX_WORKDIR' "${_DIR}"
-    tmux set-environment -g 'PATH' "${_DIR}:${PATH}"
-    tmux set-environment -g 'PYTHONPATH' "${_DIR}:${PATH}"
+    tmux set-environment -g 'PATH' "${PATH}"
+    tmux set-environment -g 'PYTHONPATH' "${PYTHONPATH}"
 
     # generate and execute tmux commands
     tmux_commands="$(python3 -c "import eutmux; tmux_commands = eutmux.eutmux(); print(tmux_commands)")"
     echo "${tmux_commands}" | sed -e 's/True/on/g' | sed -e 's/False/off/g' | tr ';' '\n' > "${TMUX_COMMANDS_FILENAME}"
     tmux source "${TMUX_COMMANDS_FILENAME}"
+}
+
+prepend_path(){
+    for p in $*
+    do
+        readable "${p}"
+        exists=$?
+        echo "${PATH}" | grep -q "${p}" 2>/dev/null
+        in_path=$?
+        if [[ $exists && ! $in_path  ]];then
+            export PATH="${p}:${PATH}"
+        fi
+    done
+}
+
+prepend_pythonpath(){
+    for p in $*
+    do
+        readable "${p}"
+        exists=$?
+        echo "${PYTHONPATH}" | grep -q "${p}" 2>/dev/null
+        in_path=$?
+        if [[ $exists && ! $in_path  ]];then
+            export PYTHONPATH="${p}:${PYTHONPATH}"
+        fi
+    done
+}
+
+readable(){
+    if [[ "${1}" == "" ||  ! -r "${1}" ]];then
+        _warn "${1} doesn't exist!"
+        return ${FALSE}
+    fi
+    return ${TRUE}
 }
 
 usage(){
