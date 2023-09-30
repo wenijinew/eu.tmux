@@ -20,7 +20,7 @@ general:
     _fg_highlight: "C_1_5"
     _bg_highlight: "C_5_4"
     _style: "nobold,nounderscore,noitalics"
-    _eutmux_template_number: "3"
+    _eutmux_template_name: "template.3"
   styles:
     message-style:
       fg: "C_4_2"

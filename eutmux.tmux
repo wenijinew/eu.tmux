@@ -48,11 +48,19 @@ setup(){
     TMUX_COMMANDS_FILENAME="tmux_commands.txt"
     DEFAULT_PALETTE_FILENAME="default_palette.txt"
     DYNAMIC_PALETTE_FILENAME="dynamic_palette.txt"
-    TEMPLATE_THEME_FILENAME="template${THEME_FILE_EXTENSION}"
-    eutmux_template_number=$(tmux show-option -gqv "@eutmux_template_number")
-    if [ -n "${eutmux_template_number}" ];then
-       TEMPLATE_THEME_FILENAME="template.${eutmux_template_number}${THEME_FILE_EXTENSION}"
+    DEFAULT_TEMPLATE_THEME_FILENAME="template${THEME_FILE_EXTENSION}"
+    # the option is configured in eutmux.yaml config file, and it's set in the last time theme and config generation by eutmux.py module
+    # therefore, from 2nd time theme setting, this option could be visible and used.
+    eutmux_template_name=$(tmux show-option -gqv "@eutmux_template_name")
+    if [ -n "${eutmux_template_name}" ];then
+       TEMPLATE_THEME_FILENAME="${eutmux_template_name}${THEME_FILE_EXTENSION}"
+       if [ ! -e "${TEMPLATE_THEME_FILENAME}" ];then
+          TEMPLATE_THEME_FILENAME="${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux/${TEMPLATE_THEME_FILENAME}"
+       fi
+    else
+       TEMPLATE_THEME_FILENAME="${DEFAULT_TEMPLATE_THEME_FILENAME}"
     fi
+    tmux set-option -gq "@eutmux_template_filename" "${TEMPLATE_THEME_FILENAME}"
     DEFAULT_CONFIG_FILENAME="eutmux.yaml"
     DYNAMIC_THEME_NAME="dynamic"
     PALETTE_FILENAME="${DEFAULT_PALETTE_FILENAME}"
