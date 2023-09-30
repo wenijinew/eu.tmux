@@ -18,7 +18,7 @@ general:
     renumber-windows: true
     clock-mode-colour: "C_4_4"
     _fg_highlight: "C_1_5"
-    _bg_highlight: "C_3_2"
+    _bg_highlight: "C_5_4"
     _style: "nobold,nounderscore,noitalics"
   styles:
     message-style:
@@ -60,7 +60,7 @@ general:
     - bind-key -n 'M-Right' select-window -n
 status_left:
   session:
-    enabled: "on"
+    enabled: true
     format: " #S "
 window:
   active:
@@ -76,25 +76,20 @@ status_right:
     enabled: true
     format: " #{b:pane_current_path} "
     icon: " "
-    decorator: ""
-    fg_format: "C_6_5"
-    bg_format: "C_3_2"
+    fg_decorator: "C_3_4"
     fg_icon: "C_6_5"
     bg_icon: "C_3_4"
-    fg_decorator: "C_3_4"
+    fg_format: "C_6_5"
+    bg_format: "C_3_2"
   date:
-    enabled: true
     icon: " "
     format: " v%V %a %Y-%m-%d %H:%M:%S "
   cpu:
-    enabled: true
     icon: " "
     format: " #(source cpu.sh) "
   memory:
-    enabled: true
     icon: " "
     format: "#(source memory.sh)"
   disk:
-    enabled: true
     icon: " "
     format: " #(source disk.sh) "
