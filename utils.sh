@@ -55,7 +55,7 @@ prepend_path(){
         exists=$?
         echo "${PATH}" | grep -q "${p}" 2>/dev/null
         in_path=$?
-        if [[ $exists && ! $in_path  ]];then
+        if [[ $exists -eq $TRUE && $in_path -ne $TRUE ]];then
             export PATH="${p}:${PATH}"
         fi
     done
@@ -68,7 +68,7 @@ prepend_pythonpath(){
         exists=$?
         echo "${PYTHONPATH}" | grep -q "${p}" 2>/dev/null
         in_path=$?
-        if [[ $exists && ! $in_path  ]];then
+        if [[ $exists -eq $TRUE && $in_path -ne $TRUE ]];then
             export PYTHONPATH="${p}:${PYTHONPATH}"
         fi
     done
