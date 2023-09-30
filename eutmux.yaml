@@ -51,6 +51,7 @@ general:
     - bind-key 'r' run-shell 'eutmux.tmux -r'
     - bind-key 't' run-shell 'eutmux.tmux -t ""'
     - bind-key 'T' run-shell 'eutmux.tmux -T ""'
+    - bind-key 'S' run-shell 'tmux source ~/.tmux.conf'
     - bind-key 'C-j' setw synchronize-panes on
     - bind-key 'C-k' setw synchronize-panes off
     - bind-key -n 'M-l' select-window -l

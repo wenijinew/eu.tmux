@@ -22,37 +22,17 @@ You can create new random dynamic theme and apply immediately by key `PREFEX g`.
 
 # Installation
 
-
-* Option1: Configure in `.tmux.conf` file as [TPM](https://github.com/tmux-plugins/tpm) plugin.
-
-``` bash
-set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'wenijinew/eu.tmux'
-```
-
-And then run command `tmux source ~/.tmux.conf` and `PREFIX I ` to clone this repo to `~/.tmux/plugins/`
-
-* Option2: Clone this repo by manually:
-
-``` bash
-git clone https://github.com/wenijinew/eu.tmux.git
-```
-
-Go to eu.tmux and run `./eutmux.tmux`
-
-
-# Environment Requirements
+## Environment Requirements
 
 * Fonts
 
 Eu.tmux can work perfectly if the morden fonts (E.g. [Nerd Fonts](https://www.nerdfonts.com/font-downloads)) are installed for the terminal. These morden fonts support different UNICODE characters which could be used as decoration for Eu.tmux themes.
 
-* Python and Bash
+* Python 3.9+ and Bash 4.0+
 
 Eu.tmux is developed with Python and Bash programming languages. In most cases, both are already available in your work environment. If not, please install them separately. The latset version are recommended.
 
-* Tmux
+* Tmux 3.2a+
 
 This is nonsense. You must have Tmux installed to use Eu.tmux to decorate it.
 
@@ -60,6 +40,29 @@ This is nonsense. You must have Tmux installed to use Eu.tmux to decorate it.
 
 Tmux is not a terminal emulator but a terminal multiplexer. To use Tmux, you have to install terminal applications in advance.
 If you work on Windows, you can use Windows Terminal, PuTTY. If you work on Linux, you probably have more choices.
+
+
+## Option1: Configure in `.tmux.conf` file as [TPM](https://github.com/tmux-plugins/tpm) plugin.
+
+``` bash
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'wenijinew/eu.tmux'
+```
+
+Run command `tmux source ~/.tmux.conf` if Tmux is already running and `PREFIX I ` to clone this repo to `~/.tmux/plugins/`
+
+:warning: WARNING
+
+If you use Tmux `3.2-` version, you have to add the line `set-option -gq terminal-overrides ',xterm*:Tc'` at the top of `.tmux.conf` as well.
+
+## Option2: Clone this repo by manually:
+
+``` bash
+git clone https://github.com/wenijinew/eu.tmux.git
+```
+
+Go to eu.tmux and run `./eutmux.tmux`
+
 
 # User Guide
 
