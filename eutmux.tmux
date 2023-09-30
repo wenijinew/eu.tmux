@@ -49,6 +49,10 @@ setup(){
     DEFAULT_PALETTE_FILENAME="default_palette.txt"
     DYNAMIC_PALETTE_FILENAME="dynamic_palette.txt"
     TEMPLATE_THEME_FILENAME="template${THEME_FILE_EXTENSION}"
+    eutmux_template_number=$(tmux show-option -gqv "@eutmux_template_number")
+    if [ -n "${eutmux_template_number}" ];then
+       TEMPLATE_THEME_FILENAME="template.${eutmux_template_number}${THEME_FILE_EXTENSION}"
+    fi
     DEFAULT_CONFIG_FILENAME="eutmux.yaml"
     DYNAMIC_THEME_NAME="dynamic"
     PALETTE_FILENAME="${DEFAULT_PALETTE_FILENAME}"
