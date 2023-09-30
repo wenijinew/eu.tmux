@@ -48,3 +48,36 @@ echoh(){
     env echo -e "$@"
     return "${EXIT_SUCCESS}"
 }
+prepend_path(){
+    for p in $*
+    do
+        readable "${p}"
+        exists=$?
+        echo "${PATH}" | grep -q "${p}" 2>/dev/null
+        in_path=$?
+        if [[ $exists && ! $in_path  ]];then
+            export PATH="${p}:${PATH}"
+        fi
+    done
+}
+
+prepend_pythonpath(){
+    for p in $*
+    do
+        readable "${p}"
+        exists=$?
+        echo "${PYTHONPATH}" | grep -q "${p}" 2>/dev/null
+        in_path=$?
+        if [[ $exists && ! $in_path  ]];then
+            export PYTHONPATH="${p}:${PYTHONPATH}"
+        fi
+    done
+}
+
+readable(){
+    if [[ "${1}" == "" ||  ! -r "${1}" ]];then
+        _warn "${1} doesn't exist!"
+        return ${FALSE}
+    fi
+    return ${TRUE}
+}
