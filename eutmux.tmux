@@ -271,13 +271,13 @@ main(){
     create_dynamic_config_file
 
     # set environment variables
-    export PATH="${_DIR}:${EUTMUX_CONFIG_HOME}:${PATH}"
-    export PYTHONPATH="${_DIR}:${PATH}"
+    prepend_path "${_DIR}" "${EUTMUX_CONFIG_HOME}"
+    prepend_pythonpath "${_DIR}"
     export EUTMUX_WORKDIR="${_DIR}"
     find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
     tmux set-environment -g 'EUTMUX_WORKDIR' "${_DIR}"
-    tmux set-environment -g 'PATH' "${_DIR}:${PATH}"
-    tmux set-environment -g 'PYTHONPATH' "${_DIR}:${PATH}"
+    tmux set-environment -g 'PATH' "${PATH}"
+    tmux set-environment -g 'PYTHONPATH' "${PYTHONPATH}"
 
     # generate and execute tmux commands
     tmux_commands="$(python3 -c "import eutmux; tmux_commands = eutmux.eutmux(); print(tmux_commands)")"
