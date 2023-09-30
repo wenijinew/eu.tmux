@@ -54,9 +54,12 @@ setup(){
     eutmux_template_name=$(tmux show-option -gqv "@eutmux_template_name")
     if [ -n "${eutmux_template_name}" ];then
        eutmux_template_name="${eutmux_template_name/%%${THEME_FILE_EXTENSION}*/}"
+       # template theme file in ${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux has higher priority
+       # if it doesn't exist, then check in the project
        TEMPLATE_THEME_FILENAME="${eutmux_template_name}${THEME_FILE_EXTENSION}"
+       TEMPLATE_THEME_FILENAME="${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux/${TEMPLATE_THEME_FILENAME}"
        if [ ! -e "${TEMPLATE_THEME_FILENAME}" ];then
-          TEMPLATE_THEME_FILENAME="${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux/${TEMPLATE_THEME_FILENAME}"
+          TEMPLATE_THEME_FILENAME="${eutmux_template_name}${THEME_FILE_EXTENSION}"
        fi
     else
        TEMPLATE_THEME_FILENAME="${DEFAULT_TEMPLATE_THEME_FILENAME}"
