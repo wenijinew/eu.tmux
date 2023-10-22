@@ -3,7 +3,8 @@
 import shlex
 import subprocess
 
-from const import EMPTY, UTF_8
+UTF_8 = "utf-8"
+EMPTY = ""
 
 
 def get_tmux_option(name, default_value):
@@ -20,7 +21,11 @@ def get_tmux_option(name, default_value):
 def run_shell_command(command, default_output=None):
     """Run shell command."""
     command_args = shlex.split(command)
-    value = subprocess.check_output(command_args, shell=False).decode(UTF_8).strip()
+    value = (
+        subprocess.check_output(command_args, shell=False)
+        .decode(UTF_8)
+        .strip()
+    )
     if value is not None and value.strip() != EMPTY:
         return value
     return default_output

@@ -304,7 +304,7 @@ main(){
     tmux set-environment -g 'PYTHONPATH' "${PYTHONPATH}"
 
     # generate and execute tmux commands
-    tmux_commands="$(python3 -c "import eutmux; tmux_commands = eutmux.eutmux(); print(tmux_commands)")"
+    tmux_commands="$(python3 -c "import eutmux; tmux_commands = eutmux.init(); print(tmux_commands)")"
     echo "${tmux_commands}" | sed -e 's/True/on/g' | sed -e 's/False/off/g' | tr ';' '\n' > "${TMUX_COMMANDS_FILENAME}"
     tmux source "${TMUX_COMMANDS_FILENAME}"
 }
