@@ -292,8 +292,12 @@ class Constructor:
                 "bg_decorator", self.theme.status_left.get("bg_decorator")
             )
             style = component.get("style", self.theme.status_left.get("style"))
+<<<<<<< HEAD
             _format = component.get("format", EMPTY)
             format_style = f"{self.get_style_for_option(fg_format, bg_format, style, _format)}"
+=======
+            format_style = f"{self.get_style_for_option(fg_format, bg_format, style, format)}"
+>>>>>>> 207f932d2953bff5e20b53c65bbfd3466adf9f9a
             icon_style = (
                 f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             )
@@ -312,6 +316,12 @@ class Constructor:
             )
             icon = component.get(
                 "icon", self.theme.window.get(name).get("icon")
+<<<<<<< HEAD
+=======
+            )
+            decorator = component.get(
+                "decorator", self.theme.window.get(name).get("decorator")
+>>>>>>> 207f932d2953bff5e20b53c65bbfd3466adf9f9a
             )
             window_name = component.get(
                 "window_name", self.theme.window.get(name).get("window_name")
@@ -398,8 +408,12 @@ class Constructor:
                 "bg_decorator", self.theme.status_right.get("bg_decorator")
             )
             style = options.get("style", self.theme.status_right.get("style"))
+<<<<<<< HEAD
             _format = options.get("format", EMPTY)
             format_style = f"{self.get_style_for_option(fg_format, bg_format, style, _format)}"
+=======
+            format_style = f"{self.get_style_for_option(fg_format, bg_format, style, format)}"
+>>>>>>> 207f932d2953bff5e20b53c65bbfd3466adf9f9a
             icon_style = (
                 f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             )

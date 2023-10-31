@@ -21,6 +21,7 @@ def get_tmux_option(name, default_value):
 def run_shell_command(command, default_output=None):
     """Run shell command."""
     command_args = shlex.split(command)
+<<<<<<< HEAD
     result = (
         subprocess.popen(command_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     )
@@ -28,3 +29,13 @@ def run_shell_command(command, default_output=None):
         return default_output
     else:
         return result.stdout.strip()
+=======
+    value = (
+        subprocess.check_output(command_args, shell=False)
+        .decode(UTF_8)
+        .strip()
+    )
+    if value is not None and value.strip() != EMPTY:
+        return value
+    return default_output
+>>>>>>> 207f932d2953bff5e20b53c65bbfd3466adf9f9a
