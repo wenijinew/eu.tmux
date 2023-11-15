@@ -3,8 +3,9 @@
 import os
 
 import yaml
-from utils import get_tmux_option, run_shell_command
 from yaml import Loader
+
+from utils import get_tmux_option, run_shell_command
 
 UTF_8 = "utf-8"
 EMPTY = ""
@@ -496,7 +497,7 @@ def init(config_file="eutmux.yaml"):
     eutmux_dynamic_config_file_name = get_tmux_option(
         "@eutmux_dynamic_config_file_name", config_file
     )
-    eutmux_workdir = os.getenv("EUTMUX_WORKDIR")
+    eutmux_workdir = os.getenv("EUTMUX_WORKDIR", os.curdir)
     os.chdir(eutmux_workdir)
     with open(eutmux_dynamic_config_file_name, "r", encoding=UTF_8) as config:
         eutmux = yaml.safe_load(config)
@@ -519,7 +520,14 @@ def init(config_file="eutmux.yaml"):
             theme_filename = f"{eutmux_config_home}/{theme_filename}"
         else:
             theme_filename = "eutmux.theme.yaml"
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9e9ce1d (Fix code issue in running shell command)
+=======
+    print(theme_filename)
+>>>>>>> fa2ca52 (temp)
     with open(theme_filename, "r", encoding=UTF_8) as theme_file:
         theme_config = yaml.safe_load(theme_file)
         theme = Theme(theme_config)

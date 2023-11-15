@@ -2,6 +2,7 @@
 """Provide utilities functions."""
 import shlex
 import subprocess
+from subprocess import TimeoutExpired
 
 UTF_8 = "utf-8"
 EMPTY = ""
@@ -21,10 +22,30 @@ def get_tmux_option(name, default_value):
 def run_shell_command(command, default_output=None):
     """Run shell command."""
     command_args = shlex.split(command)
+<<<<<<< HEAD
     result = (
-        subprocess.popen(command_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        subprocess.Popen(command_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     )
+    print(result.returncode)
     if result.returncode != 0:
         return default_output
     else:
         return result.stdout.strip()
+=======
+    with (
+        subprocess.Popen(command_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    ) as process:
+        try:
+            outs, errs = process.communicate(timeout=3)
+        except TimeoutExpired:
+            process.kill()
+            outs, errs = process.communicate()
+            raise TimeoutExpired
+    output = outs.decode().strip()
+    return output if output and len(output) > 0 else default_output
+
+
+if __name__ == "__main__":
+    value = get_tmux_option("@eutmux_base_color_total", 5)
+    print(value)
+>>>>>>> 9e9ce1d (Fix code issue in running shell command)

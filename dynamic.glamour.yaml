@@ -1,0 +1,97 @@
+---
+theme: burgundy-red
+general:
+  options:
+    status: true
+    status-fg: "#a9b0b0"
+    status-bg: "#011814"
+    status-justify: left
+    status-left-length: 100
+    status-right-length: 100
+    window-status-separator: ' '
+    terminal-overrides: ",xterm*:Tc"
+    default-terminal: "screen-256color"
+    escape-time: 10
+    status-interval: 3
+    focus-events: true
+    display-time: 10000
+    renumber-windows: true
+    clock-mode-colour: "#5ab756"
+    _fg_highlight: "#5e35a9"
+    _bg_highlight: "#d3c598"
+    _style: "nobold,nounderscore,noitalics"
+  styles:
+    message-style:
+      fg: "#9ad398"
+      bg: ""
+      style: ""
+    message-command-style:
+      fg: "#d398b3"
+      bg: ""
+      style: ""
+    pane-border-style:
+      fg: "#2b3e3b"
+      bg: ""
+      style: ""
+    pane-active-border-style:
+      fg: "#7ac577"
+      bg: ""
+      style: ""
+    popup-style:
+      fg: "#9ad398"
+      bg: "#011814"
+    popup-border-style:
+      fg: "#9ad398"
+      bg: ""
+  commands:
+    - bind-key 'g' run-shell 'glamour.tmux -d'
+    - bind-key 'G' run-shell 'glamour.tmux -D'
+    - bind-key 'a' display-popup 'glamour.tmux -a'
+    - bind-key 'r' run-shell 'glamour.tmux -r'
+    - bind-key 'C-j' setw synchronize-panes on
+    - bind-key 'C-k' setw synchronize-panes off
+    - bind-key -n 'M-l' select-window -l
+    - bind-key -n 'M-j' select-pane -R
+    - bind-key -n 'M-k' select-pane -D
+    - bind-key -n 'M-Left' select-window -p
+    - bind-key -n 'M-Right' select-window -n
+status_left:
+  session:
+    enabled: "on"
+    tmux_option: " #S "
+window:
+  active:
+    window_name: " #W "
+    window_index: " #I"
+    icon: ""
+  inactive:
+    window_name: " #W "
+    window_index: " #I"
+    icon: ""
+status_right:
+  directory:
+    enabled: true
+    tmux_option: " #{b:pane_current_path} "
+    icon: " "
+    decorator: ""
+    fg_option: "#011814"
+    bg_option: "#d3c598"
+    fg_icon: "#011814"
+    bg_icon: "#b79f56"
+    fg_decorator: "#b79f56"
+  date:
+    enabled: true
+    icon: " "
+    tmux_option: " v%V %a %Y-%m-%d %H:%M:%S "
+  cpu:
+    enabled: true
+    icon: " "
+    tmux_option: " #(source cpu.sh) "
+  memory:
+    enabled: true
+    icon: " "
+    tmux_option: "#(source memory.sh)"
+  disk:
+    enabled: true
+    icon: " "
+    tmux_option: " #(source disk.sh) "
