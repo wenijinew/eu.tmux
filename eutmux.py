@@ -520,14 +520,6 @@ def init(config_file="eutmux.yaml"):
             theme_filename = f"{eutmux_config_home}/{theme_filename}"
         else:
             theme_filename = "eutmux.theme.yaml"
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 9e9ce1d (Fix code issue in running shell command)
-=======
-    print(theme_filename)
->>>>>>> fa2ca52 (temp)
     with open(theme_filename, "r", encoding=UTF_8) as theme_file:
         theme_config = yaml.safe_load(theme_file)
         theme = Theme(theme_config)

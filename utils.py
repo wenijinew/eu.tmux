@@ -22,16 +22,6 @@ def get_tmux_option(name, default_value):
 def run_shell_command(command, default_output=None):
     """Run shell command."""
     command_args = shlex.split(command)
-<<<<<<< HEAD
-    result = (
-        subprocess.Popen(command_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    )
-    print(result.returncode)
-    if result.returncode != 0:
-        return default_output
-    else:
-        return result.stdout.strip()
-=======
     with (
         subprocess.Popen(command_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     ) as process:
@@ -48,4 +38,3 @@ def run_shell_command(command, default_output=None):
 if __name__ == "__main__":
     value = get_tmux_option("@eutmux_base_color_total", 5)
     print(value)
->>>>>>> 9e9ce1d (Fix code issue in running shell command)
