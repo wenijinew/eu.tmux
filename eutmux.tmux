@@ -298,6 +298,7 @@ main(){
     prepend_path "${_DIR}" "${EUTMUX_CONFIG_HOME}"
     prepend_pythonpath "${_DIR}"
     export EUTMUX_WORKDIR="${_DIR}"
+    export PYTHONUTF8=1
     find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
     tmux set-environment -g 'EUTMUX_WORKDIR' "${_DIR}"
     tmux set-environment -g 'PATH' "${PATH}"
