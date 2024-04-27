@@ -2,3 +2,4 @@ loguru>=0.7.0
 seaborn>=0.12.2
 fonttools>=4.43.0 # not directly required, pinned by Snyk to avoid a vulnerability
 pillow>=10.3.0 # not directly required, pinned by Snyk to avoid a vulnerability
+numpy>=1.22.2 # not directly required, pinned by Snyk to avoid a vulnerability
