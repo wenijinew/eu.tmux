@@ -134,10 +134,10 @@ replace_legacy_placeholders(){
 generate_palette_colors(){
     local color_name min_color max_color dark_base_color
     # dark_base_color doesn't have default value but has higher priority than color_name
-    color_name="${1:-color.ColorName.CYAN}"
+    color_name="${1:-color.ColorName.RANDOM}"
     min_color="${2:-20}"
     max_color="${3:-40}"
-    dark_base_color="${4}"
+    dark_base_color="${4:-#23272e}"
     install_python_modules="${5:-${FALSE}}"
     append_gray="${6:-${TRUE}}"
     token_min_color="${7:-60}"
@@ -191,10 +191,16 @@ create_dynamic_config_file(){
 replace_color(){
     target_file="${1}"
     palette_file="${2:-${PALETTE_FILENAME}}"
+    t="$(mktemp)"
+    grep -iEo 'C(_[[:digit:]]{1,}){2}' ${target_file} > "${t}"
     while read -r _color;do
-          color_name="$(echo "${_color}" | cut -d':' -f1)"
-          color_value="$(echo "${_color}" | cut -d':' -f2)"
-          sed -i "s/${color_name}/${color_value}/g" "${target_file}"
+        color_name="$(echo "${_color}" | cut -d':' -f1)"
+        grep -q ${color_name} "${t}"
+        if [ $? -ne $TRUE ];then
+            continue
+        fi
+        color_value="$(echo "${_color}" | cut -d':' -f2)"
+        sed -i "s/${color_name}/${color_value}/g" "${target_file}"
     done < "${_DIR}/${palette_file}"
 }
 
