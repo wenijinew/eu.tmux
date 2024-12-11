@@ -137,7 +137,7 @@ generate_palette_colors(){
     color_name="${1:-color.ColorName.RANDOM}"
     min_color="${2:-20}"
     max_color="${3:-40}"
-    dark_base_color="${4:-#23272e}"
+    dark_base_color="${4:-#23272e}" # elite-dark-blue: #1a1b26, github-dimmed: #23272e
     install_python_modules="${5:-${FALSE}}"
     append_gray="${6:-${TRUE}}"
     token_min_color="${7:-60}"
@@ -145,7 +145,7 @@ generate_palette_colors(){
     colors_total="${9:-3}"
     dark_colors_total="${10:-3}"
     colors_gradations="${11:-15}"
-    dark_colors_gradations="${12:-15}"
+    dark_colors_gradations="${12:-18}"
 
     PYTHON3="python3"
     if [ -n "$dark_base_color" ];then
@@ -176,7 +176,6 @@ create_dynamic_config_file(){
     if [ -e "${eutmux_dynamic_config_file_name}" ];then
         rm -f "${eutmux_dynamic_config_file_name}"
     fi
-
 
     # if config file not in $EUTMUX_CONFIG_HOME, then copy the default config file to $EUTMUX_CONFIG_HOME
     config_file="${EUTMUX_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
@@ -347,7 +346,7 @@ main(){
 
 
 usage(){
-    echoh "./eutmux.tmux [-d]"
+    echoh "./eutmux.tmux [-a] [-d] [-D] [-r] [-R] [-t] [-T new-theme-name]"
 }
 
 setup
@@ -360,7 +359,7 @@ while getopts "adDrRt:T:" opt; do
         R) replace_legacy_placeholders; exit $? ;;
         t) apply_theme "${OPTARG}" ;;
         T) NEW_THEME_NAME="$OPTARG"; save_dynamic_theme "${NEW_THEME_NAME}"; exit $? ;;
-        *) usage; exit "${EXIT_SUCCESS}" ;;
+        *|?) usage; exit "${EXIT_SUCCESS}" ;;
     esac
 done
 main

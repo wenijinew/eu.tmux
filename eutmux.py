@@ -552,6 +552,7 @@ def init(config_file="eutmux.yaml"):
 
         constructor = Constructor(eutmux, theme)
         set_option_commands = constructor.produce_option_commands()
+
     return ";".join(set_option_commands)
 
 
