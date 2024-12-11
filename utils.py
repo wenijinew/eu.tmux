@@ -22,8 +22,8 @@ def get_tmux_option(name, default_value):
 def run_shell_command(command, default_output=None):
     """Run shell command."""
     command_args = shlex.split(command)
-    with (
-        subprocess.Popen(command_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    with subprocess.Popen(
+        command_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     ) as process:
         try:
             outs, errs = process.communicate(timeout=3)
