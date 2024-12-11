@@ -1,0 +1,45 @@
+set-option -gq status 'on'
+set-option -gq status-fg '#8EEE8E'
+set-option -gq status-bg '#212D21'
+set-option -gq status-justify 'left'
+set-option -gq status-left-length '100'
+set-option -gq status-right-length '100'
+set-option -gq window-status-separator ' '
+set-option -gq terminal-overrides ',xterm*:Tc'
+set-option -gq default-terminal 'screen-256color'
+set-option -gq escape-time '5'
+set-option -gq status-interval '3'
+set-option -gq focus-events 'on'
+set-option -gq display-time '5000'
+set-option -gq renumber-windows 'on'
+set-option -gq clock-mode-colour '#6B3535'
+set-option -gq @fg_highlight '#820000'
+set-option -gq @bg_highlight '#35356B'
+set-option -gq @style 'nobold,nounderscore,noitalics'
+set-option -gq @eutmux_template_name 'template.4'
+set-option -gq message-style 'fg=#D95F5F,'
+set-option -gq message-command-style 'fg=#5E5EBD,'
+set-option -gq pane-border-style 'fg=#356435,'
+set-option -gq pane-active-border-style 'fg=#AE3E3E,'
+set-option -gq popup-style 'fg=#D95F5F,bg=#212D21,nobold,nounderscore,noitalics'
+set-option -gq popup-border-style 'fg=#D95F5F,nobold,nounderscore,noitalics'
+bind-key 'g' run-shell 'eutmux.tmux -d'
+bind-key 'G' run-shell 'eutmux.tmux -D'
+bind-key 'a' display-popup 'eutmux.tmux -a'
+bind-key 'r' run-shell 'eutmux.tmux -r'
+bind-key 't' run-shell 'eutmux.tmux -t ""'
+bind-key 'T' run-shell 'eutmux.tmux -T ""'
+bind-key 'S' run-shell 'tmux source ~/.tmux.conf'
+bind-key 'C-c' clock-mode
+bind-key 'C-j' setw synchronize-panes on
+bind-key 'C-k' setw synchronize-panes off
+bind-key -n 'M-l' select-window -l
+bind-key -n 'M-j' select-pane -R
+bind-key -n 'M-k' select-pane -D
+bind-key -n 'M-Left' select-window -p
+bind-key -n 'M-Right' select-window -n
+set-option -gq status-style 'fg=#8EEE8E,bg=#191F19'
+set-option -gq status-left '#[fg=#485748,bg=#FDDBDB,nobold,nounderscore,noitalics]  #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#FDDBDB,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics] #S #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]'
+set-option -gq window-status-current-format '#[fg=#356435,bg=#D95F5F,nobold,nounderscore,noitalics] #W #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#212D21,bg=#6B3535,nobold,nounderscore,noitalics] #I#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#356435,bg=#6B3535,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#6B3535,bg=#212D21,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics] '
+set-option -gq window-status-format '#[fg=#356435,bg=#3FA63F,nobold,nounderscore,noitalics] #W #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#212D21,bg=#356435,nobold,nounderscore,noitalics] #I#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#356435,bg=#212D21,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics] '
+set-option -gq status-right '#[fg=#356435,bg=#212D21,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#212D21,bg=#356435,nobold,nounderscore,noitalics] #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#356435,bg=#3E3EAE,nobold,nounderscore,noitalics] #{b:pane_current_path} #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics] #[fg=#356435,bg=#212D21,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#212D21,bg=#356435,nobold,nounderscore,noitalics] #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#356435,bg=#3E3EAE,nobold,nounderscore,noitalics] v%V %a %Y-%m-%d %H:%M:%S #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics] #[fg=#356435,bg=#212D21,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#212D21,bg=#356435,nobold,nounderscore,noitalics] #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#356435,bg=#3E3EAE,nobold,nounderscore,noitalics] #(source cpu.sh) #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics] #[fg=#356435,bg=#212D21,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#212D21,bg=#356435,nobold,nounderscore,noitalics] #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#356435,bg=#3E3EAE,nobold,nounderscore,noitalics]#(source memory.sh)#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics] #[fg=#356435,bg=#212D21,nobold,nounderscore,noitalics]#[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#212D21,bg=#356435,nobold,nounderscore,noitalics] #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]#[fg=#356435,bg=#3E3EAE,nobold,nounderscore,noitalics] #(source disk.sh) #[fg=#8EEE8E,bg=#191F19,nobold,nounderscore,noitalics]'
