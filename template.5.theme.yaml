@@ -28,9 +28,9 @@ status_left:
   style: "nobold,nounderscore,noitalics"
 window:
   active:
-    fg_window: "C_04_17"
-    bg_window: "C_04_06"
-    fg_window_index: "C_04_17"
+    fg_window: "C_04_14"
+    bg_window: "C_04_08"
+    fg_window_index: "C_04_14"
     bg_window_index: "C_04_10"
     fg_icon: "C_04_06"
     bg_icon: "C_04_08"

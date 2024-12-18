@@ -3,8 +3,8 @@ theme: burgundy-red
 general:
   options:
     status: true
-    status-fg: "C_06_01"
-    status-bg: "C_06_17"
+    status-fg: "C_6_1"
+    status-bg: "C_6_5"
     status-justify: left
     status-left-length: 100
     status-right-length: 100
@@ -16,34 +16,34 @@ general:
     focus-events: true
     display-time: 5000
     renumber-windows: true
-    clock-mode-colour: "C_04_12"
-    _fg_highlight: "C_04_10"
-    _bg_highlight: "C_06_06"
+    clock-mode-colour: "C_4_4"
+    _fg_highlight: "#820000"
+    _bg_highlight: "C_5_4"
     _style: "nobold,nounderscore,noitalics"
-    _eutmux_template_name: "template.5"
+    _eutmux_template_name: "template.3"
   styles:
     message-style:
-      fg: "C_04_10"
+      fg: "C_4_2"
       bg: ""
       style: ""
     message-command-style:
-      fg: "C_04_10"
+      fg: "C_2_2"
       bg: ""
       style: ""
     pane-border-style:
-      fg: "C_06_14"
+      fg: "C_6_4"
       bg: ""
       style: ""
     pane-active-border-style:
-      fg: "C_04_12"
+      fg: "C_4_3"
       bg: ""
       style: ""
     # Tmux 3.3+ support popup styles
     popup-style:
-      fg: "C_04_02"
-      bg: "C_06_05"
+      fg: "C_4_2"
+      bg: "C_6_5"
     popup-border-style:
-      fg: "C_04_02"
+      fg: "C_4_2"
       bg: ""
   commands:
     - bind-key 'g' run-shell 'eutmux.tmux -d'
@@ -53,7 +53,6 @@ general:
     - bind-key 't' run-shell 'eutmux.tmux -t ""'
     - bind-key 'T' run-shell 'eutmux.tmux -T ""'
     - bind-key 'S' run-shell 'tmux source ~/.tmux.conf'
-    - bind-key 'C-c' clock-mode
     - bind-key 'C-j' setw synchronize-panes on
     - bind-key 'C-k' setw synchronize-panes off
     - bind-key -n 'M-l' select-window -l

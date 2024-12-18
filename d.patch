@@ -1,0 +1,29 @@
+diff --git a/eutmux.tmux b/eutmux.tmux
+index 370ac4b..9e90806 100755
+--- a/eutmux.tmux
++++ b/eutmux.tmux
+@@ -85,6 +85,7 @@ setup(){
+     NEW_THEME_NAME=""
+     ROTATE_THEME=${FALSE}
+     CREATE_DYNMIC_THEME=${FALSE}
++    DARK_BASE_COLOR="" #23272e
+ 
+     # set working directory to eutmux project path
+     pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
+@@ -137,7 +138,7 @@ generate_palette_colors(){
+     color_name="${1:-color.ColorName.RANDOM}"
+     min_color="${2:-20}"
+     max_color="${3:-40}"
+-    dark_base_color="${4:-#23272e}" # elite-dark-blue: #1a1b26, github-dimmed: #23272e
++    dark_base_color="${4:-${DARK_BASE_COLOR}}" # elite-dark-blue: #1a1b26, github-dimmed: #23272e
+     install_python_modules="${5:-${FALSE}}"
+     append_gray="${6:-${TRUE}}"
+     token_min_color="${7:-60}"
+@@ -353,6 +354,7 @@ setup
+ while getopts "adDrRt:T:" opt; do
+     case $opt in
+         a) show_all_themes; exit $? ;;
++        c) DARK_BASE_COLOR="${OPTARG}" ;;
+         d) CREATE_DYNMIC_THEME=${TRUE} ;;
+         D) THEME_NAME="eutmux" ;;
+         r) ROTATE_THEME=${TRUE} ;;
