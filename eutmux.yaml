@@ -3,8 +3,8 @@ theme: burgundy-red
 general:
   options:
     status: true
-    status-fg: "C_06_15"
-    status-bg: "C_06_55"
+    status-fg: "C_06_01"
+    status-bg: "C_06_17"
     status-justify: left
     status-left-length: 100
     status-right-length: 100
@@ -16,34 +16,34 @@ general:
     focus-events: true
     display-time: 5000
     renumber-windows: true
-    clock-mode-colour: "C_04_30"
-    _fg_highlight: "C_01_50"
-    _bg_highlight: "C_05_45"
+    clock-mode-colour: "C_04_12"
+    _fg_highlight: "C_04_10"
+    _bg_highlight: "C_06_06"
     _style: "nobold,nounderscore,noitalics"
-    _eutmux_template_name: "template.3"
+    _eutmux_template_name: "template.5"
   styles:
     message-style:
-      fg: "C_04_25"
+      fg: "C_04_10"
       bg: ""
       style: ""
     message-command-style:
-      fg: "C_02_25"
+      fg: "C_04_10"
       bg: ""
       style: ""
     pane-border-style:
-      fg: "C_06_25"
+      fg: "C_06_14"
       bg: ""
       style: ""
     pane-active-border-style:
-      fg: "C_04_25"
+      fg: "C_04_12"
       bg: ""
       style: ""
     # Tmux 3.3+ support popup styles
     popup-style:
-      fg: "C_04_25"
-      bg: "C_06_55"
+      fg: "C_04_02"
+      bg: "C_06_05"
     popup-border-style:
-      fg: "C_04_25"
+      fg: "C_04_02"
       bg: ""
   commands:
     - bind-key 'g' run-shell 'eutmux.tmux -d'
@@ -53,6 +53,7 @@ general:
     - bind-key 't' run-shell 'eutmux.tmux -t ""'
     - bind-key 'T' run-shell 'eutmux.tmux -T ""'
     - bind-key 'S' run-shell 'tmux source ~/.tmux.conf'
+    - bind-key 'C-c' clock-mode
     - bind-key 'C-j' setw synchronize-panes on
     - bind-key 'C-k' setw synchronize-panes off
     - bind-key -n 'M-l' select-window -l
@@ -78,11 +79,6 @@ status_right:
     enabled: true
     format: " #{b:pane_current_path} "
     icon: " "
-    fg_decorator: "C_03_25"
-    fg_icon: "C_06_55"
-    bg_icon: "C_03_25"
-    fg_format: "C_06_55"
-    bg_format: "C_03_45"
   date:
     icon: " "
     format: " v%V %a %Y-%m-%d %H:%M:%S "
