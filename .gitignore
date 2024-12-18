@@ -5,3 +5,4 @@ eutmux.py.log
 tmux_commands.txt
 __pycache__
 /.requirements.installed.txt
+/dynamic.glamour.yaml
