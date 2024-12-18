@@ -85,6 +85,7 @@ setup(){
     NEW_THEME_NAME=""
     ROTATE_THEME=${FALSE}
     CREATE_DYNMIC_THEME=${FALSE}
+    DARK_BASE_COLOR="" #23272e
 
     # set working directory to eutmux project path
     pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
@@ -126,11 +127,40 @@ replace_legacy_placeholders(){
 }
 
 # call python module to generate palette file
-generate_palette_colors(){
-    palette=$(python3 -c "import palette; palette = palette.generate_palette(); print(palette)")
-    echo "$palette" | grep -iEo 'C(_[[:digit:]]{1,}){2}\:#[[:alnum:]]{6}' > "${DYNAMIC_PALETTE_FILENAME}"
-}
+# generate_palette_colors(){
+#     palette=$(python3 -c "import peelee; palette = palette.generate_palette(); print(palette)")
+#     echo "$palette" | grep -iEo 'C(_[[:digit:]]{1,}){2}\:#[[:alnum:]]{6}' > "${DYNAMIC_PALETTE_FILENAME}"
+# }
 
+generate_palette_colors(){
+    local color_name min_color max_color dark_base_color
+    # dark_base_color doesn't have default value but has higher priority than color_name
+    color_name="${1:-color.ColorName.BLUE}"
+    min_color="${2:-20}"
+    max_color="${3:-40}"
+    dark_base_color="${4:-${DARK_BASE_COLOR}}" # elite-dark-blue: #1a1b26, github-dimmed: #23272e
+    install_python_modules="${5:-${FALSE}}"
+    append_gray="${6:-${TRUE}}"
+    token_min_color="${7:-60}"
+    token_max_color="${8:-80}"
+    colors_total="${9:-3}"
+    dark_colors_total="${10:-3}"
+    colors_gradations="${11:-15}"
+    dark_colors_gradations="${12:-18}"
+
+    PYTHON3="python3"
+    if [ -n "$dark_base_color" ];then
+        palette=$($PYTHON3 -c "from peelee import peelee, color, color_utils; (h,l,s) = color_utils.hex2hls('$dark_base_color'); palette = peelee.Palette(colors_total=$colors_total, dark_colors_total=$dark_colors_total,colors_gradations=$colors_gradations,dark_colors_gradations_total=$dark_colors_gradations, colors_min=$token_min_color,colors_max=$token_max_color,dark_base_color='$dark_base_color', dark_colors_hue=h, dark_colors_saturation=s, dark_colors_lightness=l).generate_palette(); print(palette)")
+    else
+        palette=$($PYTHON3 -c "from peelee import peelee, color, color_utils; dark_random_color=peelee.generate_random_hex_color_code(color_name=$color_name, min_color=$min_color, max_color=$max_color); (h,l,s) = color_utils.hex2hls(dark_random_color); palette = peelee.Palette(colors_total=$colors_total, dark_colors_total=$dark_colors_total, colors_gradations=$colors_gradations,dark_colors_gradations_total=$dark_colors_gradations, colors_min=$token_min_color,colors_max=$token_max_color,dark_base_color=dark_random_color, dark_colors_hue=h, dark_colors_saturation=s, dark_colors_lightness=l).generate_palette(); print(palette)")
+    fi
+    tf1="$(mktemp)"
+    tf2="$(mktemp)"
+    echo "$palette" | grep -iEo '[CDL]_([[:digit:]]{2}|[RGBYCVOA])_[[:digit:]]{2}' > "${tf1}"
+    # tmux only accept lower case color code
+    echo "$palette" | grep -iEo '#[[:alnum:]]{6,}' | tr 'A-Z' 'a-z' > "${tf2}"
+    paste -d':' ${tf1} ${tf2} > $DYNAMIC_PALETTE_FILENAME
+}
 create_dynamic_theme_file(){
     dynamic_theme_file_name="${DYNAMIC_THEME_NAME}${THEME_FILE_EXTENSION}"
     tmux set-option -gq "${TMUX_OPTION_NAME_DYNAMIC_THEME}" "${DYNAMIC_THEME_NAME}"
@@ -148,7 +178,6 @@ create_dynamic_config_file(){
         rm -f "${eutmux_dynamic_config_file_name}"
     fi
 
-
     # if config file not in $EUTMUX_CONFIG_HOME, then copy the default config file to $EUTMUX_CONFIG_HOME
     config_file="${EUTMUX_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
     if [ ! -e "${config_file}" ];then
@@ -162,10 +191,16 @@ create_dynamic_config_file(){
 replace_color(){
     target_file="${1}"
     palette_file="${2:-${PALETTE_FILENAME}}"
+    t="$(mktemp)"
+    grep -iEo 'C(_[[:digit:]]{1,}){2}' ${target_file} > "${t}"
     while read -r _color;do
-          color_name="$(echo "${_color}" | cut -d':' -f1)"
-          color_value="$(echo "${_color}" | cut -d':' -f2)"
-          sed -i "s/${color_name}/${color_value}/g" "${target_file}"
+        color_name="$(echo "${_color}" | cut -d':' -f1)"
+        grep -q ${color_name} "${t}"
+        if [ $? -ne $TRUE ];then
+            continue
+        fi
+        color_value="$(echo "${_color}" | cut -d':' -f2)"
+        sed -i "s/${color_name}/${color_value}/g" "${target_file}"
     done < "${_DIR}/${palette_file}"
 }
 
@@ -298,33 +333,35 @@ main(){
     prepend_path "${_DIR}" "${EUTMUX_CONFIG_HOME}"
     prepend_pythonpath "${_DIR}"
     export EUTMUX_WORKDIR="${_DIR}"
+    export PYTHONUTF8=1
     find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
     tmux set-environment -g 'EUTMUX_WORKDIR' "${_DIR}"
     tmux set-environment -g 'PATH' "${PATH}"
     tmux set-environment -g 'PYTHONPATH' "${PYTHONPATH}"
 
     # generate and execute tmux commands
-    tmux_commands="$(python3 -c "import eutmux; tmux_commands = eutmux.eutmux(); print(tmux_commands)")"
+    tmux_commands="$(python3 -c "import eutmux; tmux_commands = eutmux.init(); print(tmux_commands)")"
     echo "${tmux_commands}" | sed -e 's/True/on/g' | sed -e 's/False/off/g' | tr ';' '\n' > "${TMUX_COMMANDS_FILENAME}"
     tmux source "${TMUX_COMMANDS_FILENAME}"
 }
 
 
 usage(){
-    echoh "./eutmux.tmux [-d]"
+    echoh "./eutmux.tmux [-a] [-d] [-D] [-r] [-R] [-t] [-T new-theme-name]"
 }
 
 setup
-while getopts "adDrRt:T:" opt; do
+while getopts "ac:dDrRt:T:" opt; do
     case $opt in
         a) show_all_themes; exit $? ;;
+        c) DARK_BASE_COLOR="${OPTARG}" ;;
         d) CREATE_DYNMIC_THEME=${TRUE} ;;
         D) THEME_NAME="eutmux" ;;
         r) ROTATE_THEME=${TRUE} ;;
         R) replace_legacy_placeholders; exit $? ;;
         t) apply_theme "${OPTARG}" ;;
         T) NEW_THEME_NAME="$OPTARG"; save_dynamic_theme "${NEW_THEME_NAME}"; exit $? ;;
-        *) usage; exit "${EXIT_SUCCESS}" ;;
+        *|?) usage; exit "${EXIT_SUCCESS}" ;;
     esac
 done
 main

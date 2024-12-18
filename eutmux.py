@@ -3,10 +3,16 @@
 import os
 
 import yaml
-from yaml import Loader
+from peelee import color
 
-from const import EMPTY, STYLE_END, STYLE_START, UTF_8
 from utils import get_tmux_option, run_shell_command
+
+UTF_8 = "utf-8"
+EMPTY = ""
+
+# tmux options
+STYLE_START = "#["
+STYLE_END = "]"
 
 
 def get(_dict, key, default):
@@ -60,10 +66,21 @@ class ThemeStatusLeft(dict):
         """Constructor."""
         status_line = theme_config.get("status_line")
         status_left = theme_config.get("status_left")
-        self.fg_format = get(status_left, "fg_format", status_line.get("foreground"))
-        self.bg_format = get(status_left, "bg_format", status_line.get("background"))
-        self.fg_icon = get(status_left, "fg_icon", status_line.get("foreground"))
-        self.bg_icon = get(status_left, "bg_icon", status_line.get("background"))
+        self.fg_format = get(
+            status_left, "fg_format", status_line.get("foreground")
+        )
+        self.bg_format = get(
+            status_left, "bg_format", status_line.get("background")
+        )
+        self.fg_format = color.convert_to_best_light_color(
+            self.fg_format, self.bg_format
+        )
+        self.fg_icon = get(
+            status_left, "fg_icon", status_line.get("foreground")
+        )
+        self.bg_icon = get(
+            status_left, "bg_icon", status_line.get("background")
+        )
         self.fg_decorator = status_left.get(
             "fg_decorator", status_line.get("foreground")
         )
@@ -71,7 +88,9 @@ class ThemeStatusLeft(dict):
             status_left, "bg_decorator", status_line.get("background")
         )
         self.icon = get(status_left, "icon", status_line.get("left_icon"))
-        self.decorator = status_left.get("decorator", status_line.get("left_decorator"))
+        self.decorator = status_left.get(
+            "decorator", status_line.get("left_decorator")
+        )
         self.style = get(status_left, "style", status_line.get("style"))
         super().__init__(
             fg_format=self.fg_format,
@@ -166,10 +185,21 @@ class ThemeStatusRight(dict):
         """Constructor."""
         status_line = theme_config.get("status_line")
         status_right = theme_config.get("status_right")
-        self.fg_format = get(status_right, "fg_format", status_line.get("foreground"))
-        self.bg_format = get(status_right, "bg_format", status_line.get("background"))
-        self.fg_icon = get(status_right, "fg_icon", status_line.get("foreground"))
-        self.bg_icon = get(status_right, "bg_icon", status_line.get("background"))
+        self.fg_format = get(
+            status_right, "fg_format", status_line.get("foreground")
+        )
+        self.bg_format = get(
+            status_right, "bg_format", status_line.get("background")
+        )
+        self.bg_foramt = color.convert_to_best_dark_color(
+            self.bg_format, self.fg_format
+        )
+        self.fg_icon = get(
+            status_right, "fg_icon", status_line.get("foreground")
+        )
+        self.bg_icon = get(
+            status_right, "bg_icon", status_line.get("background")
+        )
         self.fg_decorator = get(
             status_right, "fg_decorator", status_line.get("foreground")
         )
@@ -223,7 +253,9 @@ class Constructor:
             foreground = component.get("fg", self.terminal.get("foreground"))
             background = component.get("bg", self.terminal.get("background"))
             style = component.get("style", self.status_line.get("style"))
-            style_command = self.get_style_command(foreground, background, style, name)
+            style_command = self.get_style_command(
+                foreground, background, style, name
+            )
             if style_command is not None:
                 general.append(style_command)
 
@@ -244,7 +276,6 @@ class Constructor:
             enabled = component.get("enabled", "on")
             if not enabled:
                 continue
-            format = component.get("format", EMPTY)
             icon = component.get("icon", self.theme.status_left.get("icon"))
             decorator = component.get(
                 "decorator", self.theme.status_left.get("decorator")
@@ -255,8 +286,12 @@ class Constructor:
             bg_format = component.get(
                 "bg_format", self.theme.status_left.get("bg_format")
             )
-            fg_icon = component.get("fg_icon", self.theme.status_left.get("fg_icon"))
-            bg_icon = component.get("bg_icon", self.theme.status_left.get("bg_icon"))
+            fg_icon = component.get(
+                "fg_icon", self.theme.status_left.get("fg_icon")
+            )
+            bg_icon = component.get(
+                "bg_icon", self.theme.status_left.get("bg_icon")
+            )
             fg_decorator = component.get(
                 "fg_decorator", self.theme.status_left.get("fg_decorator")
             )
@@ -264,10 +299,11 @@ class Constructor:
                 "bg_decorator", self.theme.status_left.get("bg_decorator")
             )
             style = component.get("style", self.theme.status_left.get("style"))
-            format_style = (
-                f"{self.get_style_for_option(fg_format, bg_format, style, format)}"
+            _format = component.get("format", EMPTY)
+            format_style = f"{self.get_style_for_option(fg_format, bg_format, style, _format)}"
+            icon_style = (
+                f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             )
-            icon_style = f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             decorator_style = f"{self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)}"
             component_value = f"{icon_style}{decorator_style}{format_style}"
             status_left.append(component_value)
@@ -278,10 +314,11 @@ class Constructor:
         """Return tuple with active window and inactive window option strings."""
         windows = {}
         for name, component in self.window.items():
-            style = component.get("style", self.theme.window.get(name).get("style"))
-            icon = component.get("icon", self.theme.window.get(name).get("icon"))
-            decorator = component.get(
-                "decorator", self.theme.window.get(name).get("decorator")
+            style = component.get(
+                "style", self.theme.window.get(name).get("style")
+            )
+            icon = component.get(
+                "icon", self.theme.window.get(name).get("icon")
             )
             window_name = component.get(
                 "window_name", self.theme.window.get(name).get("window_name")
@@ -327,13 +364,13 @@ class Constructor:
             window_index_style = self.get_style_for_option(
                 fg_window_index, bg_window_index, style, window_index
             )
-            icon_style = self.get_style_for_option(fg_icon, bg_icon, style, icon)
+            icon_style = self.get_style_for_option(
+                fg_icon, bg_icon, style, icon
+            )
             decorator_style = self.get_style_for_option(
                 fg_decorator, bg_decorator, style, decorator
             )
-            component_value = (
-                f"{window_style}{window_index_style}{icon_style}{decorator_style} "
-            )
+            component_value = f"{window_style}{window_index_style}{icon_style}{decorator_style} "
             windows[name] = component_value
 
         return windows
@@ -345,7 +382,6 @@ class Constructor:
             enabled = options.get("enabled", "on")
             if not enabled:
                 continue
-            format = options.get("format", EMPTY)
             icon = options.get("icon", self.theme.status_right.get("icon"))
             decorator = options.get(
                 "decorator", self.theme.status_right.get("decorator")
@@ -356,8 +392,12 @@ class Constructor:
             bg_format = options.get(
                 "bg_format", self.theme.status_right.get("bg_format")
             )
-            fg_icon = options.get("fg_icon", self.theme.status_right.get("fg_icon"))
-            bg_icon = options.get("bg_icon", self.theme.status_right.get("bg_icon"))
+            fg_icon = options.get(
+                "fg_icon", self.theme.status_right.get("fg_icon")
+            )
+            bg_icon = options.get(
+                "bg_icon", self.theme.status_right.get("bg_icon")
+            )
             fg_decorator = options.get(
                 "fg_decorator", self.theme.status_right.get("fg_decorator")
             )
@@ -365,10 +405,11 @@ class Constructor:
                 "bg_decorator", self.theme.status_right.get("bg_decorator")
             )
             style = options.get("style", self.theme.status_right.get("style"))
-            format_style = (
-                f"{self.get_style_for_option(fg_format, bg_format, style, format)}"
+            _format = options.get("format", EMPTY)
+            format_style = f"{self.get_style_for_option(fg_format, bg_format, style, _format)}"
+            icon_style = (
+                f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             )
-            icon_style = f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
             decorator_style = f"{self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)}"
             component_value = f"{decorator_style}{icon_style}{format_style}"
             status_right.append(component_value)
@@ -397,7 +438,27 @@ class Constructor:
         return f"{_style}{_default_style}"
 
     def get_style_command(self, foreground, background, style, style_name):
+        """Return tmux set style option command.
+
+        Parameters:
+            foreground: The foreground color.
+            background: The background color.
+            style: The style.
+            style_name: The name of the style.
+            e.g. status-style, window-status-current-format, window-status-format
+
+        Return:
+            The tmux command string to set the style.
+            Example:
+            set-option -gq status-style 'fg=green,bg=black,italics'
+        """
         style_content = None
+        has_foreground = foreground and foreground.strip() != EMPTY
+        has_background = background and background.strip() != EMPTY
+        if has_foreground and has_background:
+            foreground = color.convert_to_best_light_color(
+                foreground, background
+            )
         if foreground and foreground.strip() != EMPTY:
             style_content = f"fg={foreground},"
         if background and background.strip() != EMPTY:
@@ -419,15 +480,21 @@ class Constructor:
         window = self.produce_window()
         status_right = self.produce_status_right()
 
-        status_line_cmd = self.produce_option_command("status-style", status_line)
-        status_left_cmd = self.produce_option_command("status-left", status_left)
+        status_line_cmd = self.produce_option_command(
+            "status-style", status_line
+        )
+        status_left_cmd = self.produce_option_command(
+            "status-left", status_left
+        )
         active_window_cmd = self.produce_option_command(
             "window-status-current-format", window["active"]
         )
         inactive_window_cmd = self.produce_option_command(
             "window-status-format", window["inactive"]
         )
-        status_right_cmd = self.produce_option_command("status-right", status_right)
+        status_right_cmd = self.produce_option_command(
+            "status-right", status_right
+        )
         general_commands = self.produce_general_options_commands()
         option_commands = []
         option_commands.append(general_commands)
@@ -439,11 +506,13 @@ class Constructor:
         return option_commands
 
 
-def eutmux(config_file="eutmux.yaml"):
+def init(config_file="eutmux.yaml"):
     """Load config file, overwrite options by value from tmux.conf."""
 
     # user can set customized config file under EUTMUX_CONFIG_HOME
-    xdg_config_home = os.getenv("XDG_CONFIG_HOME", f'{os.getenv("HOME")}/.config')
+    xdg_config_home = os.getenv(
+        "XDG_CONFIG_HOME", f'{os.getenv("HOME")}/.config'
+    )
     eutmux_config_home = f"{xdg_config_home}/eutmux"
     _config_file = f"{eutmux_config_home}/{config_file}"
     if os.path.exists(_config_file):
@@ -454,17 +523,19 @@ def eutmux(config_file="eutmux.yaml"):
     eutmux_dynamic_config_file_name = get_tmux_option(
         "@eutmux_dynamic_config_file_name", config_file
     )
-    eutmux_workdir = os.getenv("EUTMUX_WORKDIR")
+    eutmux_workdir = os.getenv("EUTMUX_WORKDIR", os.curdir)
     os.chdir(eutmux_workdir)
     with open(eutmux_dynamic_config_file_name, "r", encoding=UTF_8) as config:
-        eutmux = yaml.load(config, Loader=Loader)
+        eutmux = yaml.safe_load(config)
 
     # if specified theme doesn't have corresponding file, then fall-back to
     # the default theme - eutmux theme.
     theme_name = eutmux.get("theme", "eutmux")
 
     # if dynamic theme is set, then use dynamic theme.
-    dynamic_theme_name = get_tmux_option("@eutmux_dynamic_theme_name", theme_name)
+    dynamic_theme_name = get_tmux_option(
+        "@eutmux_dynamic_theme_name", theme_name
+    )
     theme_filename = f"{dynamic_theme_name}.theme.yaml"
 
     # if dynamic theme file doesn't exist under project, then check if it
@@ -475,19 +546,19 @@ def eutmux(config_file="eutmux.yaml"):
             theme_filename = f"{eutmux_config_home}/{theme_filename}"
         else:
             theme_filename = "eutmux.theme.yaml"
-
     with open(theme_filename, "r", encoding=UTF_8) as theme_file:
-        theme_config = yaml.load(theme_file, Loader=Loader)
+        theme_config = yaml.safe_load(theme_file)
         theme = Theme(theme_config)
 
         constructor = Constructor(eutmux, theme)
         set_option_commands = constructor.produce_option_commands()
+
     return ";".join(set_option_commands)
 
 
 def main():
     """Run."""
-    set_option_commands = eutmux()
+    set_option_commands = init()
     if set_option_commands:
         for command in set_option_commands.split(";"):
             run_shell_command(f"tmux {command}")

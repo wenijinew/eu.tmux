@@ -90,7 +90,7 @@ More bind-keys are set by default as follows:
 
 ## Configuration File
 
-After installation, the default configuration file was copied to `$XDG_CONFIG_HOME/eutmux/eutmux.yaml`. In the configuration file, user can do customization.
+After installation, the default configuration file was copied to `$XDG_CONFIG_HOME/eutmux/eutmux.yaml`. In the configuration file (`$XDG_CONFIG_HOME/eutmux/eutmux.yaml`), user can do customization.
 
 * _theme_: theme file name without extension(`.theme.yaml`)
 * _general/options_: any kinds of Tmux options (but only those with simple values are recommended to put here). `key` is the option name, `value` is the option value. For switch options, use `true` or `false`. `on` or `off`, "on" or "off" are all supported.
@@ -104,6 +104,8 @@ After installation, the default configuration file was copied to `$XDG_CONFIG_HO
 
 Theme file is to decouple _icon_, _decorator_, _style_ and _color_ configurations from the main configuration file. Refer to the [Template Theme File](template.theme.yaml) for details. The [Template Theme File](template.theme.yaml) is mainly used for [Dynamic Theme](#dynamic-theme) generation. All color values in the [Template Theme File](template.theme.yaml) are [Color Identity](#color-identity) such as `C_1_3` which will be replaced with specific color HEX value such as `#ff7834` when [Dynamic Theme](#dynamic-theme) is generated. Therefore, in generated [Dynamic Theme](#dynamic-theme) file, all color values are HEX value and not color identity anymore.
 
+_Note_: User can have their own Template Theme File. The customized Template Theme File name should be configured in `$XDG_CONFIG_HOME/eutmux/eutmux.yaml` by `general\options\_eutmux_template_name`.
+The customized Template Theme File should be located in the eutmux configuration root directory `$XDG_CONFIG_HOME/eutmux/`.
 
 ### Dynamic Theme
 
