@@ -135,7 +135,7 @@ replace_legacy_placeholders(){
 generate_palette_colors(){
     local color_name min_color max_color dark_base_color
     # dark_base_color doesn't have default value but has higher priority than color_name
-    color_name="${1:-color.ColorName.RANDOM}"
+    color_name="${1:-color.ColorName.BLUE}"
     min_color="${2:-20}"
     max_color="${3:-40}"
     dark_base_color="${4:-${DARK_BASE_COLOR}}" # elite-dark-blue: #1a1b26, github-dimmed: #23272e
