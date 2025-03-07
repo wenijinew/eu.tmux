@@ -127,7 +127,7 @@ replace_legacy_placeholders(){
     done
 }
 
-generate_palette_colors(){
+_generate_palette_colors(){
     local color_name min_color max_color dark_base_color
     # dark_base_color doesn't have default value but has higher priority than color_name
     color_name="${1:-color.ColorName.BLUE}"
@@ -157,6 +157,12 @@ generate_palette_colors(){
     cat ${temp_json} | jq '.|keys_unsorted[]' > ${tf1}
     cat ${temp_json} | jq '.[]' | tr 'A-Z' 'a-z' > ${tf2}
     paste -d':' ${tf1} ${tf2} > $DYNAMIC_PALETTE_FILENAME
+}
+generate_palette_colors(){
+    _generate_palette_colors "${1:-color.ColorName.RANDOM}" "${2:-30}" "${3:-60}" "${4:-${DARK_BASE_COLOR}}" "${5:-${FALSE}}" "${6:-${TRUE}}" "${7:-60}" "${8:-80}" "${9:-7}" "${10:-7}" "${11:-60}" "${12:-60}"
+}
+generate_palette_colors_old(){
+    _generate_palette_colors
 }
 create_dynamic_theme_file(){
     dynamic_theme_file_name="${DYNAMIC_THEME_NAME}${THEME_FILE_EXTENSION}"
@@ -200,6 +206,7 @@ replace_color(){
         color_value="$(echo "${_color}" | cut -d':' -f2)"
         sed -i "s/${color_name}/${color_value}/g" "${target_file}"
     done < "${temp_palette_file}"
+    cp "${temp_palette_file}" "${_DIR}/$(basename ${temp_palette_file})-used.palette"
 }
 
 show_all_themes(){
