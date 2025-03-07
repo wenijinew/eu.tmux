@@ -48,6 +48,7 @@ setup(){
     TMUX_COMMANDS_FILENAME="tmux_commands.txt"
     DEFAULT_PALETTE_FILENAME="default_palette.txt"
     DYNAMIC_PALETTE_FILENAME="dynamic_palette.txt"
+    GIVEN_PALETTE_FILENAME=""
     DEFAULT_TEMPLATE_THEME_FILENAME="template${THEME_FILE_EXTENSION}"
     # the option is configured in eutmux.yaml config file, and it's set in the last time theme and config generation by eutmux.py module
     # therefore, from 2nd time theme setting, this option could be visible and used.
@@ -126,12 +127,6 @@ replace_legacy_placeholders(){
     done
 }
 
-# call python module to generate palette file
-# generate_palette_colors(){
-#     palette=$(python3 -c "import peelee; palette = palette.generate_palette(); print(palette)")
-#     echo "$palette" | grep -iEo 'C(_[[:digit:]]{1,}){2}\:#[[:alnum:]]{6}' > "${DYNAMIC_PALETTE_FILENAME}"
-# }
-
 generate_palette_colors(){
     local color_name min_color max_color dark_base_color
     # dark_base_color doesn't have default value but has higher priority than color_name
@@ -156,9 +151,11 @@ generate_palette_colors(){
     fi
     tf1="$(mktemp)"
     tf2="$(mktemp)"
-    echo "$palette" | grep -iEo '[CDL]_([[:digit:]]{2}|[RGBYCVOA])_[[:digit:]]{2}' > "${tf1}"
-    # tmux only accept lower case color code
-    echo "$palette" | grep -iEo '#[[:alnum:]]{6,}' | tr 'A-Z' 'a-z' > "${tf2}"
+    temp_json="$(mktemp)"
+    echo "$palette" > ${temp_json}
+    sed -i "s/'/\"/g" ${temp_json}
+    cat ${temp_json} | jq '.|keys_unsorted[]' > ${tf1}
+    cat ${temp_json} | jq '.[]' | tr 'A-Z' 'a-z' > ${tf2}
     paste -d':' ${tf1} ${tf2} > $DYNAMIC_PALETTE_FILENAME
 }
 create_dynamic_theme_file(){
@@ -168,7 +165,7 @@ create_dynamic_theme_file(){
        rm -f "${dynamic_theme_file_name}"
     fi
     cp "${TEMPLATE_THEME_FILENAME}" "${dynamic_theme_file_name}"
-    replace_color "${dynamic_theme_file_name}"
+    replace_color "${_DIR}/${dynamic_theme_file_name}"
 }
 
 create_dynamic_config_file(){
@@ -185,23 +182,24 @@ create_dynamic_config_file(){
     fi
 
     cp "${config_file}" "${eutmux_dynamic_config_file_name}"
-    replace_color "${eutmux_dynamic_config_file_name}"
+    replace_color "${_DIR}/${eutmux_dynamic_config_file_name}"
 }
 
 replace_color(){
     target_file="${1}"
-    palette_file="${2:-${PALETTE_FILENAME}}"
+    palette_file="${PALETTE_FILENAME}"
+    if [[ "." == "$(dirname ${palette_file})" ]];then
+        palette_file="${_DIR}/${PALETTE_FILENAME}"
+    fi
     t="$(mktemp)"
-    grep -iEo 'C(_[[:digit:]]{1,}){2}' ${target_file} > "${t}"
+    temp_palette_file="$(mktemp)"
+    grep -iEo '"?[CDL]_(([0-9]{2})|([A-Z]{2}))_[0-9]{2}"?' ${target_file} > "${t}"
+    grep -f "${t}" "${palette_file}" > "${temp_palette_file}"
     while read -r _color;do
         color_name="$(echo "${_color}" | cut -d':' -f1)"
-        grep -q ${color_name} "${t}"
-        if [ $? -ne $TRUE ];then
-            continue
-        fi
         color_value="$(echo "${_color}" | cut -d':' -f2)"
         sed -i "s/${color_name}/${color_value}/g" "${target_file}"
-    done < "${_DIR}/${palette_file}"
+    done < "${temp_palette_file}"
 }
 
 show_all_themes(){
@@ -289,9 +287,15 @@ main(){
 
     # create dynamic theme and config file
     if [ "$CREATE_DYNMIC_THEME" -eq $TRUE ];then
-       PALETTE_FILENAME=${DYNAMIC_PALETTE_FILENAME}
-       generate_palette_colors
-       create_dynamic_theme_file
+        # if given palette file name is not empty, then use it
+        # else, generate dynamic palette file
+        if [[ "" != "${GIVEN_PALETTE_FILENAME}" ]];then
+            PALETTE_FILENAME=${GIVEN_PALETTE_FILENAME}
+        else
+            PALETTE_FILENAME=${DYNAMIC_PALETTE_FILENAME}
+            generate_palette_colors
+        fi
+        create_dynamic_theme_file
     elif [ -n "${THEME_NAME}" ];then
         tmux set-option -gq "${TMUX_OPTION_NAME_DYNAMIC_THEME}" "${THEME_NAME}"
     elif [ "${ROTATE_THEME}" -eq ${TRUE} ];then
@@ -351,12 +355,13 @@ usage(){
 }
 
 setup
-while getopts "ac:dDrRt:T:" opt; do
+while getopts "ac:dDp:rRt:T:" opt; do
     case $opt in
         a) show_all_themes; exit $? ;;
         c) DARK_BASE_COLOR="${OPTARG}" ;;
         d) CREATE_DYNMIC_THEME=${TRUE} ;;
         D) THEME_NAME="eutmux" ;;
+        p) GIVEN_PALETTE_FILENAME="${OPTARG}" ;;
         r) ROTATE_THEME=${TRUE} ;;
         R) replace_legacy_placeholders; exit $? ;;
         t) apply_theme "${OPTARG}" ;;
