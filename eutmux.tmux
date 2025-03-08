@@ -44,6 +44,8 @@ PLACE_HOLDERS=(
 
 setup(){
     # constants
+    COLOR_GRADATIONS_DIVISION_RATE=0.9
+    REVERSED_COLOR_OFFSET_RATE=0.5
     THEME_FILE_EXTENSION=".theme.yaml"
     TMUX_COMMANDS_FILENAME="tmux_commands.txt"
     DEFAULT_PALETTE_FILENAME="default_palette.txt"
@@ -142,12 +144,14 @@ _generate_palette_colors(){
     dark_colors_total="${10:-3}"
     colors_gradations="${11:-15}"
     dark_colors_gradations="${12:-18}"
+    color_gradations_division_rate=${13:-${COLOR_GRADATIONS_DIVISION_RATE}}
+    reversed_color_offset_rate=${14:-${REVERSED_COLOR_OFFSET_RATE}}
 
     PYTHON3="python3"
     if [ -n "$dark_base_color" ];then
-        palette=$($PYTHON3 -c "from peelee import peelee, color, color_utils; (h,l,s) = color_utils.hex2hls('$dark_base_color'); palette = peelee.Palette(colors_total=$colors_total, dark_colors_total=$dark_colors_total,colors_gradations=$colors_gradations,dark_colors_gradations_total=$dark_colors_gradations, colors_min=$token_min_color,colors_max=$token_max_color,dark_base_color='$dark_base_color', dark_colors_hue=h, dark_colors_saturation=s, dark_colors_lightness=l).generate_palette(); print(palette)")
+        palette=$($PYTHON3 -c "from peelee import peelee, color, color_utils; (h,l,s) = color_utils.hex2hls('$dark_base_color'); palette = peelee.Palette(colors_total=$colors_total, dark_colors_total=$dark_colors_total,colors_gradations=$colors_gradations,dark_colors_gradations_total=$dark_colors_gradations, colors_min=$token_min_color,colors_max=$token_max_color,dark_base_color='$dark_base_color', dark_colors_hue=h, dark_colors_saturation=s, dark_colors_lightness=l, color_gradations_division_rate=${color_gradations_division_rate}, reversed_color_offset_rate=${reversed_color_offset_rate}).generate_palette(); print(palette)")
     else
-        palette=$($PYTHON3 -c "from peelee import peelee, color, color_utils; dark_random_color=peelee.generate_random_hex_color_code(color_name=$color_name, min_color=$min_color, max_color=$max_color); (h,l,s) = color_utils.hex2hls(dark_random_color); palette = peelee.Palette(colors_total=$colors_total, dark_colors_total=$dark_colors_total, colors_gradations=$colors_gradations,dark_colors_gradations_total=$dark_colors_gradations, colors_min=$token_min_color,colors_max=$token_max_color,dark_base_color=dark_random_color, dark_colors_hue=h, dark_colors_saturation=s, dark_colors_lightness=l).generate_palette(); print(palette)")
+        palette=$($PYTHON3 -c "from peelee import peelee, color, color_utils; dark_random_color=peelee.generate_random_hex_color_code(color_name=$color_name, min_color=$min_color, max_color=$max_color); (h,l,s) = color_utils.hex2hls(dark_random_color); palette = peelee.Palette(colors_total=$colors_total, dark_colors_total=$dark_colors_total, colors_gradations=$colors_gradations,dark_colors_gradations_total=$dark_colors_gradations, colors_min=$token_min_color,colors_max=$token_max_color,dark_base_color=dark_random_color, dark_colors_hue=h, dark_colors_saturation=s, dark_colors_lightness=l, color_gradations_division_rate=${color_gradations_division_rate}, reversed_color_offset_rate=${reversed_color_offset_rate}).generate_palette(); print(palette)")
     fi
     tf1="$(mktemp)"
     tf2="$(mktemp)"
@@ -159,7 +163,7 @@ _generate_palette_colors(){
     paste -d':' ${tf1} ${tf2} > $DYNAMIC_PALETTE_FILENAME
 }
 generate_palette_colors(){
-    _generate_palette_colors "${1:-color.ColorName.RANDOM}" "${2:-30}" "${3:-60}" "${4:-${DARK_BASE_COLOR}}" "${5:-${FALSE}}" "${6:-${TRUE}}" "${7:-60}" "${8:-80}" "${9:-7}" "${10:-7}" "${11:-60}" "${12:-60}"
+    _generate_palette_colors "${1:-color.ColorName.RANDOM}" "${2:-15}" "${3:-60}" "${4:-${DARK_BASE_COLOR}}" "${5:-${FALSE}}" "${6:-${TRUE}}" "${7:-60}" "${8:-80}" "${9:-7}" "${10:-7}" "${11:-60}" "${12:-60}"
 }
 generate_palette_colors_old(){
     _generate_palette_colors
@@ -297,11 +301,10 @@ main(){
         # if given palette file name is not empty, then use it
         # else, generate dynamic palette file
         if [[ "" != "${GIVEN_PALETTE_FILENAME}" ]];then
-            PALETTE_FILENAME=${GIVEN_PALETTE_FILENAME}
-        else
-            PALETTE_FILENAME=${DYNAMIC_PALETTE_FILENAME}
-            generate_palette_colors
+            DARK_BASE_COLOR=$(grep "C_14_53" "${GIVEN_PALETTE_FILENAME}" | cut -d':' -f2 | sed -e 's/\"//g')
         fi
+        PALETTE_FILENAME=${DYNAMIC_PALETTE_FILENAME}
+        generate_palette_colors
         create_dynamic_theme_file
     elif [ -n "${THEME_NAME}" ];then
         tmux set-option -gq "${TMUX_OPTION_NAME_DYNAMIC_THEME}" "${THEME_NAME}"
