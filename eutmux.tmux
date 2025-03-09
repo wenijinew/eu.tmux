@@ -169,7 +169,7 @@ _generate_palette_colors(){
     cp -f "${DYNAMIC_PALETTE_FILENAME}" "${CURRENT_PALETTE_FILEPATH}"
 }
 generate_palette_colors(){
-    _generate_palette_colors "${1:-color.ColorName.RANDOM}" "${2:-15}" "${3:-60}" "${4:-${DARK_BASE_COLOR}}" "${5:-${FALSE}}" "${6:-${TRUE}}" "${7:-60}" "${8:-80}" "${9:-7}" "${10:-7}" "${11:-60}" "${12:-60}"
+    _generate_palette_colors "${1:-color.ColorName.RANDOM}" "${2:-25}" "${3:-50}" "${4:-${DARK_BASE_COLOR}}" "${5:-${FALSE}}" "${6:-${TRUE}}" "${7:-60}" "${8:-80}" "${9:-7}" "${10:-7}" "${11:-60}" "${12:-60}"
 }
 generate_palette_colors_old(){
     _generate_palette_colors
@@ -209,6 +209,7 @@ replace_color(){
     fi
     t="$(mktemp)"
     temp_palette_file="$(mktemp)"
+    trap 'rm -f "${t}" "${temp_palette_file}"' EXIT
     grep -iEo '"?[CDL]_(([0-9]{2})|([A-Z]{2}))_[0-9]{2}"?' ${target_file} > "${t}"
     grep -f "${t}" "${palette_file}" > "${temp_palette_file}"
     while read -r _color;do
