@@ -47,6 +47,7 @@ setup(){
     COLOR_GRADATIONS_DIVISION_RATE=0.9
     REVERSED_COLOR_OFFSET_RATE=0.5
     THEME_FILE_EXTENSION=".theme.yaml"
+    PALETTE_FILE_EXTENSION=".palette"
     TMUX_COMMANDS_FILENAME="tmux_commands.txt"
     DEFAULT_PALETTE_FILENAME="default_palette.txt"
     DYNAMIC_PALETTE_FILENAME="dynamic_palette.txt"
@@ -100,8 +101,12 @@ setup(){
     # if config file not in $EUTMUX_CONFIG_HOME, then copy the default config file to $EUTMUX_CONFIG_HOME
     EUTMUX_CONFIG_FILE="${EUTMUX_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
     if [ ! -e "${EUTMUX_CONFIG_FILE}" ];then
-       cp "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
+       cp -f "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
     fi
+
+    # current palette file name
+    CURRENT_PALETTE_FILENAME="current${PALETTE_FILE_EXTENSION}"
+    CURRENT_PALETTE_FILEPATH="${EUTMUX_CONFIG_HOME}/${CURRENT_PALETTE_FILENAME}"
 }
 
 teardown(){
@@ -161,6 +166,7 @@ _generate_palette_colors(){
     cat ${temp_json} | jq '.|keys_unsorted[]' > ${tf1}
     cat ${temp_json} | jq '.[]' | tr 'A-Z' 'a-z' > ${tf2}
     paste -d':' ${tf1} ${tf2} > $DYNAMIC_PALETTE_FILENAME
+    cp -f "${DYNAMIC_PALETTE_FILENAME}" "${CURRENT_PALETTE_FILEPATH}"
 }
 generate_palette_colors(){
     _generate_palette_colors "${1:-color.ColorName.RANDOM}" "${2:-15}" "${3:-60}" "${4:-${DARK_BASE_COLOR}}" "${5:-${FALSE}}" "${6:-${TRUE}}" "${7:-60}" "${8:-80}" "${9:-7}" "${10:-7}" "${11:-60}" "${12:-60}"
@@ -174,7 +180,7 @@ create_dynamic_theme_file(){
     if [ -e "${dynamic_theme_file_name}" ];then
        rm -f "${dynamic_theme_file_name}"
     fi
-    cp "${TEMPLATE_THEME_FILENAME}" "${dynamic_theme_file_name}"
+    cp -f "${TEMPLATE_THEME_FILENAME}" "${dynamic_theme_file_name}"
     replace_color "${_DIR}/${dynamic_theme_file_name}"
 }
 
@@ -188,10 +194,10 @@ create_dynamic_config_file(){
     # if config file not in $EUTMUX_CONFIG_HOME, then copy the default config file to $EUTMUX_CONFIG_HOME
     config_file="${EUTMUX_CONFIG_HOME}/${DEFAULT_CONFIG_FILENAME}"
     if [ ! -e "${config_file}" ];then
-       cp "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
+       cp -f "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
     fi
 
-    cp "${config_file}" "${eutmux_dynamic_config_file_name}"
+    cp -f "${config_file}" "${eutmux_dynamic_config_file_name}"
     replace_color "${_DIR}/${eutmux_dynamic_config_file_name}"
 }
 
@@ -210,7 +216,6 @@ replace_color(){
         color_value="$(echo "${_color}" | cut -d':' -f2)"
         sed -i "s/${color_name}/${color_value}/g" "${target_file}"
     done < "${temp_palette_file}"
-    cp "${temp_palette_file}" "${_DIR}/$(basename ${temp_palette_file})-used.palette"
 }
 
 show_all_themes(){
@@ -237,7 +242,8 @@ save_dynamic_theme(){
     current_dynamic_theme=$(tmux show-option -gqv "${TMUX_OPTION_NAME_DYNAMIC_THEME}")
     current_dynamic_theme_filename="${current_dynamic_theme}${THEME_FILE_EXTENSION}"
     if [ -e "${current_dynamic_theme_filename}" ];then
-       cp "${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
+       cp -f "${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
+       cp -f "${CURRENT_PALETTE_FILEPATH}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${PALETTE_FILE_EXTENSION}"
        if [ $? -eq $TRUE ];then
           tmux display-message -d "${DELAY}" "New theme saved: ${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
        fi
@@ -287,7 +293,7 @@ main(){
     fi
     if [[ $is_installed -ne $TURE || $is_latest -ne $TRUE ]];then
        env pip install -q -r "${_DIR}/requirements.txt" 2>/dev/null
-       cp "${_DIR}/requirements.txt" "${_DIR}/.requirements.installed.txt"
+       cp -f "${_DIR}/requirements.txt" "${_DIR}/.requirements.installed.txt"
     fi
     if [ $? -ne $TRUE ];then
        _warn "Python Environment:\t Dependencies Installation Failure."
@@ -308,6 +314,7 @@ main(){
         create_dynamic_theme_file
     elif [ -n "${THEME_NAME}" ];then
         tmux set-option -gq "${TMUX_OPTION_NAME_DYNAMIC_THEME}" "${THEME_NAME}"
+        PALETTE_FILENAME="${EUTMUX_CONFIG_HOME}/${THEME_NAME}${PALETTE_FILE_EXTENSION}"
     elif [ "${ROTATE_THEME}" -eq ${TRUE} ];then
         local themes found_current_dynamic_theme new_dynamic_theme first_theme
         themes="$(show_all_themes)"
@@ -341,6 +348,12 @@ main(){
     else
         tmux set-option -gq "${TMUX_OPTION_NAME_DYNAMIC_THEME}" "${current_dynamic_theme}"
     fi
+    # bug: if rotate or use default theme, no change to generate the
+    # corresponding palette file, and the defult palette is used which might not
+    # for the target theme, so the palette file must be saved for each specific
+    # should not use _dir as the place to save palette or theme or command
+    # files, use should configure one place to save them and configure the
+    # environment variable for the place. no, EUTMUX_CONFIG_HOME should used.
     create_dynamic_config_file
 
     # set environment variables
