@@ -44,15 +44,21 @@ PLACE_HOLDERS=(
 
 setup(){
     # constants
+    FORCE_SAVE_THEME=${FALSE}
+
     COLOR_GRADATIONS_DIVISION_RATE=0.9
     REVERSED_COLOR_OFFSET_RATE=0.5
+
     THEME_FILE_EXTENSION=".theme.yaml"
     PALETTE_FILE_EXTENSION=".palette"
+    CMD_FILE_EXTENSION=".cmd"
+
     TMUX_COMMANDS_FILENAME="tmux_commands.txt"
     DEFAULT_PALETTE_FILENAME="default_palette.txt"
     DYNAMIC_PALETTE_FILENAME="dynamic_palette.txt"
     GIVEN_PALETTE_FILENAME=""
     DEFAULT_TEMPLATE_THEME_FILENAME="template${THEME_FILE_EXTENSION}"
+
     # the option is configured in eutmux.yaml config file, and it's set in the last time theme and config generation by eutmux.py module
     # therefore, from 2nd time theme setting, this option could be visible and used.
     eutmux_template_name=$(tmux show-option -gqv "@eutmux_template_name")
@@ -240,11 +246,15 @@ save_dynamic_theme(){
        exit $?
     fi
     new_theme_name="${new_theme_name/%%${THEME_FILE_EXTENSION}*/}"
+
     current_dynamic_theme=$(tmux show-option -gqv "${TMUX_OPTION_NAME_DYNAMIC_THEME}")
     current_dynamic_theme_filename="${current_dynamic_theme}${THEME_FILE_EXTENSION}"
+    current_dynamic_theme_cmd_filename="${current_dynamic_theme}${CMD_FILE_EXTENSION}"
+
     if [ -e "${current_dynamic_theme_filename}" ];then
        cp -f "${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
        cp -f "${CURRENT_PALETTE_FILEPATH}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${PALETTE_FILE_EXTENSION}"
+       cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_theme_cmd_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${CMD_FILE_EXTENSION}"
        if [ $? -eq $TRUE ];then
           tmux display-message -d "${DELAY}" "New theme saved: ${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
        fi
@@ -351,9 +361,9 @@ main(){
     fi
     # theme name
     theme_name=$(tmux show-option -gqv "${TMUX_OPTION_NAME_DYNAMIC_THEME}")
-    theme_cmd_filename="${EUTMUX_CONFIG_HOME}/${theme_name}.cmd"
+    theme_cmd_filename="${EUTMUX_CONFIG_HOME}/${theme_name}${CMD_FILE_EXTENSION}"
 
-    if [ ! -e ${theme_cmd_filename} ];then
+    if [[ ( ! -e ${theme_cmd_filename} ) || ( ${FORCE_SAVE_THEME} -eq ${TRUE} ) ]];then
         # bug: if rotate or use default theme, no change to generate the
         # corresponding palette file, and the defult palette is used which might not
         # for the target theme, so the palette file must be saved for each specific
@@ -386,19 +396,22 @@ usage(){
 }
 
 setup
-while getopts "ac:dDp:rRt:T:" opt; do
+while getopts "ac:dDfp:rRt:T:" opt; do
     case $opt in
         a) show_all_themes; exit $? ;;
         c) DARK_BASE_COLOR="${OPTARG}" ;;
-        d) CREATE_DYNMIC_THEME=${TRUE} ;;
+        d) CREATE_DYNMIC_THEME=${TRUE}; FORCE_SAVE_THEME=${TRUE} ;;
         D) THEME_NAME="eutmux" ;;
+        f) FORCE_SAVE_THEME=${TRUE} ;;
         p) GIVEN_PALETTE_FILENAME="${OPTARG}" ;;
         r) ROTATE_THEME=${TRUE} ;;
         R) replace_legacy_placeholders; exit $? ;;
         t) apply_theme "${OPTARG}" ;;
-        T) NEW_THEME_NAME="$OPTARG"; save_dynamic_theme "${NEW_THEME_NAME}"; exit $? ;;
+        T) NEW_THEME_NAME="$OPTARG"; save_dynamic_theme "${NEW_THEME_NAME}"; exit ;;
         *|?) usage; exit "${EXIT_SUCCESS}" ;;
     esac
 done
+set -x
 main
+set +x
 teardown
