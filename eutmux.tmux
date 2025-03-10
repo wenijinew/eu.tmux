@@ -95,7 +95,6 @@ setup(){
     NEW_THEME_NAME=""
     ROTATE_THEME=${FALSE}
     CREATE_DYNMIC_THEME=${FALSE}
-    DARK_BASE_COLOR="" #23272e
 
     # set working directory to eutmux project path
     pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
@@ -109,6 +108,9 @@ setup(){
     if [ ! -e "${EUTMUX_CONFIG_FILE}" ];then
        cp -f "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
     fi
+    set -x
+    DARK_BASE_COLOR="$(grep '^terminal:' -A 2 ${EUTMUX_CONFIG_FILE} | grep bg | sed -e 's/\s\+//g' -e 's/\"//g' | cut -d':' -f2)"
+    set +x
 
     # current palette file name
     CURRENT_PALETTE_FILENAME="current${PALETTE_FILE_EXTENSION}"
@@ -427,7 +429,5 @@ while getopts "ac:dDfhp:rRt:T:" opt; do
         *|h|?) usage; exit "${EXIT_SUCCESS}" ;;
     esac
 done
-set -x
 main
-set +x
 teardown
