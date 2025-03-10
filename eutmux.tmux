@@ -349,28 +349,35 @@ main(){
     else
         tmux set-option -gq "${TMUX_OPTION_NAME_DYNAMIC_THEME}" "${current_dynamic_theme}"
     fi
-    # bug: if rotate or use default theme, no change to generate the
-    # corresponding palette file, and the defult palette is used which might not
-    # for the target theme, so the palette file must be saved for each specific
-    # should not use _dir as the place to save palette or theme or command
-    # files, use should configure one place to save them and configure the
-    # environment variable for the place. no, EUTMUX_CONFIG_HOME should used.
-    create_dynamic_config_file
+    # theme name
+    theme_name=$(tmux show-option -gqv "${TMUX_OPTION_NAME_DYNAMIC_THEME}")
+    theme_cmd_filename="${EUTMUX_CONFIG_HOME}/${theme_name}.cmd"
 
-    # set environment variables
-    prepend_path "${_DIR}" "${EUTMUX_CONFIG_HOME}"
-    prepend_pythonpath "${_DIR}"
-    export EUTMUX_WORKDIR="${_DIR}"
-    export PYTHONUTF8=1
-    find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
-    tmux set-environment -g 'EUTMUX_WORKDIR' "${_DIR}"
-    tmux set-environment -g 'PATH' "${PATH}"
-    tmux set-environment -g 'PYTHONPATH' "${PYTHONPATH}"
+    if [ ! -e ${theme_cmd_filename} ];then
+        # bug: if rotate or use default theme, no change to generate the
+        # corresponding palette file, and the defult palette is used which might not
+        # for the target theme, so the palette file must be saved for each specific
+        # should not use _dir as the place to save palette or theme or command
+        # files, use should configure one place to save them and configure the
+        # environment variable for the place. no, EUTMUX_CONFIG_HOME should used.
+        create_dynamic_config_file
 
-    # generate and execute tmux commands
-    tmux_commands="$(python3 -c "import eutmux; tmux_commands = eutmux.init(); print(tmux_commands)")"
-    echo "${tmux_commands}" | sed -e 's/True/on/g' | sed -e 's/False/off/g' | tr ';' '\n' > "${TMUX_COMMANDS_FILENAME}"
-    tmux source "${TMUX_COMMANDS_FILENAME}"
+        # set environment variables
+        prepend_path "${_DIR}" "${EUTMUX_CONFIG_HOME}"
+        prepend_pythonpath "${_DIR}"
+        export EUTMUX_WORKDIR="${_DIR}"
+        export PYTHONUTF8=1
+        find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
+        tmux set-environment -g 'EUTMUX_WORKDIR' "${_DIR}"
+        tmux set-environment -g 'PATH' "${PATH}"
+        tmux set-environment -g 'PYTHONPATH' "${PYTHONPATH}"
+
+        # generate and execute tmux commands
+        tmux_commands="$(python3 -c "import eutmux; tmux_commands = eutmux.init(); print(tmux_commands)")"
+        echo "${tmux_commands}" | sed -e 's/True/on/g' | sed -e 's/False/off/g' | tr ';' '\n' > "${theme_cmd_filename}"
+    fi
+
+    tmux source "${theme_cmd_filename}"
 }
 
 
