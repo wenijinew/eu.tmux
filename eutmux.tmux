@@ -392,11 +392,27 @@ main(){
 
 
 usage(){
-    echoh "./eutmux.tmux [-a] [-d] [-D] [-r] [-R] [-t] [-T new-theme-name]"
+    echoh "Easy to use Tmux theme (generation tool)"
+    echoh
+    echoh "./eutmux.tmux [-a] [-c] [-d] [-D] [-f] [-p] [-r] [-R] [-t] [-T new-theme-name]"
+    echoh
+    echoh "  -a: show all themes"
+    echoh "  -c: dark base color for the new theme palette"
+    echoh "  -d: create dynamic theme and force save theme"
+    echoh "  -D: reset to default theme - eutmux theme"
+    echoh "  -f: force to save theme files"
+    echoh "  -p: palette file path"
+    echoh "  -r: rotate the existing themes"
+    echoh "  -R: replace legacy placeholders. (not used anymore)"
+    echoh "  -t: apply the given theme"
+    echoh "  -T: save to the target theme name"
+    echoh "  *|h|?: show this usage"
+    echoh
+    echoh "Author: Bruce Wen <wenijinew@gmail.com>"
 }
 
 setup
-while getopts "ac:dDfp:rRt:T:" opt; do
+while getopts "ac:dDfhp:rRt:T:" opt; do
     case $opt in
         a) show_all_themes; exit $? ;;
         c) DARK_BASE_COLOR="${OPTARG}" ;;
@@ -408,7 +424,7 @@ while getopts "ac:dDfp:rRt:T:" opt; do
         R) replace_legacy_placeholders; exit $? ;;
         t) apply_theme "${OPTARG}" ;;
         T) NEW_THEME_NAME="$OPTARG"; save_dynamic_theme "${NEW_THEME_NAME}"; exit ;;
-        *|?) usage; exit "${EXIT_SUCCESS}" ;;
+        *|h|?) usage; exit "${EXIT_SUCCESS}" ;;
     esac
 done
 set -x
