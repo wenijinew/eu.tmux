@@ -1,9 +1,6 @@
-dynamic.eutmux.yaml
-dynamic.theme.yaml
-dynamic_palette.txt
-eutmux.py.log
-tmux_commands.txt
+dynamic*
+*.log
+*.txt
+*.cmd
+*.palette
 __pycache__
-/.requirements.installed.txt
-/dynamic.glamour.yaml
-*used*

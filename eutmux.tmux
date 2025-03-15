@@ -53,9 +53,9 @@ setup(){
     PALETTE_FILE_EXTENSION=".palette"
     CMD_FILE_EXTENSION=".cmd"
 
-    TMUX_COMMANDS_FILENAME="tmux_commands.txt"
-    DEFAULT_PALETTE_FILENAME="default_palette.txt"
-    DYNAMIC_PALETTE_FILENAME="dynamic_palette.txt"
+    TMUX_COMMANDS_FILENAME="tmux${CMD_FILE_EXTENSION}"
+    DEFAULT_PALETTE_FILENAME="default${PALETTE_FILE_EXTENSION}"
+    DYNAMIC_PALETTE_FILENAME="dynamic${PALETTE_FILE_EXTENSION}"
     GIVEN_PALETTE_FILENAME=""
     DEFAULT_TEMPLATE_THEME_FILENAME="template${THEME_FILE_EXTENSION}"
 
@@ -111,10 +111,6 @@ setup(){
     set -x
     DARK_BASE_COLOR="$(grep '^terminal:' -A 2 ${EUTMUX_CONFIG_FILE} | grep bg | sed -e 's/\s\+//g' -e 's/\"//g' | cut -d':' -f2)"
     set +x
-
-    # current palette file name
-    CURRENT_PALETTE_FILENAME="current${PALETTE_FILE_EXTENSION}"
-    CURRENT_PALETTE_FILEPATH="${EUTMUX_CONFIG_HOME}/${CURRENT_PALETTE_FILENAME}"
 }
 
 teardown(){
@@ -174,7 +170,6 @@ _generate_palette_colors(){
     cat ${temp_json} | jq '.|keys_unsorted[]' > ${tf1}
     cat ${temp_json} | jq '.[]' | tr 'A-Z' 'a-z' > ${tf2}
     paste -d':' ${tf1} ${tf2} > $DYNAMIC_PALETTE_FILENAME
-    cp -f "${DYNAMIC_PALETTE_FILENAME}" "${CURRENT_PALETTE_FILEPATH}"
 }
 generate_palette_colors(){
     _generate_palette_colors "${1:-color.ColorName.RANDOM}" "${2:-25}" "${3:-50}" "${4:-${DARK_BASE_COLOR}}" "${5:-${FALSE}}" "${6:-${TRUE}}" "${7:-60}" "${8:-80}" "${9:-7}" "${10:-7}" "${11:-60}" "${12:-60}"
@@ -239,7 +234,15 @@ show_all_themes(){
     echo "${_themes}" | env sed -e 's/ /\n/g'
 }
 
-save_dynamic_theme(){
+# Save the dynamic theme to the target theme under ${EUTMUX_CONFIG_HOME}. It's
+# not supported to use one saved theme to overwritten another theme or re-save
+# to another theme. However, the dynmic theme could be save to different themes.
+# The reason is that dynamic theme relevant files are saved in the project root
+# folder and it only copy dynamic theme relevant files from the project root to
+# ${EUTMUX_CONFIG_HOME}. When the target theme is applied, the theme relevant
+# files are from ${EUTMUX_CONFIG_HOME} rather than the project root folder, so
+# coping acton won't be performed.
+function save_dynamic_theme(){
     local new_theme_name
     new_theme_name="${1}"
     if [ -z "${new_theme_name}" ];then
@@ -253,10 +256,11 @@ save_dynamic_theme(){
     current_dynamic_theme=$(tmux show-option -gqv "${TMUX_OPTION_NAME_DYNAMIC_THEME}")
     current_dynamic_theme_filename="${current_dynamic_theme}${THEME_FILE_EXTENSION}"
     current_dynamic_theme_cmd_filename="${current_dynamic_theme}${CMD_FILE_EXTENSION}"
+    current_dynamic_palette_filename="${current_dynamic_theme}${PALETTE_FILE_EXTENSION}"
 
     if [ -e "${current_dynamic_theme_filename}" ];then
        cp -f "${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
-       cp -f "${CURRENT_PALETTE_FILEPATH}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${PALETTE_FILE_EXTENSION}"
+       cp -f "${current_dynamic_palette_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${PALETTE_FILE_EXTENSION}"
        cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_theme_cmd_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${CMD_FILE_EXTENSION}"
        if [ $? -eq $TRUE ];then
           tmux display-message -d "${DELAY}" "New theme saved: ${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
