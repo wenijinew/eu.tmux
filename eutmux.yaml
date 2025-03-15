@@ -2,7 +2,7 @@
 theme: burgundy-red
 terminal:
   fg: "#c0cacd"
-  bg: "#1a1b26"
+  bg: "#1a1a26"
 general:
   options:
     status: true

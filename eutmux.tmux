@@ -265,9 +265,6 @@ function save_dynamic_theme(){
         cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
        cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_palette_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${PALETTE_FILE_EXTENSION}"
        cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_theme_cmd_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${CMD_FILE_EXTENSION}"
-       if [ $? -eq $TRUE ];then
-          tmux display-message -d "${DELAY}" "New theme saved: ${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
-       fi
     fi
 }
 
