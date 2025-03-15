@@ -108,9 +108,12 @@ setup(){
     if [ ! -e "${EUTMUX_CONFIG_FILE}" ];then
        cp -f "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
     fi
-    set -x
+
+    # use the terminal bg color in config file as the dark base color
     DARK_BASE_COLOR="$(grep '^terminal:' -A 2 ${EUTMUX_CONFIG_FILE} | grep bg | sed -e 's/\s\+//g' -e 's/\"//g' | cut -d':' -f2)"
-    set +x
+
+    # set session-window-change hooks/session-window-changed.hook
+    tmux set-hook session-window-changed "run-shell '${_DIR}/hooks/session-window-changed.hook'"
 }
 
 teardown(){
