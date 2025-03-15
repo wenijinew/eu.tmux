@@ -190,6 +190,7 @@ create_dynamic_theme_file(){
     fi
     cp -f "${TEMPLATE_THEME_FILENAME}" "${dynamic_theme_file_name}"
     replace_color "${_DIR}/${dynamic_theme_file_name}"
+    cp -f "${_DIR}/${dynamic_theme_file_name}" "${EUTMUX_CONFIG_HOME}"
 }
 
 create_dynamic_config_file(){
