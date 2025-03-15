@@ -88,7 +88,7 @@ setup(){
     PALETTE_FILENAME="${DEFAULT_PALETTE_FILENAME}"
     TMUX_OPTION_NAME_DYNAMIC_CONFIG="@eutmux_dynamic_config_file_name"
     TMUX_OPTION_NAME_DYNAMIC_THEME="@eutmux_dynamic_theme_name"
-    DELAY=3000
+    DELAY=500
 
     # global variables, could be set by script arguments. see main.
     THEME_NAME=""
@@ -172,7 +172,7 @@ _generate_palette_colors(){
     sed -i "s/'/\"/g" ${temp_json}
     cat ${temp_json} | jq '.|keys_unsorted[]' > ${tf1}
     cat ${temp_json} | jq '.[]' | tr 'A-Z' 'a-z' > ${tf2}
-    paste -d':' ${tf1} ${tf2} > $DYNAMIC_PALETTE_FILENAME
+    paste -d':' ${tf1} ${tf2} > ${EUTMUX_CONFIG_HOME}/$DYNAMIC_PALETTE_FILENAME
 }
 generate_palette_colors(){
     _generate_palette_colors "${1:-color.ColorName.RANDOM}" "${2:-25}" "${3:-50}" "${4:-${DARK_BASE_COLOR}}" "${5:-${FALSE}}" "${6:-${TRUE}}" "${7:-60}" "${8:-80}" "${9:-7}" "${10:-7}" "${11:-60}" "${12:-60}"
@@ -261,9 +261,9 @@ function save_dynamic_theme(){
     current_dynamic_theme_cmd_filename="${current_dynamic_theme}${CMD_FILE_EXTENSION}"
     current_dynamic_palette_filename="${current_dynamic_theme}${PALETTE_FILE_EXTENSION}"
 
-    if [ -e "${current_dynamic_theme_filename}" ];then
-       cp -f "${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
-       cp -f "${current_dynamic_palette_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${PALETTE_FILE_EXTENSION}"
+    if [ -e "${EUTMUX_CONFIG_HOME}/${current_dynamic_theme_filename}" ];then
+        cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
+       cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_palette_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${PALETTE_FILE_EXTENSION}"
        cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_theme_cmd_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${CMD_FILE_EXTENSION}"
        if [ $? -eq $TRUE ];then
           tmux display-message -d "${DELAY}" "New theme saved: ${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
@@ -330,7 +330,7 @@ main(){
         if [[ "" != "${GIVEN_PALETTE_FILENAME}" ]];then
             DARK_BASE_COLOR=$(grep "C_14_53" "${GIVEN_PALETTE_FILENAME}" | cut -d':' -f2 | sed -e 's/\"//g')
         fi
-        PALETTE_FILENAME=${DYNAMIC_PALETTE_FILENAME}
+        PALETTE_FILENAME="${EUTMUX_CONFIG_HOME}/${DYNAMIC_PALETTE_FILENAME}"
         generate_palette_colors
         create_dynamic_theme_file
     elif [ -n "${THEME_NAME}" ];then
@@ -427,10 +427,11 @@ while getopts "ac:dDfhp:rRt:T:" opt; do
         a) show_all_themes; exit $? ;;
         c) DARK_BASE_COLOR="${OPTARG}" ;;
         d) CREATE_DYNMIC_THEME=${TRUE}; FORCE_SAVE_THEME=${TRUE} ;;
-        D) THEME_NAME="eutmux" ;;
+        D) THEME_NAME="dynamic" ;;
         f) FORCE_SAVE_THEME=${TRUE} ;;
         p) GIVEN_PALETTE_FILENAME="${OPTARG}" ;;
         r) ROTATE_THEME=${TRUE} ;;
+        R) THEME_NAME="eutmux" ;;
         R) replace_legacy_placeholders; exit $? ;;
         t) apply_theme "${OPTARG}" ;;
         T) NEW_THEME_NAME="$OPTARG"; save_dynamic_theme "${NEW_THEME_NAME}"; exit ;;
