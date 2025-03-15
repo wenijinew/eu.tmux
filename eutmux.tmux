@@ -113,7 +113,9 @@ setup(){
     DARK_BASE_COLOR="$(grep '^terminal:' -A 2 ${EUTMUX_CONFIG_FILE} | grep bg | sed -e 's/\s\+//g' -e 's/\"//g' | cut -d':' -f2)"
 
     # set session-window-change hooks/session-window-changed.hook
-    tmux set-hook session-window-changed "run-shell '${_DIR}/hooks/session-window-changed.hook'"
+    tmux set-hook -g session-window-changed "run-shell '${_DIR}/hooks/session-window-changed.hook'"
+    tmux set-hook -g pane-focus-in "run-shell '${_DIR}/hooks/session-window-changed.hook'"
+    tmux set-hook -g window-resized "run-shell '${_DIR}/hooks/session-window-changed.hook'"
 }
 
 teardown(){
