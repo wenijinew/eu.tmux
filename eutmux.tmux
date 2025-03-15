@@ -114,8 +114,6 @@ setup(){
 
     # set session-window-change hooks/session-window-changed.hook
     tmux set-hook -g session-window-changed "run-shell '${_DIR}/hooks/session-window-changed.hook'"
-    tmux set-hook -g pane-focus-in "run-shell '${_DIR}/hooks/session-window-changed.hook'"
-    tmux set-hook -g window-resized "run-shell '${_DIR}/hooks/session-window-changed.hook'"
 }
 
 teardown(){
