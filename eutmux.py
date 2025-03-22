@@ -525,7 +525,10 @@ def init(config_file="eutmux.yaml"):
     )
     eutmux_workdir = os.getenv("EUTMUX_WORKDIR", os.curdir)
     os.chdir(eutmux_workdir)
-    with open(eutmux_dynamic_config_file_name, "r", encoding=UTF_8) as config:
+    eutmux_dynamic_config_file_path = (
+        f"{eutmux_config_home}/{eutmux_dynamic_config_file_name}"
+    )
+    with open(eutmux_dynamic_config_file_path, "r", encoding=UTF_8) as config:
         eutmux = yaml.safe_load(config)
 
     # if specified theme doesn't have corresponding file, then fall-back to

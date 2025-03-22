@@ -186,9 +186,8 @@ create_dynamic_theme_file(){
     if [ -e "${dynamic_theme_file_name}" ];then
        rm -f "${dynamic_theme_file_name}"
     fi
-    cp -f "${TEMPLATE_THEME_FILENAME}" "${dynamic_theme_file_name}"
-    replace_color "${_DIR}/${dynamic_theme_file_name}"
-    cp -f "${_DIR}/${dynamic_theme_file_name}" "${EUTMUX_CONFIG_HOME}"
+    cp -f "${TEMPLATE_THEME_FILENAME}" "${EUTMUX_CONFIG_HOME}/${dynamic_theme_file_name}"
+    replace_color "${EUTMUX_CONFIG_HOME}/${dynamic_theme_file_name}"
 }
 
 create_dynamic_config_file(){
@@ -204,8 +203,8 @@ create_dynamic_config_file(){
        cp -f "${DEFAULT_CONFIG_FILENAME}" "${EUTMUX_CONFIG_HOME}"
     fi
 
-    cp -f "${config_file}" "${eutmux_dynamic_config_file_name}"
-    replace_color "${_DIR}/${eutmux_dynamic_config_file_name}"
+    cp -f "${config_file}" "${EUTMUX_CONFIG_HOME}/${eutmux_dynamic_config_file_name}"
+    replace_color "${EUTMUX_CONFIG_HOME}/${eutmux_dynamic_config_file_name}"
 }
 
 replace_color(){
