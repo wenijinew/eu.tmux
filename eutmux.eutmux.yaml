@@ -1,10 +1,13 @@
 ---
 theme: burgundy-red
+terminal:
+  fg: "#c0cacd"
+  bg: "#1a1a26"
 general:
   options:
     status: true
-    status-fg: "C_14_10"
-    status-bg: "C_14_53"
+    status-fg: "#c9c9da"
+    status-bg: "#1a1a26"
     status-justify: left
     status-left-length: 100
     status-right-length: 100
@@ -16,34 +19,34 @@ general:
     focus-events: true
     display-time: 5000
     renumber-windows: true
-    clock-mode-colour: "C_09_40"
-    _fg_highlight: "C_14_10"
-    _bg_highlight: "C_14_30"
+    clock-mode-colour: "#45654d"
+    _fg_highlight: "#c9c9da"
+    _bg_highlight: "#676796"
     _style: "nobold,nounderscore,noitalics"
     _eutmux_template_name: "template.6"
   styles:
     message-style:
-      fg: "C_14_10"
+      fg: "#c9c9da"
       bg: ""
       style: ""
     message-command-style:
-      fg: "C_14_10"
+      fg: "#c9c9da"
       bg: ""
       style: ""
     pane-border-style:
-      fg: "C_14_59"
+      fg: "#0d0d13"
       bg: ""
       style: ""
     pane-active-border-style:
-      fg: "C_07_35"
+      fg: "#d77bd7"
       bg: ""
       style: ""
     # Tmux 3.3+ support popup styles
     popup-style:
-      fg: "C_14_10"
-      bg: "C_14_25"
+      fg: "#c9c9da"
+      bg: "#7f7fa7"
     popup-border-style:
-      fg: "C_14_10"
+      fg: "#c9c9da"
       bg: ""
   commands:
     - bind-key 'g' run-shell 'eutmux.tmux -d'
