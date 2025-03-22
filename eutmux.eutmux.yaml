@@ -38,7 +38,7 @@ general:
       bg: ""
       style: ""
     pane-active-border-style:
-      fg: "#d77bd7"
+      fg: "#a1a1a1"
       bg: ""
       style: ""
     # Tmux 3.3+ support popup styles

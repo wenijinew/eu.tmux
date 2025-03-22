@@ -311,10 +311,11 @@ main(){
     fi
     if [[ $is_installed -ne $TURE || $is_latest -ne $TRUE ]];then
        env pip install -q -r "${_DIR}/requirements.txt" 2>/dev/null
-       cp -f "${_DIR}/requirements.txt" "${_DIR}/.requirements.installed.txt"
-    fi
-    if [ $? -ne $TRUE ];then
-       _warn "Python Environment:\t Dependencies Installation Failure."
+       if [ $? -ne $TRUE ];then
+           _warn "Python Environment:\t Dependencies Installation Failure."
+       else
+           cp -f "${_DIR}/requirements.txt" "${_DIR}/.requirements.installed.txt"
+       fi
     fi
 
     local current_dynamic_theme
@@ -326,6 +327,8 @@ main(){
         # else, generate dynamic palette file
         if [[ "" != "${GIVEN_PALETTE_FILENAME}" ]];then
             DARK_BASE_COLOR=$(grep "C_14_53" "${GIVEN_PALETTE_FILENAME}" | cut -d':' -f2 | sed -e 's/\"//g')
+            DYNAMIC_THEME_NAME="dynamic"
+            DYNAMIC_PALETTE_FILENAME="${DYNAMIC_THEME_NAME}${PALETTE_FILE_EXTENSION}"
         fi
         PALETTE_FILENAME="${EUTMUX_CONFIG_HOME}/${DYNAMIC_PALETTE_FILENAME}"
         generate_palette_colors

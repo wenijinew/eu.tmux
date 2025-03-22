@@ -29,12 +29,12 @@ status_left:
 window:
   active:
     fg_window: "#0d0d13"
-    bg_window: "#e58fe5"
+    bg_window: "#b3b3b3"
     fg_window_index: "#0d0d13"
-    bg_window_index: "#c66ac6"
+    bg_window_index: "#8f8f8f"
     fg_icon: "#c9c9da"
     bg_icon: "#b0c5c9"
-    fg_decorator: "#c66ac6"
+    fg_decorator: "#8f8f8f"
     bg_decorator: "#1a1a26"
     icon: ""
     decorator: ""
