@@ -114,6 +114,7 @@ setup(){
 
     # set session-window-change hooks/session-window-changed.hook
     tmux set-hook -g session-window-changed "run-shell '${_DIR}/hooks/session-window-changed.hook'"
+    tmux set-hook -g after-resize-pane "run-shell '${_DIR}/hooks/session-window-changed.hook'"
 }
 
 teardown(){
@@ -420,8 +421,9 @@ usage(){
     echoh "Author: Bruce Wen <wenijinew@gmail.com>"
 }
 
+# set -x
 setup
-while getopts "ac:dDfhp:rRt:T:" opt; do
+while getopts "ac:dDfhLp:rRt:T:" opt; do
     case $opt in
         a) show_all_themes; exit $? ;;
         c) DARK_BASE_COLOR="${OPTARG}" ;;
@@ -431,7 +433,7 @@ while getopts "ac:dDfhp:rRt:T:" opt; do
         p) GIVEN_PALETTE_FILENAME="${OPTARG}" ;;
         r) ROTATE_THEME=${TRUE} ;;
         R) THEME_NAME="eutmux" ;;
-        R) replace_legacy_placeholders; exit $? ;;
+        L) replace_legacy_placeholders; exit $? ;;
         t) apply_theme "${OPTARG}" ;;
         T) NEW_THEME_NAME="$OPTARG"; save_dynamic_theme "${NEW_THEME_NAME}"; exit ;;
         *|h|?) usage; exit "${EXIT_SUCCESS}" ;;
@@ -439,3 +441,4 @@ while getopts "ac:dDfhp:rRt:T:" opt; do
 done
 main
 teardown
+set +x
