@@ -20,13 +20,13 @@ function change_theme(){
     else
         # only when the pane is maximized or only one pane, change the theme
         # the theme named as 'emacs' or 'nvim' for the pane where the process
-        # is running 'emacs' or 'nvim'. 
+        # is running 'emacs' or 'nvim'.
         local pane_process_id=$(env tmux display-message -p "#{pane_pid}")
         local idename=$(env pstree -a ${pane_process_id} | head -2 | tail -1 | grep -iEo '(nvim|emacs)' 2>/dev/null)
         if [[ ( ${is_pane_maximized} -eq 1 ) || ( ${panes_total} -eq 1 ) ]]; then
             if [ -n "${idename}" ];then
                 ${eutmux_script} -t ${idename}
-                return
+                return 0
             fi
         fi
         # for other cases, use default latset theme

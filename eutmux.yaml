@@ -60,6 +60,8 @@ general:
     - bind-key 'C-j' setw synchronize-panes on
     - bind-key 'C-k' setw synchronize-panes off
     - bind-key -n 'M-l' select-window -l
+    - bind-key -n 'M-n' select-window -n
+    - bind-key -n 'M-p' select-window -p
     - bind-key -n 'M-j' select-pane -R
     - bind-key -n 'M-k' select-pane -D
     - bind-key -n 'M-Left' select-window -p
