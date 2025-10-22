@@ -42,6 +42,11 @@ PLACE_HOLDERS=(
     "DEEP_GRAY"
 )
 
+init(){
+    # set working directory to eutmux project path
+    pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
+}
+
 setup(){
     # constants
     FORCE_SAVE_THEME=${FALSE}
@@ -97,9 +102,6 @@ setup(){
     ROTATE_THEME=${FALSE}
     CREATE_DYNMIC_THEME=${FALSE}
 
-    # set working directory to eutmux project path
-    pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
-
     # set config home and config file
     EUTMUX_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/eutmux"
     mkdir -p "${EUTMUX_CONFIG_HOME}" >/dev/null 2>/dev/null
@@ -118,7 +120,7 @@ setup(){
     tmux set-hook -g after-resize-pane "run-shell '${_DIR}/hooks/session-window-changed.hook'"
 }
 
-teardown(){
+reset(){
     popd >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
 }
 
@@ -262,8 +264,12 @@ function save_dynamic_theme(){
     current_dynamic_theme_cmd_filename="${current_dynamic_theme}${CMD_FILE_EXTENSION}"
     current_dynamic_palette_filename="${current_dynamic_theme}${PALETTE_FILE_EXTENSION}"
 
+    if [ "${new_theme_name}" == "${current_dynamic_theme}" ];then
+	return
+    fi
+
     if [ -e "${EUTMUX_CONFIG_HOME}/${current_dynamic_theme_filename}" ];then
-        cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
+       cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_theme_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${THEME_FILE_EXTENSION}"
        cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_palette_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${PALETTE_FILE_EXTENSION}"
        cp -f "${EUTMUX_CONFIG_HOME}/${current_dynamic_theme_cmd_filename}" "${EUTMUX_CONFIG_HOME}/${new_theme_name}${CMD_FILE_EXTENSION}"
     fi
@@ -282,9 +288,9 @@ apply_theme(){
     else
        themes=$(show_all_themes)
        echo "$themes" | grep -q "${theme_name}"
+       # if the target theme name not exist, then save the current dynamic theme to it
        if [ $? -ne $TRUE ];then
-          tmux display-message -d "${DELAY}" "Not found theme: '${theme_name}'"
-          exit ${EXIT_ABNORMAL}
+	   save_dynamic_theme ${theme_name}
        fi
     fi
     THEME_NAME="${theme_name}"
@@ -431,6 +437,7 @@ usage(){
 }
 
 # set -x
+init
 setup
 while getopts "ac:dDfHLp:rsRt:T:" opt; do
     case $opt in
@@ -450,5 +457,5 @@ while getopts "ac:dDfHLp:rsRt:T:" opt; do
     esac
 done
 main
-teardown
+reset
 set +x
