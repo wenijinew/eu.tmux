@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
+# trap "echo $GITHUB_REPO_ROOT" DEBUG
+
 function change_theme(){
+    set -x
     local eutmux_script=${GITHUB_REPO_ROOT}/eu.tmux/eutmux.tmux
     if [ ! -x ${eutmux_script} ];then
         return 2
@@ -26,12 +29,14 @@ function change_theme(){
         if [[ ( ${is_pane_maximized} -eq 1 ) || ( ${panes_total} -eq 1 ) ]]; then
             if [ -n "${idename}" ];then
                 ${eutmux_script} -t ${idename}
-                return 0
+                return $?
             fi
         fi
         # for other cases, use default latset theme
         ${eutmux_script} -R
+        return $?
     fi
+    set +x
 }
 
 change_theme
