@@ -49,21 +49,22 @@ general:
       fg: "C_14_10"
       bg: ""
   commands:
-    - bind-key 'g' run-shell 'eutmux.tmux -d'
-    - bind-key 'G' run-shell 'eutmux.tmux -D'
-    - bind-key 'a' display-popup 'eutmux.tmux -a'
-    - bind-key 'r' run-shell 'eutmux.tmux -r'
-    - bind-key 't' run-shell 'eutmux.tmux -t ""'
-    - bind-key 'T' run-shell 'eutmux.tmux -T ""'
-    - bind-key 'S' run-shell 'tmux source ~/.tmux.conf'
     - bind-key 'C-c' clock-mode
     - bind-key 'C-j' setw synchronize-panes on
     - bind-key 'C-k' setw synchronize-panes off
-    - bind-key -n 'M-l' select-window -l
-    - bind-key -n 'M-j' select-pane -R
-    - bind-key -n 'M-k' select-pane -D
+    - bind-key 'G' run-shell 'eutmux.tmux -D'
+    - bind-key 'S' run-shell 'tmux source ~/.tmux.conf'
+    - bind-key 'T' run-shell 'eutmux.tmux -T ""'
+    - bind-key 'a' display-popup 'eutmux.tmux -a'
+    - bind-key 'g' run-shell 'eutmux.tmux -d'
+    - bind-key 'h' run-shell 'eutmux.tmux -s'
+    - bind-key 'r' run-shell 'eutmux.tmux -r'
+    - bind-key 't' run-shell 'eutmux.tmux -t ""'
     - bind-key -n 'M-Left' select-window -p
     - bind-key -n 'M-Right' select-window -n
+    - bind-key -n 'M-j' select-pane -R
+    - bind-key -n 'M-k' select-pane -D
+    - bind-key -n 'M-l' select-window -l
 status_left:
   session:
     enabled: true

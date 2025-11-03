@@ -45,6 +45,7 @@ PLACE_HOLDERS=(
 setup(){
     # constants
     FORCE_SAVE_THEME=${FALSE}
+    TMUX_OPTION_NAME_STATUS="status"
 
     COLOR_GRADATIONS_DIVISION_RATE=0.9
     REVERSED_COLOR_OFFSET_RATE=0.5
@@ -289,6 +290,14 @@ apply_theme(){
     THEME_NAME="${theme_name}"
 }
 
+# toggle tmux status bar
+toggle_tmux_status(){
+    if [ "$(tmux show-option -gqv "${TMUX_OPTION_NAME_STATUS}")" = "on" ];then
+        tmux set-option -gq "${TMUX_OPTION_NAME_STATUS}" "off"
+    else
+        tmux set-option -gq "${TMUX_OPTION_NAME_STATUS}" "on"
+    fi
+}
 
 main(){
     # pre-check
@@ -423,7 +432,7 @@ usage(){
 
 # set -x
 setup
-while getopts "ac:dDfhLp:rRt:T:" opt; do
+while getopts "ac:dDfHLp:rsRt:T:" opt; do
     case $opt in
         a) show_all_themes; exit $? ;;
         c) DARK_BASE_COLOR="${OPTARG}" ;;
@@ -433,6 +442,7 @@ while getopts "ac:dDfhLp:rRt:T:" opt; do
         p) GIVEN_PALETTE_FILENAME="${OPTARG}" ;;
         r) ROTATE_THEME=${TRUE} ;;
         R) THEME_NAME="eutmux" ;;
+        s) toggle_tmux_status; exit $? ;;
         L) replace_legacy_placeholders; exit $? ;;
         t) apply_theme "${OPTARG}" ;;
         T) NEW_THEME_NAME="$OPTARG"; save_dynamic_theme "${NEW_THEME_NAME}"; exit ;;
