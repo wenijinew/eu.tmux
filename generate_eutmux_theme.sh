@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-GITHUB_REPO_ROOT="/repo/${USER}/github"
 THEME_ROOT="${WS_ROOT}/.themes"
 PALETTE_ROOT="${THEME_ROOT}/palettes"
 mkdir -p ${PALETTE_ROOT}
@@ -9,7 +8,11 @@ function _warn(){
     echo -e "\033[93mWARNING:\033[0m ${1}"
 }
 
-function generate_eutmux_theme(){
+function generate(){
+    if [ -z "${GITHUB_REPO_ROOT}" ];then
+      _warn "The environment variable 'GITHUB_REPO_ROOT' is not set!"
+      return $EXIT_ABNORMAL
+    fi
     local eutmux_script=${GITHUB_REPO_ROOT}/eu.tmux/eutmux.tmux
     if [ ! -x ${eutmux_script} ];then
         _warn "Not found ${eutmux_script}"
@@ -37,4 +40,4 @@ function generate_eutmux_theme(){
     fi
 }
 
-generate_eutmux_theme $@ >/dev/null 2>/dev/null
+generate $@ >/dev/null 2>/dev/null
