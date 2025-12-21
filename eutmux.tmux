@@ -325,7 +325,7 @@ main(){
        is_latest=$?
     fi
     if [[ $is_installed -ne $TURE || $is_latest -ne $TRUE ]];then
-       env pip install -q -r "${_DIR}/requirements.txt" 2>/dev/null
+       env python -m pip install -q -r "${_DIR}/requirements.txt" 2>/dev/null
        if [ $? -ne $TRUE ];then
            _warn "Python Environment:\t Dependencies Installation Failure."
        else
