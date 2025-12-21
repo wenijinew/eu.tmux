@@ -5,17 +5,17 @@ terminal:
   bg: "#1a1a26"
 general:
   options:
-    status: true
-    status-fg: "C_14_10"
+    default-terminal: "screen-256color"
+    escape-time: 5
     status-bg: "C_14_53"
+    status-fg: "C_14_10"
+    status-interval: 3
     status-justify: left
     status-left-length: 100
     status-right-length: 100
-    window-status-separator: ' '
+    status: true
     terminal-overrides: ",xterm*:Tc"
-    default-terminal: "screen-256color"
-    escape-time: 5
-    status-interval: 3
+    window-status-separator: ' '
     focus-events: true
     display-time: 5000
     renumber-windows: true
@@ -24,6 +24,8 @@ general:
     _bg_highlight: "C_14_30"
     _style: "nobold,nounderscore,noitalics"
     _eutmux_template_name: "template.6"
+  window:
+    mode-keys: vi
   styles:
     message-style:
       fg: "C_14_10"
