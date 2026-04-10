@@ -235,7 +235,7 @@ class Constructor:
             general_commands.append(f"set-option -gq {name} '{value}'")
 
         # window options
-        for name, value in self.general.get("window").items():
+        for name, value in (self.general.get("window") or {}).items():
             general_commands.append(f"set-window-option -gq {name} '{value}'")
 
         # styles options
