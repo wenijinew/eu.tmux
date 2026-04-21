@@ -1,6 +1,6 @@
 [project]
 name = "eu-tmux"
-version = "0.3.0"
+version = "0.3.1"
 description = "Dynamic tmux theme engine with palette-driven styling"
 readme = "README.md"
 license = "MIT"
@@ -9,7 +9,7 @@ authors = [{ name = "Bruce Wen" }]
 keywords = ["tmux", "theme", "terminal"]
 
 dependencies = [
-    "peelee>=0.2.27",
+    "peelee>=0.2.57",
     "loguru>=0.7.0",
     "seaborn>=0.12.2",
     "pyyaml>=6.0",
