@@ -1,7 +1,7 @@
 .PHONY: install test theme hooks clean
 
 install: ## Install dependencies
-	pip install -r requirements.txt
+	poetry install --no-root
 
 test: ## Run tests
 	python3 -m pytest tests/ -v

@@ -313,25 +313,14 @@ main(){
        exit "${EXIT_ABNORMAL}"
     fi
 
-    # python environment and requirements installation
-    if [ ! "$(which pip)" ] ; then
-        _warn "Python Environment:\t CHECK FAILED. 'pip' command not found."
+    # python environment and dependencies
+    if command -v poetry &>/dev/null; then
+        poetry install --no-root -C "${_ROOT}" -q 2>/dev/null
+    elif command -v pip &>/dev/null; then
+        pip install -q peelee loguru seaborn pyyaml 2>/dev/null
+    else
+        _warn "Python Environment:\t Neither poetry nor pip found."
         exit "$EXIT_ABNORMAL"
-    fi
-    test -e "${_ROOT}/.requirements.installed.txt"
-    is_installed=$?
-    is_latest=$FALSE
-    if [ ${is_installed} -eq $TRUE ];then
-       diff "${_ROOT}/.requirements.installed.txt" "${_ROOT}/requirements.txt" >/dev/null 2>/dev/null
-       is_latest=$?
-    fi
-    if [[ $is_installed -ne $TURE || $is_latest -ne $TRUE ]];then
-       env python -m pip install -q -r "${_ROOT}/requirements.txt" 2>/dev/null
-       if [ $? -ne $TRUE ];then
-           _warn "Python Environment:\t Dependencies Installation Failure."
-       else
-           cp -f "${_ROOT}/requirements.txt" "${_ROOT}/.requirements.installed.txt"
-       fi
     fi
 
     local current_dynamic_theme
