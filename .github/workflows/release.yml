@@ -46,9 +46,9 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add pyproject.toml
           git commit -m "Bump version to ${{ steps.bump.outputs.version }} [skip ci]"
-          git tag -a "${{ steps.bump.outputs.tag }}" -m "Release ${{ steps.bump.outputs.tag }}"
+          git tag -fa "${{ steps.bump.outputs.tag }}" -m "Release ${{ steps.bump.outputs.tag }}"
           git push
-          git push --tags
+          git push --tags --force
 
       - name: Generate changelog
         id: changelog
