@@ -1,6 +1,6 @@
 [project]
 name = "eu-tmux"
-version = "0.4.1"
+version = "0.4.2"
 description = "Dynamic tmux theme engine with palette-driven styling"
 readme = "README.md"
 license = "MIT"
