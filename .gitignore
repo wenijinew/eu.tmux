@@ -1,6 +1,20 @@
-dynamic*
-*.log
-*.txt
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Generated runtime files
 *.cmd
+*.log
 *.palette
-__pycache__
+dynamic*
+.requirements.installed.txt
+
+# Editor backups
+*~
+*.old
+*.bak
+*.swp
+
+# Patches
+*.patch
