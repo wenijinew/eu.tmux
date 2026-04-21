@@ -208,42 +208,48 @@ class Constructor:
         bg_status_line = self.background
         return f"fg={fg_status_line},bg={bg_status_line}"
 
+    def _produce_status_section(self, section, theme_section, order="idf"):
+        """Produce status section option string.
+
+        Args:
+            section: config section dict (status_left or status_right values)
+            theme_section: theme defaults for the section
+            order: component order - 'idf' (icon,decorator,format) or 'dif'
+        """
+        parts = []
+        for component in section.values():
+            if not component.get("enabled", "on"):
+                continue
+            icon = component.get("icon", theme_section.get("icon"))
+            decorator = component.get("decorator", theme_section.get("decorator"))
+            fg_format = component.get("fg_format", theme_section.get("fg_format"))
+            bg_format = component.get("bg_format", theme_section.get("bg_format"))
+            fg_icon = component.get("fg_icon", theme_section.get("fg_icon"))
+            bg_icon = component.get("bg_icon", theme_section.get("bg_icon"))
+            fg_decorator = component.get("fg_decorator", theme_section.get("fg_decorator"))
+            bg_decorator = component.get("bg_decorator", theme_section.get("bg_decorator"))
+            style = component.get("style", theme_section.get("style"))
+            _format = component.get("format", EMPTY)
+            fmt = self.get_style_for_option(fg_format, bg_format, style, _format)
+            ico = self.get_style_for_option(fg_icon, bg_icon, style, icon)
+            dec = self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)
+            if order == "idf":
+                parts.append(f"{ico}{dec}{fmt}")
+            else:
+                parts.append(f"{dec}{ico}{fmt}")
+        return " ".join(parts)
+
     def produce_status_left(self):
         """Produce status left option string."""
-        status_left = []
-        for component in self.status_left.values():
-            enabled = component.get("enabled", "on")
-            if not enabled:
-                continue
-            icon = component.get("icon", self.theme.status_left.get("icon"))
-            decorator = component.get(
-                "decorator", self.theme.status_left.get("decorator")
-            )
-            fg_format = component.get(
-                "fg_format", self.theme.status_left.get("fg_format")
-            )
-            bg_format = component.get(
-                "bg_format", self.theme.status_left.get("bg_format")
-            )
-            fg_icon = component.get("fg_icon", self.theme.status_left.get("fg_icon"))
-            bg_icon = component.get("bg_icon", self.theme.status_left.get("bg_icon"))
-            fg_decorator = component.get(
-                "fg_decorator", self.theme.status_left.get("fg_decorator")
-            )
-            bg_decorator = component.get(
-                "bg_decorator", self.theme.status_left.get("bg_decorator")
-            )
-            style = component.get("style", self.theme.status_left.get("style"))
-            _format = component.get("format", EMPTY)
-            format_style = (
-                f"{self.get_style_for_option(fg_format, bg_format, style, _format)}"
-            )
-            icon_style = f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
-            decorator_style = f"{self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)}"
-            component_value = f"{icon_style}{decorator_style}{format_style}"
-            status_left.append(component_value)
+        return self._produce_status_section(
+            self.status_left, self.theme.status_left, order="idf"
+        )
 
-        return " ".join(status_left)
+    def produce_status_right(self):
+        """Produce status right tmux options string."""
+        return self._produce_status_section(
+            self.status_right, self.theme.status_right, order="dif"
+        )
 
     def produce_window(self):
         """Return tuple with active window and inactive window option strings."""
@@ -305,43 +311,6 @@ class Constructor:
             windows[name] = component_value
 
         return windows
-
-    def produce_status_right(self):
-        """Produce status right tmux options string."""
-        status_right = []
-        for options in self.status_right.values():
-            enabled = options.get("enabled", "on")
-            if not enabled:
-                continue
-            icon = options.get("icon", self.theme.status_right.get("icon"))
-            decorator = options.get(
-                "decorator", self.theme.status_right.get("decorator")
-            )
-            fg_format = options.get(
-                "fg_format", self.theme.status_right.get("fg_format")
-            )
-            bg_format = options.get(
-                "bg_format", self.theme.status_right.get("bg_format")
-            )
-            fg_icon = options.get("fg_icon", self.theme.status_right.get("fg_icon"))
-            bg_icon = options.get("bg_icon", self.theme.status_right.get("bg_icon"))
-            fg_decorator = options.get(
-                "fg_decorator", self.theme.status_right.get("fg_decorator")
-            )
-            bg_decorator = options.get(
-                "bg_decorator", self.theme.status_right.get("bg_decorator")
-            )
-            style = options.get("style", self.theme.status_right.get("style"))
-            _format = options.get("format", EMPTY)
-            format_style = (
-                f"{self.get_style_for_option(fg_format, bg_format, style, _format)}"
-            )
-            icon_style = f"{self.get_style_for_option(fg_icon, bg_icon, style, icon)}"
-            decorator_style = f"{self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)}"
-            component_value = f"{decorator_style}{icon_style}{format_style}"
-            status_right.append(component_value)
-
-        return " ".join(status_right)
 
     def get_style_for_option(self, foreground, background, style, option):
         """Construct style string with foreground and background."""
