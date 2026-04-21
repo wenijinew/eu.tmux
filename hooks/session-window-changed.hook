@@ -4,7 +4,7 @@
 
 function change_theme(){
     set -x
-    local eutmux_script=${GITHUB_REPO_ROOT}/eu.tmux/eutmux.tmux
+    local eutmux_script=${GITHUB_REPO_ROOT}/eu.tmux/scripts/eutmux.tmux
     if [ ! -x ${eutmux_script} ];then
         return 2
     fi

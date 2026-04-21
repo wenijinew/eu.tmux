@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 _DIR="$(cd "$(dirname "$0")" && pwd)"
+_ROOT="$(cd "${_DIR}/.." && pwd)"
 source "${_DIR}/utils.sh"
 
 
@@ -44,7 +45,7 @@ PLACE_HOLDERS=(
 
 init(){
     # set working directory to eutmux project path
-    pushd "${_DIR}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
+    pushd "${_ROOT}" >/dev/null 2>/dev/null || exit ${EXIT_ABNORMAL}
 }
 
 setup(){
@@ -116,8 +117,8 @@ setup(){
     DARK_BASE_COLOR="$(grep '^terminal:' -A 2 ${EUTMUX_CONFIG_FILE} | grep bg | sed -e 's/\s\+//g' -e 's/\"//g' | cut -d':' -f2)"
 
     # set session-window-change hooks/session-window-changed.hook
-    tmux set-hook -g session-window-changed "run-shell '${_DIR}/hooks/session-window-changed.hook'"
-    tmux set-hook -g after-resize-pane "run-shell '${_DIR}/hooks/session-window-changed.hook'"
+    tmux set-hook -g session-window-changed "run-shell '${_ROOT}/hooks/session-window-changed.hook'"
+    tmux set-hook -g after-resize-pane "run-shell '${_ROOT}/hooks/session-window-changed.hook'"
 }
 
 reset(){
@@ -215,7 +216,7 @@ replace_color(){
     target_file="${1}"
     palette_file="${PALETTE_FILENAME}"
     if [[ "." == "$(dirname ${palette_file})" ]];then
-        palette_file="${_DIR}/${PALETTE_FILENAME}"
+        palette_file="${_ROOT}/themes/${PALETTE_FILENAME}"
     fi
     t="$(mktemp)"
     temp_palette_file="$(mktemp)"
@@ -233,7 +234,7 @@ show_all_themes(){
     local _themes
     # except for template
     _themes=""
-    for _path in "${_DIR}" "${EUTMUX_CONFIG_HOME}"; do
+    for _path in "${_ROOT}/themes" "${EUTMUX_CONFIG_HOME}"; do
         _themes="${_themes} $(find "${_path}" -name "*${THEME_FILE_EXTENSION}*" | sed -e 's/.*\///' | sed -e "s/${THEME_FILE_EXTENSION}//g" | grep -v template)"
     done
     _themes="${_themes## }"
@@ -317,19 +318,19 @@ main(){
         _warn "Python Environment:\t CHECK FAILED. 'pip' command not found."
         exit "$EXIT_ABNORMAL"
     fi
-    test -e "${_DIR}/.requirements.installed.txt"
+    test -e "${_ROOT}/.requirements.installed.txt"
     is_installed=$?
     is_latest=$FALSE
     if [ ${is_installed} -eq $TRUE ];then
-       diff "${_DIR}/.requirements.installed.txt" "${_DIR}/requirements.txt" >/dev/null 2>/dev/null
+       diff "${_ROOT}/.requirements.installed.txt" "${_ROOT}/requirements.txt" >/dev/null 2>/dev/null
        is_latest=$?
     fi
     if [[ $is_installed -ne $TURE || $is_latest -ne $TRUE ]];then
-       env python -m pip install -q -r "${_DIR}/requirements.txt" 2>/dev/null
+       env python -m pip install -q -r "${_ROOT}/requirements.txt" 2>/dev/null
        if [ $? -ne $TRUE ];then
            _warn "Python Environment:\t Dependencies Installation Failure."
        else
-           cp -f "${_DIR}/requirements.txt" "${_DIR}/.requirements.installed.txt"
+           cp -f "${_ROOT}/requirements.txt" "${_ROOT}/.requirements.installed.txt"
        fi
     fi
 
@@ -398,12 +399,12 @@ main(){
         create_dynamic_config_file
 
         # set environment variables
-        prepend_path "${_DIR}" "${EUTMUX_CONFIG_HOME}"
-        prepend_pythonpath "${_DIR}"
-        export EUTMUX_WORKDIR="${_DIR}"
+        prepend_path "${_DIR}" "${_ROOT}" "${EUTMUX_CONFIG_HOME}"
+        prepend_pythonpath "${_ROOT}/src"
+        export EUTMUX_WORKDIR="${_ROOT}"
         export PYTHONUTF8=1
         find "${_DIR}" -name "*.sh" -exec chmod u+x '{}' \;
-        tmux set-environment -g 'EUTMUX_WORKDIR' "${_DIR}"
+        tmux set-environment -g 'EUTMUX_WORKDIR' "${_ROOT}"
         tmux set-environment -g 'PATH' "${PATH}"
         tmux set-environment -g 'PYTHONPATH' "${PYTHONPATH}"
 
