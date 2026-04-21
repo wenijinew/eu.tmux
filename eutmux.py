@@ -64,7 +64,29 @@ class Theme(dict):
         )
 
 
-class ThemeStatusLeft(dict):
+class ThemeComponent(dict):
+    """Base class for theme section configuration."""
+
+    def _load_common(self, section, status_line):
+        """Load fields common to all theme sections."""
+        self.fg_icon = get(section, "fg_icon", status_line.get("foreground"))
+        self.bg_icon = get(section, "bg_icon", status_line.get("background"))
+        self.fg_decorator = get(section, "fg_decorator", status_line.get("foreground"))
+        self.bg_decorator = get(section, "bg_decorator", status_line.get("background"))
+        self.icon = get(section, "icon", status_line.get("left_icon"))
+        self.decorator = get(section, "decorator", status_line.get("left_decorator"))
+        self.style = get(section, "style", status_line.get("style"))
+
+    def _common_dict(self):
+        """Return common fields as dict."""
+        return dict(
+            fg_icon=self.fg_icon, bg_icon=self.bg_icon,
+            fg_decorator=self.fg_decorator, bg_decorator=self.bg_decorator,
+            icon=self.icon, decorator=self.decorator, style=self.style,
+        )
+
+
+class ThemeStatusLeft(ThemeComponent):
     """Wrapper for status_left configuration."""
 
     def __init__(self, theme_config):
@@ -76,104 +98,44 @@ class ThemeStatusLeft(dict):
         self.fg_format = color.convert_to_best_light_color(
             self.fg_format, self.bg_format
         )
-        self.fg_icon = get(status_left, "fg_icon", status_line.get("foreground"))
-        self.bg_icon = get(status_left, "bg_icon", status_line.get("background"))
-        self.fg_decorator = status_left.get(
-            "fg_decorator", status_line.get("foreground")
-        )
-        self.bg_decorator = get(
-            status_left, "bg_decorator", status_line.get("background")
-        )
-        self.icon = get(status_left, "icon", status_line.get("left_icon"))
-        self.decorator = status_left.get("decorator", status_line.get("left_decorator"))
-        self.style = get(status_left, "style", status_line.get("style"))
+        self._load_common(status_left, status_line)
         super().__init__(
-            fg_format=self.fg_format,
-            bg_format=self.bg_format,
-            fg_icon=self.fg_icon,
-            bg_icon=self.bg_icon,
-            fg_decorator=self.fg_decorator,
-            bg_decorator=self.bg_decorator,
-            icon=self.icon,
-            decorator=self.decorator,
-            style=self.style,
+            fg_format=self.fg_format, bg_format=self.bg_format,
+            **self._common_dict(),
         )
 
 
-class ThemeWindow(dict):
+class ThemeWindow(ThemeComponent):
     """Wrapper for window configuration."""
 
     def __init__(self, status_line_theme_config, window_theme_config):
         """Constructor."""
         self.fg_window = get(
-            window_theme_config,
-            "fg_window",
+            window_theme_config, "fg_window",
             status_line_theme_config.get("foreground"),
         )
         self.bg_window = get(
-            window_theme_config,
-            "bg_window",
+            window_theme_config, "bg_window",
             status_line_theme_config.get("background"),
         )
         self.fg_window_index = get(
-            window_theme_config,
-            "fg_window_index",
+            window_theme_config, "fg_window_index",
             status_line_theme_config.get("foreground"),
         )
         self.bg_window_index = get(
-            window_theme_config,
-            "bg_window_index",
+            window_theme_config, "bg_window_index",
             status_line_theme_config.get("background"),
         )
-        self.fg_icon = get(
-            window_theme_config,
-            "fg_icon",
-            status_line_theme_config.get("foreground"),
-        )
-        self.bg_icon = get(
-            window_theme_config,
-            "bg_icon",
-            status_line_theme_config.get("background"),
-        )
-        self.fg_decorator = get(
-            window_theme_config,
-            "fg_decorator",
-            status_line_theme_config.get("foreground"),
-        )
-        self.bg_decorator = get(
-            window_theme_config,
-            "bg_decorator",
-            status_line_theme_config.get("background"),
-        )
-        self.icon = get(
-            window_theme_config,
-            "icon",
-            status_line_theme_config.get("left_icon"),
-        )
-        self.decorator = get(
-            window_theme_config,
-            "decorator",
-            status_line_theme_config.get("left_decorator"),
-        )
-        self.style = get(
-            window_theme_config, "style", status_line_theme_config.get("style")
-        )
+        self._load_common(window_theme_config, status_line_theme_config)
         super().__init__(
-            fg_window=self.fg_window,
-            bg_window=self.bg_window,
+            fg_window=self.fg_window, bg_window=self.bg_window,
             fg_window_index=self.fg_window_index,
             bg_window_index=self.bg_window_index,
-            fg_icon=self.fg_icon,
-            bg_icon=self.bg_icon,
-            fg_decorator=self.fg_decorator,
-            bg_decorator=self.bg_decorator,
-            icon=self.icon,
-            decorator=self.decorator,
-            style=self.style,
+            **self._common_dict(),
         )
 
 
-class ThemeStatusRight(dict):
+class ThemeStatusRight(ThemeComponent):
     """Wrapper for status_right configuration."""
 
     def __init__(self, theme_config):
@@ -185,29 +147,10 @@ class ThemeStatusRight(dict):
         self.bg_format = color.convert_to_best_dark_color(
             self.bg_format, self.fg_format
         )
-        self.fg_icon = get(status_right, "fg_icon", status_line.get("foreground"))
-        self.bg_icon = get(status_right, "bg_icon", status_line.get("background"))
-        self.fg_decorator = get(
-            status_right, "fg_decorator", status_line.get("foreground")
-        )
-        self.bg_decorator = get(
-            status_right, "bg_decorator", status_line.get("background")
-        )
-        self.icon = get(status_right, "icon", status_line.get("left_icon"))
-        self.decorator = get(
-            status_right, "decorator", status_line.get("left_decorator")
-        )
-        self.style = get(status_right, "style", status_line.get("style"))
+        self._load_common(status_right, status_line)
         super().__init__(
-            fg_format=self.fg_format,
-            bg_format=self.bg_format,
-            fg_icon=self.fg_icon,
-            bg_icon=self.bg_icon,
-            fg_decorator=self.fg_decorator,
-            bg_decorator=self.bg_decorator,
-            icon=self.icon,
-            decorator=self.decorator,
-            style=self.style,
+            fg_format=self.fg_format, bg_format=self.bg_format,
+            **self._common_dict(),
         )
 
 
