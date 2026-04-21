@@ -174,9 +174,9 @@ _generate_palette_colors(){
     temp_json="$(mktemp)"
     echo "$palette" > ${temp_json}
     sed -i "s/'/\"/g" ${temp_json}
-    cat ${temp_json} | jq '.|keys_unsorted[]' > ${tf1}
-    cat ${temp_json} | jq '.[]' | tr 'A-Z' 'a-z' > ${tf2}
-    paste -d':' ${tf1} ${tf2} > ${EUTMUX_CONFIG_HOME}/$DYNAMIC_PALETTE_FILENAME
+    cat "${temp_json}" | jq '.|keys_unsorted[]' > "${tf1}"
+    cat "${temp_json}" | jq '.[]' | tr 'A-Z' 'a-z' > "${tf2}"
+    paste -d':' "${tf1}" "${tf2}" > "${EUTMUX_CONFIG_HOME}/$DYNAMIC_PALETTE_FILENAME"
 }
 generate_palette_colors(){
     _generate_palette_colors "${1:-color.ColorName.RANDOM}" "${2:-25}" "${3:-50}" "${4:-${DARK_BASE_COLOR}}" "${5:-${FALSE}}" "${6:-${TRUE}}" "${7:-60}" "${8:-80}" "${9:-7}" "${10:-7}" "${11:-60}" "${12:-60}"
@@ -233,7 +233,7 @@ show_all_themes(){
     local _themes
     # except for template
     _themes=""
-    for _path in ${_DIR} ${EUTMUX_CONFIG_HOME}; do
+    for _path in "${_DIR}" "${EUTMUX_CONFIG_HOME}"; do
         _themes="${_themes} $(find "${_path}" -name "*${THEME_FILE_EXTENSION}*" | sed -e 's/.*\///' | sed -e "s/${THEME_FILE_EXTENSION}//g" | grep -v template)"
     done
     _themes="${_themes## }"

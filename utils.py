@@ -2,7 +2,6 @@
 """Provide utilities functions."""
 import shlex
 import subprocess
-from subprocess import TimeoutExpired
 
 UTF_8 = "utf-8"
 EMPTY = ""
@@ -22,17 +21,14 @@ def get_tmux_option(name, default_value):
 def run_shell_command(command, default_output=None):
     """Run shell command."""
     command_args = shlex.split(command)
-    with subprocess.Popen(
-        command_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    ) as process:
-        try:
-            outs, errs = process.communicate(timeout=3)
-        except TimeoutExpired:
-            process.kill()
-            outs, errs = process.communicate()
-            raise TimeoutExpired
-    output = outs.decode().strip()
-    return output if output and len(output) > 0 else default_output
+    try:
+        result = subprocess.run(
+            command_args, capture_output=True, text=True, timeout=3
+        )
+        output = result.stdout.strip()
+        return output if output else default_output
+    except subprocess.TimeoutExpired:
+        return default_output
 
 
 if __name__ == "__main__":

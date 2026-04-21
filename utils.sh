@@ -49,7 +49,7 @@ echoh(){
     return "${EXIT_SUCCESS}"
 }
 prepend_path(){
-    for p in $*
+    for p in "$@"
     do
         readable "${p}"
         exists=$?
@@ -62,7 +62,7 @@ prepend_path(){
 }
 
 prepend_pythonpath(){
-    for p in $*
+    for p in "$@"
     do
         readable "${p}"
         exists=$?

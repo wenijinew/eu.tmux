@@ -10,6 +10,11 @@ from utils import get_tmux_option, run_shell_command
 UTF_8 = "utf-8"
 EMPTY = ""
 
+# file names and extensions
+DEFAULT_CONFIG_FILE = "eutmux.yaml"
+DEFAULT_THEME_FILE = "eutmux.theme.yaml"
+THEME_FILE_EXTENSION = ".theme.yaml"
+
 # tmux options
 STYLE_START = "#["
 STYLE_END = "]"
@@ -177,7 +182,7 @@ class ThemeStatusRight(dict):
         status_right = theme_config.get("status_right")
         self.fg_format = get(status_right, "fg_format", status_line.get("foreground"))
         self.bg_format = get(status_right, "bg_format", status_line.get("background"))
-        self.bg_foramt = color.convert_to_best_dark_color(
+        self.bg_format = color.convert_to_best_dark_color(
             self.bg_format, self.fg_format
         )
         self.fg_icon = get(status_right, "fg_icon", status_line.get("foreground"))
@@ -477,7 +482,7 @@ class Constructor:
         return option_commands
 
 
-def init(config_file="eutmux.yaml"):
+def init(config_file=DEFAULT_CONFIG_FILE):
     """Load config file, overwrite options by value from tmux.conf."""
 
     # user can set customized config file under EUTMUX_CONFIG_HOME
@@ -506,7 +511,7 @@ def init(config_file="eutmux.yaml"):
 
     # if dynamic theme is set, then use dynamic theme.
     dynamic_theme_name = get_tmux_option("@eutmux_dynamic_theme_name", theme_name)
-    theme_filename = f"{dynamic_theme_name}.theme.yaml"
+    theme_filename = f"{dynamic_theme_name}{THEME_FILE_EXTENSION}"
 
     # if dynamic theme file doesn't exist under project, then check if it
     # exists under EUTMUX_CONFIG_HOME, if not, then fall-back to default them -
@@ -515,7 +520,7 @@ def init(config_file="eutmux.yaml"):
         if os.path.exists(f"{eutmux_config_home}/{theme_filename}"):
             theme_filename = f"{eutmux_config_home}/{theme_filename}"
         else:
-            theme_filename = "eutmux.theme.yaml"
+            theme_filename = DEFAULT_THEME_FILE
     with open(theme_filename, "r", encoding=UTF_8) as theme_file:
         theme_config = yaml.safe_load(theme_file)
         theme = Theme(theme_config)
