@@ -9,7 +9,7 @@ authors = [{ name = "Bruce Wen" }]
 keywords = ["tmux", "theme", "terminal"]
 
 dependencies = [
-    "peelee>=0.2.22",
+    "peelee>=0.2.27",
     "loguru>=0.7.0",
     "seaborn>=0.12.2",
     "pyyaml>=6.0",
