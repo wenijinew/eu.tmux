@@ -6,7 +6,7 @@
 
 ## What's Eu.tmux
 
-Eu.tmux is a Tmux plugin(throught [TPM](https://github.com/tmux-plugins/tpm)). It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
+Eu.tmux is a Tmux plugin(through [TPM](https://github.com/tmux-plugins/tpm)). It aims to help Tmux user to simplify configurations, especially for theme configuration, customization, and *dynamic* theme generation.
 
 ## What's NOT Eu.tmux
 
@@ -30,7 +30,7 @@ Eu.tmux can work perfectly if the morden fonts (E.g. [Nerd Fonts](https://www.ne
 
 * Python 3.9+ and Bash 4.0+
 
-Eu.tmux is developed with Python and Bash programming languages. In most cases, both are already available in your work environment. If not, please install them separately. The latset version are recommended.
+Eu.tmux is developed with Python and Bash programming languages. In most cases, both are already available in your work environment. If not, please install them separately. The latest version are recommended.
 
 * Tmux 3.2a+
 
@@ -61,7 +61,7 @@ If you use Tmux `3.2-` version, you have to add the line `set-option -gq termina
 git clone https://github.com/wenijinew/eu.tmux.git
 ```
 
-Go to eu.tmux and run `./eutmux.tmux`
+Go to eu.tmux and run `./scripts/eutmux.tmux`
 
 
 # User Guide
@@ -85,8 +85,8 @@ More bind-keys are set by default as follows:
 * `M-Left` - select the left window. (if in the first window, then go to last window)
 * `M-Right` - select the right window. (if in the last window, then go to first window)
 * `M-l` - select the previous working window.
-* `M-j` - go to the left pane in the same horizontal level. if no more left, then go to the last pane in the same hozontal level.
-* `M-k` - go to the downward pane in the same vertial level. if no more downward pane, then go to the first pane in the same vertial level.
+* `M-j` - go to the left pane in the same horizontal level. if no more left, then go to the last pane in the same horizontal level.
+* `M-k` - go to the downward pane in the same vertical level. if no more downward pane, then go to the first pane in the same vertical level.
 
 ## Configuration File
 
@@ -96,13 +96,13 @@ After installation, the default configuration file was copied to `$XDG_CONFIG_HO
 * _general/options_: any kinds of Tmux options (but only those with simple values are recommended to put here). `key` is the option name, `value` is the option value. For switch options, use `true` or `false`. `on` or `off`, "on" or "off" are all supported.
 * _general/styles_: Tmux options ending with `_style` such as `message-style`. Mainly for `fg`, `bg` and `style` settings.
 * _general/commands_: general Tmux commands but mainly for `bind-keys`.
-* _status_left_: a list of one or more supported Tmux [FORMATS](https://man7.org/linux/man-pages/man1/tmux.1.html#FORMATS) could be configured here. Each of them is a `dict`: `key` is name, `value` is a `dict` whose `key` is one of the supported keys: `enabled`, `format`, `icon`, `decorator`, `fg_format`, `bg_format`, `fg_icon`, `bg_icon`, `fg_decorator`, `bg_decorator` and `style`. _Note_: `icon` and `decorator` are UNICODE charactors which represents graphs . By default, `enabled` is `true`, `format` is empty. _Other keys_ are optional and the ones in *theme* file will be used if not configured in the configuration file (if they are configured in configuration file, they have higher priority - will overrides the ones from *theme* file). Value of `fg_***` and `bg_***` could be HEX value such as `#ff0efa` (lower case) or [Color Identity](#color-identity) such as `C_1_2`.
+* _status_left_: a list of one or more supported Tmux [FORMATS](https://man7.org/linux/man-pages/man1/tmux.1.html#FORMATS) could be configured here. Each of them is a `dict`: `key` is name, `value` is a `dict` whose `key` is one of the supported keys: `enabled`, `format`, `icon`, `decorator`, `fg_format`, `bg_format`, `fg_icon`, `bg_icon`, `fg_decorator`, `bg_decorator` and `style`. _Note_: `icon` and `decorator` are UNICODE characters which represents graphs . By default, `enabled` is `true`, `format` is empty. _Other keys_ are optional and the ones in *theme* file will be used if not configured in the configuration file (if they are configured in configuration file, they have higher priority - will overrides the ones from *theme* file). Value of `fg_***` and `bg_***` could be HEX value such as `#ff0efa` (lower case) or [Color Identity](#color-identity) such as `C_1_2`.
 * _window_: includes 2 sections: `active` and `inactive` for current window and other windows. Both supports keys `window_name`, `window_index`, and all keys supported by `status-left`.
-* _status_right_: same with `status-left` but for right side of the status line. By default, except for current directory name and date time, `CPU`, `Memory`, and `Desk` usage are displayed on _status_right_. Those 3 parts are handled by bash scripts: [cpu.sh](cpu.sh), [memory.sh](memory.sh), [disk.sh](disk.sh). User can add more similar components by adding similar shell script file under `$XDG_CONFIG_HOME/eutmux/`.
+* _status_right_: same with `status-left` but for right side of the status line. By default, except for current directory name and date time, `CPU`, `Memory`, and `Desk` usage are displayed on _status_right_. Those 3 parts are handled by bash scripts: [cpu.sh](scripts/cpu.sh), [memory.sh](scripts/memory.sh), [disk.sh](scripts/disk.sh). User can add more similar components by adding similar shell script file under `$XDG_CONFIG_HOME/eutmux/`.
 
 ## Theme File
 
-Theme file is to decouple _icon_, _decorator_, _style_ and _color_ configurations from the main configuration file. Refer to the [Template Theme File](template.theme.yaml) for details. The [Template Theme File](template.theme.yaml) is mainly used for [Dynamic Theme](#dynamic-theme) generation. All color values in the [Template Theme File](template.theme.yaml) are [Color Identity](#color-identity) such as `C_1_3` which will be replaced with specific color HEX value such as `#ff7834` when [Dynamic Theme](#dynamic-theme) is generated. Therefore, in generated [Dynamic Theme](#dynamic-theme) file, all color values are HEX value and not color identity anymore.
+Theme file is to decouple _icon_, _decorator_, _style_ and _color_ configurations from the main configuration file. Refer to the [Template Theme File](themes/template.theme.yaml) for details. The [Template Theme File](themes/template.theme.yaml) is mainly used for [Dynamic Theme](#dynamic-theme) generation. All color values in the [Template Theme File](themes/template.theme.yaml) are [Color Identity](#color-identity) such as `C_1_3` which will be replaced with specific color HEX value such as `#ff7834` when [Dynamic Theme](#dynamic-theme) is generated. Therefore, in generated [Dynamic Theme](#dynamic-theme) file, all color values are HEX value and not color identity anymore.
 
 _Note_: User can have their own Template Theme File. The customized Template Theme File name should be configured in `$XDG_CONFIG_HOME/eutmux/eutmux.yaml` by `general\options\_eutmux_template_name`.
 The customized Template Theme File should be located in the eutmux configuration root directory `$XDG_CONFIG_HOME/eutmux/`.
@@ -111,7 +111,7 @@ The customized Template Theme File should be located in the eutmux configuration
 
 Dynamic theme relies on [RGB](https://en.wikipedia.org/wiki/RGB_color_model), [Hue](https://en.wikipedia.org/wiki/Hue), [HLS](https://en.wikipedia.org/wiki/HSL_color_space) and [Color Scheme](https://en.wikipedia.org/wiki/Color_scheme) technologies. Simply, use one random [RGB](https://en.wikipedia.org/wiki/RGB_color_model) color and then find out `n` other colors with 360 degrees. For example, if `n` is 3, then other 2 colors are from `120` and `240` degrees of [Hue](https://en.wikipedia.org/wiki/Hue). These colors are called _base colors_. Once _base colors_ are generated, _light colors_ are generated.
 
-By default, dynamic theme uses `6` different random _base color_ sets. One of them is `dark` color set which is used for status-line `bg`. Other `5` colors are for status-line components `bg` and `fg`. The _light color_ total is `5` by default. Therefore, each dynamic theme consists of `36` different colors - `6` _base color_ and `30` _light color_. However, in [Template Theme File](template.theme.yaml) for details, only `11` of them are used by default. To make the status-line more colors, user can make tuning in [Template Theme File](template.theme.yaml) for details.
+By default, dynamic theme uses `6` different random _base color_ sets. One of them is `dark` color set which is used for status-line `bg`. Other `5` colors are for status-line components `bg` and `fg`. The _light color_ total is `5` by default. Therefore, each dynamic theme consists of `36` different colors - `6` _base color_ and `30` _light color_. However, in [Template Theme File](themes/template.theme.yaml) for details, only `11` of them are used by default. To make the status-line more colors, user can make tuning in [Template Theme File](themes/template.theme.yaml) for details.
 
 Dynamic colors are generated and saved in palette file - _dynamic_palette.txt_. The conent of palette file follows the format: `[color identity]=[color hex code]` such as `C_5_4:#685255`.
 
@@ -121,7 +121,7 @@ _Note_: till now, dynamic theme only work for _color_ of the themes not for _ico
 
 ### Color Identity
 
-Color identity plays the place holder role. When dynmamic theme is generated, all color identities are replaced with concrete color HEX codes.
+Color identity plays the place holder role. When dynamic theme is generated, all color identities are replaced with concrete color HEX codes.
 
 Value of each color identity follows the format `C_[base color index]_[light color index]`. _Base color_ index starts from `1` and _light color_ index starts from `0` (lightest). So, by default, the color identities are from `C_1_0` to `C_6_5`.
 Note, here, _base color_ in _base color index_ should be understood as group of the colors rather than the concrete color HEX codes which are all from _light color_ which includes both _base color_ and _light color_. (A bit confusing but I need more time to think about the better names to easily distinguish them.)
@@ -136,16 +136,38 @@ Color identity could be used in [Configuration File](#configuration-file) also. 
 
 # Developer Guide
 
-Eu.tmux is developed with Python and Bash programming languages.
+## Project Structure
 
-Python modules are use to generate dynamic palette, parse configuration file and theme file, generate Tmux commands to set options and bind keys.
+```
+eu.tmux/
+├── src/              # Python modules
+│   ├── eutmux.py     # Config parser, theme builder, tmux command generator
+│   ├── palette.py    # Color generation (HLS, schemes, gradients)
+│   └── utils.py      # Shell command runner, tmux option reader
+├── scripts/          # Bash scripts
+│   ├── eutmux.tmux   # Main entry point (TPM plugin)
+│   ├── utils.sh      # Bash utilities
+│   ├── cpu.sh        # CPU usage for status bar
+│   ├── disk.sh       # Disk usage for status bar
+│   └── memory.sh     # Memory usage for status bar
+├── themes/           # Theme and palette files
+├── hooks/            # Tmux hooks
+├── tests/            # Pytest tests
+├── Makefile          # make install/test/theme/lint/clean
+└── pyproject.toml    # Poetry dependencies
+```
 
-* [eutmux.py](eutmux.py)
-* [palette.py](palette.py)
+Eu.tmux is developed with Python and Bash.
 
-Bash scripts are use to accept client parameters, create dynamic configuration file or theme file, run generated Tmux commands to apply configurations and theme.
+Python modules parse configuration and theme files, generate dynamic palettes, and produce tmux commands:
 
-* [eutmux.tmux](eutmux.tmux)
+* [eutmux.py](src/eutmux.py) — main module
+* [palette.py](src/palette.py) — color generation
+* [utils.py](src/utils.py) — utilities
+
+Bash scripts handle CLI arguments, dynamic config creation, and tmux command execution:
+
+* [eutmux.tmux](scripts/eutmux.tmux) — main entry point
 
 Anybody are welcome to contribute for new features or fix bugs. Before you start, please carefully read [CONTRIBUTING](CONTRIBUTING.md) and [CODE OF CONDUCT](CODE_OF_CONDUCT.md).Please make sure you respect it.
 
