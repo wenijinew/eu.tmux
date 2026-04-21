@@ -10,13 +10,12 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    # Skip if commit is from this workflow (prevent infinite loop)
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
 
       - name: Get current version
         id: current
@@ -41,18 +40,20 @@ jobs:
           echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=v$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Commit version bump
+      - name: Commit and tag
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add pyproject.toml
           git commit -m "Bump version to ${{ steps.bump.outputs.version }} [skip ci]"
+          git tag -a "${{ steps.bump.outputs.tag }}" -m "Release ${{ steps.bump.outputs.tag }}"
           git push
+          git push --tags
 
       - name: Generate changelog
         id: changelog
         run: |
-          PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          PREV_TAG=$(git tag -l "v*" | sort -V | tail -2 | head -1)
           if [ -n "$PREV_TAG" ]; then
             CHANGES=$(git log ${PREV_TAG}..HEAD --pretty=format:"- %s" --no-merges | grep -v '\[skip ci\]')
           else
@@ -65,6 +66,7 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
+          token: ${{ secrets.PAT_TOKEN }}
           tag_name: ${{ steps.bump.outputs.tag }}
           name: ${{ steps.bump.outputs.tag }}
           body: |
