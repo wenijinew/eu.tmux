@@ -66,8 +66,9 @@ setup(){
     GIVEN_PALETTE_FILENAME=""
     DEFAULT_TEMPLATE_THEME_FILENAME="template${THEME_FILE_EXTENSION}"
 
-    # the option is configured in eutmux.yaml config file, and it's set in the last time theme and config generation by eutmux.py module
-    # therefore, from 2nd time theme setting, this option could be visible and used.
+    # the option is configured in eutmux.yaml config file, and it's set in the
+    # last time theme and config generation by eutmux.py module therefore, from
+    # 2nd time theme setting, this option could be visible and used.
     eutmux_template_name=$(tmux show-option -gqv "@eutmux_template_name")
     if [ -n "${eutmux_template_name}" ];then
        eutmux_template_name="${eutmux_template_name/%%${THEME_FILE_EXTENSION}*/}"
@@ -82,7 +83,8 @@ setup(){
        TEMPLATE_THEME_FILENAME="${DEFAULT_TEMPLATE_THEME_FILENAME}"
     fi
     # if the template theme file name does not exist, print warning and cleanup the tmux option for it
-    if [ ! -e "${TEMPLATE_THEME_FILENAME}" ];then
+    if [[ ! -e "${_ROOT}/themes/${TEMPLATE_THEME_FILENAME}" \
+        && ! -e "${TEMPLATE_THEME_FILENAME}" ]];then
        _warn "Not found ${TEMPLATE_THEME_FILENAME}"
        tmux set-option -gq "@eutmux_template_name" ""
        exit ${EXIT_ABNORMAL}
@@ -426,7 +428,7 @@ usage(){
     echoh "Author: Bruce Wen <wenijinew@gmail.com>"
 }
 
-# set -x
+set -x
 init
 setup
 while getopts "ac:dDfHLp:rsRt:T:" opt; do
