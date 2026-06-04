@@ -32,7 +32,9 @@ def get(_dict, key, default):
     want to use icon, then they can set icon as Empty.
     """
     value = _dict.get(key)
-    if value is None or value.strip() == EMPTY:
+    if value is None:
+        value = default
+    elif isinstance(value, str) and value.strip() == EMPTY:
         value = default
     return value
 
@@ -159,14 +161,15 @@ class Constructor:
 
     def __init__(self, eutmux: dict, theme: Theme):
         """Constructor."""
+        self._config = eutmux
         self.general = eutmux.get("general")
         self.terminal = eutmux.get("terminal", theme.get("terminal"))
         self.status_line = eutmux.get("status_line", theme.get("status_line"))
         self.foreground = self.status_line.get("foreground")
         self.background = self.status_line.get("background")
-        self.status_left = eutmux.get("status_left")
-        self.window = eutmux.get("window")
-        self.status_right = eutmux.get("status_right")
+        self.status_left = eutmux.get("status_left") or {}
+        self.window = eutmux.get("window") or {}
+        self.status_right = eutmux.get("status_right") or {}
         self.theme = theme
 
     def produce_general_options_commands(self):

@@ -19,6 +19,14 @@ show_status() {
     [ ! -f "$STATE_FILE" ] && exit 0
 
     read -r start_epoch mode < "$STATE_FILE"
+
+    # Validate state file contents
+    if ! [[ "$start_epoch" =~ ^[0-9]+$ ]]; then
+        rm -f "$STATE_FILE"
+        exit 0
+    fi
+    [ -z "$mode" ] && mode="work"
+
     now=$(date +%s)
     elapsed_seconds=$(( now - start_epoch ))
 

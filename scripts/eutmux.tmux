@@ -233,7 +233,7 @@ replace_color() {
   while read -r _color; do
     color_name="$(echo "${_color}" | cut -d':' -f1)"
     color_value="$(echo "${_color}" | cut -d':' -f2)"
-    sed -i "s/${color_name}/${color_value}/g" "${target_file}"
+    sed -i "s/\b${color_name}\b/${color_value}/g" "${target_file}"
   done <"${temp_palette_file}"
 }
 
@@ -406,6 +406,10 @@ main() {
 
     # generate and execute tmux commands
     tmux_commands="$(python3 -c "import eutmux; tmux_commands = eutmux.init(); print(tmux_commands)")"
+    if [ $? -ne 0 ] || [ -z "${tmux_commands}" ]; then
+      _warn "Python theme generation failed"
+      return ${EXIT_ABNORMAL}
+    fi
     echo "${tmux_commands}" | sed -e 's/True/on/g' | sed -e 's/False/off/g' | tr ';' '\n' >"${theme_cmd_filename}"
   fi
 

@@ -11,7 +11,8 @@ EUTMUX_SCRIPT="${SCRIPT_DIR}/eutmux.tmux"
 # Walk up directory tree looking for .eutmux.project
 find_project_theme() {
     local search_dir="$1"
-    while [ "$search_dir" != "/" ]; do
+    [ -z "$search_dir" ] && return 1
+    while [ "$search_dir" != "/" ] && [ "$search_dir" != "$(dirname "$search_dir")" ]; do
         if [ -f "$search_dir/.eutmux.project" ]; then
             cat "$search_dir/.eutmux.project"
             return 0

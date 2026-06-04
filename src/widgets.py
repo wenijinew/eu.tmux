@@ -94,7 +94,7 @@ def execute_widget(widget_entry: dict) -> str:
         result = subprocess.run(
             [str(script_path)],
             capture_output=True, text=True, timeout=3,
-            env={**os.environ, **widget_entry.get("env", {})},
+            env={**os.environ, **{k: str(v) for k, v in widget_entry.get("env", {}).items()}},
         )
         return result.stdout.strip()
     except (subprocess.TimeoutExpired, OSError):

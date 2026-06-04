@@ -23,7 +23,7 @@ branch=$(git -C "$pane_path" rev-parse --abbrev-ref HEAD 2>/dev/null)
 # Cache result for 60s to avoid API spam
 cache_file="/tmp/eutmux_ci_${branch}.cache"
 if [ -f "$cache_file" ]; then
-    cache_age=$(( $(date +%s) - $(stat -c %Y "$cache_file" 2>/dev/null || echo 0) ))
+    cache_age=$(( $(date +%s) - $(stat -c %Y "$cache_file" 2>/dev/null || stat -f %m "$cache_file" 2>/dev/null || echo 0) ))
     if [ "$cache_age" -lt 60 ]; then
         cat "$cache_file"
         exit 0
