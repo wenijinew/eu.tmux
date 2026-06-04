@@ -1,22 +1,24 @@
 #!/usr/bin/env bash
 
-# trap "echo $GITHUB_REPO_ROOT" DEBUG
+# Derive paths from this hook's own location
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLUGIN_ROOT="$(dirname "$HOOK_DIR")"
 
 function change_theme(){
     set -x
-    local eutmux_script=${GITHUB_REPO_ROOT}/eu.tmux/scripts/eutmux.tmux
-    if [ ! -x ${eutmux_script} ];then
+    local eutmux_script="${PLUGIN_ROOT}/scripts/eutmux.tmux"
+    if [ ! -x "${eutmux_script}" ];then
         return 2
     fi
 
     # Priority: project-aware auto-theming
-    local project_theme_script="${GITHUB_REPO_ROOT}/eu.tmux/scripts/project-theme.sh"
+    local project_theme_script="${PLUGIN_ROOT}/scripts/project-theme.sh"
     if [ -x "$project_theme_script" ]; then
         "$project_theme_script" && { set +x; return 0; }
     fi
 
     # Focus mode: minimal bar when zoomed
-    local focus_script="${GITHUB_REPO_ROOT}/eu.tmux/scripts/focus-mode.sh"
+    local focus_script="${PLUGIN_ROOT}/scripts/focus-mode.sh"
     [ -x "$focus_script" ] && "$focus_script"
 
     current_window=$(tmux display-message -p '#W')
