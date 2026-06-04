@@ -57,9 +57,9 @@ main() {
     local project_theme
     project_theme="$(find_project_theme "$current_pane_path")"
 
-    # Priority 2: hash-based deterministic theme
+    # Only apply if explicit .eutmux.project was found (not hash fallback)
     if [ -z "$project_theme" ]; then
-        project_theme="$(hash_directory_to_theme "$current_pane_path")"
+        exit 1
     fi
 
     [ -z "$project_theme" ] && exit 0
