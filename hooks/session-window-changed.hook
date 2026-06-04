@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Derive paths from this hook's own location
-HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HOOK_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLUGIN_ROOT="$(dirname "$HOOK_DIR")"
 LOCK_FILE="/tmp/eutmux-hook.lock"
 
@@ -13,16 +13,6 @@ function change_theme(){
     if [ ! -x "${eutmux_script}" ];then
         return 2
     fi
-
-    # Priority: project-aware auto-theming
-    local project_theme_script="${PLUGIN_ROOT}/scripts/project-theme.sh"
-    if [ -x "$project_theme_script" ]; then
-        "$project_theme_script" && return 0
-    fi
-
-    # Focus mode: minimal bar when zoomed
-    local focus_script="${PLUGIN_ROOT}/scripts/focus-mode.sh"
-    [ -x "$focus_script" ] && "$focus_script"
 
     current_window=$(tmux display-message -p '#W')
     is_pane_maximized=$(tmux display-message -p '#{window_zoomed_flag}')
@@ -45,12 +35,10 @@ function change_theme(){
         if [[ ( ${is_pane_maximized} -eq 1 ) || ( ${panes_total} -eq 1 ) ]]; then
             if [ -n "${idename}" ];then
                 ${eutmux_script} -t ${idename}
-                return $?
             fi
         fi
         # for other cases, use default latset theme
         ${eutmux_script} -R
-        return $?
     fi
 }
 

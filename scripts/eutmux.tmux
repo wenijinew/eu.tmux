@@ -313,6 +313,16 @@ toggle_tmux_status() {
   fi
 }
 
+# hide tmux status bar
+hide_tmux_status() {
+  tmux set-option -gq "${TMUX_OPTION_NAME_STATUS}" "off"
+}
+
+# show tmux status bar
+show_tmux_status() {
+  tmux set-option -gq "${TMUX_OPTION_NAME_STATUS}" "on"
+}
+
 main() {
   # pre-check
   if [ -z "${TMUX}" ]; then
@@ -439,10 +449,18 @@ usage() {
 # set -x
 init
 setup
-while getopts "ac:dDfHLp:rsRt:T:" opt; do
+while getopts "abBc:dDfhLp:rsRt:T:" opt; do
   case $opt in
   a)
     show_all_themes
+    exit $?
+    ;;
+  b)
+    hide_tmux_status
+    exit $?
+    ;;
+  B)
+    show_tmux_status
     exit $?
     ;;
   c) DARK_BASE_COLOR="${OPTARG}" ;;
