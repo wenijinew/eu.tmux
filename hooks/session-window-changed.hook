@@ -15,6 +15,10 @@ function change_theme(){
         "$project_theme_script" && { set +x; return 0; }
     fi
 
+    # Focus mode: minimal bar when zoomed
+    local focus_script="${GITHUB_REPO_ROOT}/eu.tmux/scripts/focus-mode.sh"
+    [ -x "$focus_script" ] && "$focus_script"
+
     current_window=$(tmux display-message -p '#W')
     is_pane_maximized=$(tmux display-message -p '#{window_zoomed_flag}')
     panes_total=$(tmux display-message -p '#{window_panes}')
