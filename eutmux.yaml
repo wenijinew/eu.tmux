@@ -55,11 +55,13 @@ general:
     - bind-key 'C-j' setw synchronize-panes on
     - bind-key 'C-k' setw synchronize-panes off
     - bind-key 'G' run-shell 'eutmux.tmux -D'
+    - bind-key 'L' run-shell 'scripts/live-reload.sh start'
     - bind-key 'S' run-shell 'tmux source ~/.tmux.conf'
     - bind-key 'T' run-shell 'eutmux.tmux -T ""'
     - bind-key 'a' display-popup 'eutmux.tmux -a'
     - bind-key 'g' run-shell 'eutmux.tmux -d'
     - bind-key 'h' run-shell 'eutmux.tmux -s'
+    - bind-key 'p' run-shell 'scripts/project-theme.sh'
     - bind-key 'r' run-shell 'eutmux.tmux -r'
     - bind-key 't' run-shell 'eutmux.tmux -t ""'
     - bind-key -n 'M-Left' select-window -p

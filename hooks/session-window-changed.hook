@@ -8,6 +8,13 @@ function change_theme(){
     if [ ! -x ${eutmux_script} ];then
         return 2
     fi
+
+    # Priority: project-aware auto-theming
+    local project_theme_script="${GITHUB_REPO_ROOT}/eu.tmux/scripts/project-theme.sh"
+    if [ -x "$project_theme_script" ]; then
+        "$project_theme_script" && { set +x; return 0; }
+    fi
+
     current_window=$(tmux display-message -p '#W')
     is_pane_maximized=$(tmux display-message -p '#{window_zoomed_flag}')
     panes_total=$(tmux display-message -p '#{window_panes}')

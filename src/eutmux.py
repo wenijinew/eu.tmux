@@ -246,10 +246,21 @@ class Constructor:
         )
 
     def produce_status_right(self):
-        """Produce status right tmux options string."""
-        return self._produce_status_section(
+        """Produce status right tmux options string.
+
+        If widgets are configured in eutmux.yaml, appends widget output
+        via shell command substitution.
+        """
+        base_status = self._produce_status_section(
             self.status_right, self.theme.status_right, order="dif"
         )
+        # Append widget system output if configured
+        if hasattr(self, '_config') and self._config.get("widgets", {}).get("status_right"):
+            widgets_script = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "widgets.py"
+            )
+            base_status += f" #(python3 {widgets_script} status_right)"
+        return base_status
 
     def produce_window(self):
         """Return tuple with active window and inactive window option strings."""
