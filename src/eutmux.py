@@ -82,9 +82,13 @@ class ThemeComponent(dict):
     def _common_dict(self):
         """Return common fields as dict."""
         return dict(
-            fg_icon=self.fg_icon, bg_icon=self.bg_icon,
-            fg_decorator=self.fg_decorator, bg_decorator=self.bg_decorator,
-            icon=self.icon, decorator=self.decorator, style=self.style,
+            fg_icon=self.fg_icon,
+            bg_icon=self.bg_icon,
+            fg_decorator=self.fg_decorator,
+            bg_decorator=self.bg_decorator,
+            icon=self.icon,
+            decorator=self.decorator,
+            style=self.style,
         )
 
 
@@ -102,7 +106,8 @@ class ThemeStatusLeft(ThemeComponent):
         )
         self._load_common(status_left, status_line)
         super().__init__(
-            fg_format=self.fg_format, bg_format=self.bg_format,
+            fg_format=self.fg_format,
+            bg_format=self.bg_format,
             **self._common_dict(),
         )
 
@@ -113,24 +118,29 @@ class ThemeWindow(ThemeComponent):
     def __init__(self, status_line_theme_config, window_theme_config):
         """Constructor."""
         self.fg_window = get(
-            window_theme_config, "fg_window",
+            window_theme_config,
+            "fg_window",
             status_line_theme_config.get("foreground"),
         )
         self.bg_window = get(
-            window_theme_config, "bg_window",
+            window_theme_config,
+            "bg_window",
             status_line_theme_config.get("background"),
         )
         self.fg_window_index = get(
-            window_theme_config, "fg_window_index",
+            window_theme_config,
+            "fg_window_index",
             status_line_theme_config.get("foreground"),
         )
         self.bg_window_index = get(
-            window_theme_config, "bg_window_index",
+            window_theme_config,
+            "bg_window_index",
             status_line_theme_config.get("background"),
         )
         self._load_common(window_theme_config, status_line_theme_config)
         super().__init__(
-            fg_window=self.fg_window, bg_window=self.bg_window,
+            fg_window=self.fg_window,
+            bg_window=self.bg_window,
             fg_window_index=self.fg_window_index,
             bg_window_index=self.bg_window_index,
             **self._common_dict(),
@@ -151,7 +161,8 @@ class ThemeStatusRight(ThemeComponent):
         )
         self._load_common(status_right, status_line)
         super().__init__(
-            fg_format=self.fg_format, bg_format=self.bg_format,
+            fg_format=self.fg_format,
+            bg_format=self.bg_format,
             **self._common_dict(),
         )
 
@@ -229,13 +240,19 @@ class Constructor:
             bg_format = component.get("bg_format", theme_section.get("bg_format"))
             fg_icon = component.get("fg_icon", theme_section.get("fg_icon"))
             bg_icon = component.get("bg_icon", theme_section.get("bg_icon"))
-            fg_decorator = component.get("fg_decorator", theme_section.get("fg_decorator"))
-            bg_decorator = component.get("bg_decorator", theme_section.get("bg_decorator"))
+            fg_decorator = component.get(
+                "fg_decorator", theme_section.get("fg_decorator")
+            )
+            bg_decorator = component.get(
+                "bg_decorator", theme_section.get("bg_decorator")
+            )
             style = component.get("style", theme_section.get("style"))
             _format = component.get("format", EMPTY)
             fmt = self.get_style_for_option(fg_format, bg_format, style, _format)
             ico = self.get_style_for_option(fg_icon, bg_icon, style, icon)
-            dec = self.get_style_for_option(fg_decorator, bg_decorator, style, decorator)
+            dec = self.get_style_for_option(
+                fg_decorator, bg_decorator, style, decorator
+            )
             if order == "idf":
                 parts.append(f"{ico}{dec}{fmt}")
             else:
@@ -258,7 +275,9 @@ class Constructor:
             self.status_right, self.theme.status_right, order="dif"
         )
         # Append widget system output if configured
-        if hasattr(self, '_config') and self._config.get("widgets", {}).get("status_right"):
+        if hasattr(self, "_config") and self._config.get("widgets", {}).get(
+            "status_right"
+        ):
             widgets_script = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)), "widgets.py"
             )
@@ -447,6 +466,7 @@ def init(config_file=DEFAULT_CONFIG_FILE):
             theme_filename = f"{eutmux_config_home}/{theme_filename}"
         else:
             theme_filename = DEFAULT_THEME_FILE
+
     with open(theme_filename, "r", encoding=UTF_8) as theme_file:
         theme_config = yaml.safe_load(theme_file)
         theme = Theme(theme_config)

@@ -57,12 +57,10 @@ main() {
     local project_theme
     project_theme="$(find_project_theme "$current_pane_path")"
 
-    # Only apply if explicit .eutmux.project was found (not hash fallback)
+    # Only apply if explicit .eutmux.project was found
     if [ -z "$project_theme" ]; then
         exit 1
     fi
-
-    [ -z "$project_theme" ] && exit 0
 
     # Only apply if theme changed (avoid flicker)
     local current_theme

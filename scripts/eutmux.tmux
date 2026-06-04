@@ -233,7 +233,7 @@ replace_color() {
   while read -r _color; do
     color_name="$(echo "${_color}" | cut -d':' -f1)"
     color_value="$(echo "${_color}" | cut -d':' -f2)"
-    sed -i "s/\b${color_name}\b/${color_value}/g" "${target_file}"
+    sed -i "s/${color_name}/${color_value}/g" "${target_file}"
   done <"${temp_palette_file}"
 }
 
