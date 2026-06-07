@@ -198,7 +198,7 @@ create_dynamic_theme_file() {
   if [ -e "${dynamic_theme_file_name}" ]; then
     rm -f "${dynamic_theme_file_name}"
   fi
-  cp -f "${TEMPLATE_THEME_FILENAME}" "${EUTMUX_CONFIG_HOME}/${dynamic_theme_file_name}"
+  cp -f "${_ROOT}/themes/${TEMPLATE_THEME_FILENAME}" "${EUTMUX_CONFIG_HOME}/${dynamic_theme_file_name}"
   replace_color "${EUTMUX_CONFIG_HOME}/${dynamic_theme_file_name}"
 }
 
