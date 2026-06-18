@@ -198,7 +198,11 @@ create_dynamic_theme_file() {
   if [ -e "${dynamic_theme_file_name}" ]; then
     rm -f "${dynamic_theme_file_name}"
   fi
-  cp -f "${_ROOT}/themes/${TEMPLATE_THEME_FILENAME}" "${EUTMUX_CONFIG_HOME}/${dynamic_theme_file_name}"
+  if [[ "${TEMPLATE_THEME_FILENAME}" == /* ]]; then
+    cp -f "${TEMPLATE_THEME_FILENAME}" "${EUTMUX_CONFIG_HOME}/${dynamic_theme_file_name}"
+  else
+    cp -f "${_ROOT}/themes/${TEMPLATE_THEME_FILENAME}" "${EUTMUX_CONFIG_HOME}/${dynamic_theme_file_name}"
+  fi
   replace_color "${EUTMUX_CONFIG_HOME}/${dynamic_theme_file_name}"
 }
 
