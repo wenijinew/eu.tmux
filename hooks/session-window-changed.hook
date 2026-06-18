@@ -35,6 +35,7 @@ function change_theme(){
         if [[ ( ${is_pane_maximized} -eq 1 ) || ( ${panes_total} -eq 1 ) ]]; then
             if [ -n "${idename}" ];then
                 ${eutmux_script} -t ${idename}
+                return 0
             fi
         fi
         # for other cases, use default latset theme
